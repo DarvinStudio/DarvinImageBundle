@@ -8,7 +8,7 @@
 
 namespace Darvin\ImageBundle\Form\Type;
 
-use Darvin\ImageBundle\Entity\AbstractImage;
+use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
