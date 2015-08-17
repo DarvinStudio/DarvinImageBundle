@@ -18,11 +18,16 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-//        $rootNode = $treeBuilder->root('darvin_image');
+        $rootNode = $treeBuilder->root('darvin_image');
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.
+        $rootNode
+            ->children()
+                ->scalarNode('imagine_filter')->cannotBeEmpty()->isRequired()->end()
+                ->scalarNode('upload_path')->cannotBeEmpty()->isRequired()->end()
+            ->end();
 
         return $treeBuilder;
     }

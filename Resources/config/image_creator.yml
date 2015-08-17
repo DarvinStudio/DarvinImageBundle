@@ -1,0 +1,13 @@
+parameters:
+    darvin_image.image_creator.class: Darvin\ImageBundle\ImageCreator\ImageCreator
+
+services:
+    darvin_image.image_creator:
+        class: %darvin_image.image_creator.class%
+        arguments:
+            - "@liip_imagine.cache.manager"
+            - "@liip_imagine.filter.manager"
+            - "@liip_imagine.data.manager"
+            - %darvin_image.imagine_filter%
+            - %secret%
+            - %darvin_image.upload_path%

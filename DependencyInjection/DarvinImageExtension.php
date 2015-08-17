@@ -19,10 +19,14 @@ class DarvinImageExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-//        $configuration = new Configuration();
-//        $config = $this->processConfiguration($configuration, $configs);
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+
+        $container->setParameter('darvin_image.imagine_filter', $config['imagine_filter']);
+        $container->setParameter('darvin_image.upload_path', $config['upload_path']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('form.yml');
+        $loader->load('image.yml');
+        $loader->load('image_creator.yml');
     }
 }
