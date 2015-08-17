@@ -27,6 +27,7 @@ class DarvinImageExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('image.yml');
-        $loader->load('image_creator.yml');
+        $loader->load('size.yml');
+        $loader->load('url_builder.yml');
     }
 }
