@@ -23,14 +23,14 @@ class ImageCreator implements ImageCreatorInterface
     private $cacheManager;
 
     /**
-     * @var \Liip\ImagineBundle\Imagine\Filter\FilterManager
-     */
-    private $filterManager;
-
-    /**
      * @var \Liip\ImagineBundle\Imagine\Data\DataManager
      */
     private $dataManager;
+
+    /**
+     * @var \Liip\ImagineBundle\Imagine\Filter\FilterManager
+     */
+    private $filterManager;
 
     /**
      * @var string
@@ -40,36 +40,36 @@ class ImageCreator implements ImageCreatorInterface
     /**
      * @var string
      */
-    private $secret;
+    private $removeFromPath;
 
     /**
      * @var string
      */
-    private $removeFromPath;
+    private $secret;
 
     /**
      * @param \Liip\ImagineBundle\Imagine\Cache\CacheManager   $cacheManager   Imagine cache manager
-     * @param \Liip\ImagineBundle\Imagine\Filter\FilterManager $filterManager  Imagine filter manager
      * @param \Liip\ImagineBundle\Imagine\Data\DataManager     $dataManager    Imagine data manager
+     * @param \Liip\ImagineBundle\Imagine\Filter\FilterManager $filterManager  Imagine filter manager
      * @param string                                           $filterName     Filter name
-     * @param string                                           $secret         Secret
      * @param string                                           $removeFromPath Remove from path
+     * @param string                                           $secret         Secret
      */
     public function __construct(
         CacheManager $cacheManager,
-        FilterManager $filterManager,
         DataManager $dataManager,
+        FilterManager $filterManager,
         $filterName,
-        $secret,
-        $removeFromPath
+        $removeFromPath,
+        $secret
     )
     {
         $this->cacheManager = $cacheManager;
-        $this->filterManager = $filterManager;
         $this->dataManager = $dataManager;
+        $this->filterManager = $filterManager;
         $this->filterName=$filterName;
-        $this->secret = $secret;
         $this->removeFromPath = $removeFromPath;
+        $this->secret = $secret;
     }
 
     /**
