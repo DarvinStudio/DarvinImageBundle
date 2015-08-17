@@ -6,7 +6,7 @@
  * Time: 8:43
  */
 
-namespace DarvinCore\ImageBundle\Size\Manager\Exception;
+namespace Darvin\ImageBundle\Size\Manager\Exception;
 
 /**
  * Size not found exception
