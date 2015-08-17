@@ -37,6 +37,13 @@ class Size
     private $image;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    private $name;
+
+    /**
      * @var int
      *
      * @ORM\Column(type="integer")
@@ -78,6 +85,26 @@ class Size
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * @param string $name name
+     *
+     * @return Size
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
