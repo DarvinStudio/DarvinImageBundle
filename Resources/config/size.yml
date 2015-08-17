@@ -1,0 +1,6 @@
+parameters:
+    darvin_image.size.resolver.pool.class: Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPool
+
+services:
+    darvin_image.size.resolver.pool:
+        class: %darvin_image.size.resolver.pool.class%

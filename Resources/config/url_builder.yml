@@ -1,0 +1,17 @@
+parameters:
+    darvin_image.url_builder.builder.class: Darvin\ImageBundle\UrlBuilder\UrlBuilder
+
+    darvin_image.url_builder.filter.resize.class: Darvin\ImageBundle\UrlBuilder\Filter\ResizeFilter
+
+services:
+    darvin_image.url_builder.filter.resize:
+        class: %darvin_image.url_builder.filter.resize.class%
+        arguments:
+            - "@liip_imagine.filter.manager"
+            - "@darvin_image.image.creator"
+
+    darvin_image.url_builder.builder:
+        class: %darvin_image.url_builder.builder.class%
+        arguments:
+            - "@darvin_image.size.resolver.pool"
+            - "@vich_uploader.storage"
