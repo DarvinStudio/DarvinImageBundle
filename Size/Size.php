@@ -9,10 +9,12 @@
 namespace Darvin\ImageBundle\Size;
 
 /**
- * Image size
+ * Size
  */
 class Size
 {
+    const CLASS_NAME = 'Darvin\\ImageBundle\\Size\\Size';
+
     /**
      * @var string
      */
@@ -21,23 +23,35 @@ class Size
     /**
      * @var int
      */
-    private $defaultWidth;
+    private $width;
 
     /**
      * @var int
      */
-    private $defaultHeight;
+    private $height;
 
     /**
-     * @param string $name          Size name
-     * @param int    $defaultWidth  Default width
-     * @param int    $defaultHeight Default height
+     * @param string $name   Name
+     * @param int    $width  Width
+     * @param int    $height Height
      */
-    public function __construct($name, $defaultWidth, $defaultHeight)
+    public function __construct($name = null, $width = null, $height = null)
     {
         $this->name = $name;
-        $this->defaultWidth = $defaultWidth;
-        $this->defaultHeight = $defaultHeight;
+        $this->width = $width;
+        $this->height = $height;
+    }
+
+    /**
+     * @param string $name name
+     *
+     * @return Size
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -49,18 +63,42 @@ class Size
     }
 
     /**
-     * @return int
+     * @param int $width width
+     *
+     * @return Size
      */
-    public function getDefaultWidth()
+    public function setWidth($width)
     {
-        return $this->defaultWidth;
+        $this->width = $width;
+
+        return $this;
     }
 
     /**
      * @return int
      */
-    public function getDefaultHeight()
+    public function getWidth()
     {
-        return $this->defaultHeight;
+        return $this->width;
+    }
+
+    /**
+     * @param int $height height
+     *
+     * @return Size
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHeight()
+    {
+        return $this->height;
     }
 }
