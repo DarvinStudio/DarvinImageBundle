@@ -45,6 +45,6 @@ class ImageType extends AbstractType
      */
     public function getName()
     {
-        return 'darvin_image';
+        return 'darvin_image_image';
     }
 }

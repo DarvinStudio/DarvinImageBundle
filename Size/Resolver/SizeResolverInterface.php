@@ -9,7 +9,7 @@
 namespace Darvin\ImageBundle\Size\Resolver;
 
 /**
- * Image size resolver
+ * Size resolver
  */
 interface SizeResolverInterface
 {

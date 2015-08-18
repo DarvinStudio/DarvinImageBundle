@@ -48,6 +48,7 @@ class Size
      *
      * @ORM\Column(type="integer")
      * @Assert\GreaterThan(0)
+     * @Assert\NotBlank
      */
     private $width;
 
@@ -56,6 +57,7 @@ class Size
      *
      * @ORM\Column(type="integer")
      * @Assert\GreaterThan(0)
+     * @Assert\NotBlank
      */
     private $height;
 

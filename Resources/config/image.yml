@@ -17,4 +17,4 @@ services:
     darvin_image.image.form_type:
         class: %darvin_image.image.form_type.class%
         tags:
-            - { name: form.type, alias: darvin_image }
+            - { name: form.type, alias: darvin_image_image }

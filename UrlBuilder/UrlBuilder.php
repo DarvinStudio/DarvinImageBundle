@@ -108,16 +108,6 @@ class UrlBuilder implements UrlBuilderInterface
     /**
      * @param string $name Filter name
      *
-     * @return bool
-     */
-    private function hasFilter($name)
-    {
-        return isset($this->filters[$name]);
-    }
-
-    /**
-     * @param string $name Filter name
-     *
      * @return \Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface
      * @throws \Darvin\ImageBundle\UrlBuilder\Exception\FilterNotFoundException
      */
@@ -128,6 +118,16 @@ class UrlBuilder implements UrlBuilderInterface
         }
 
         return $this->filters[$name];
+    }
+
+    /**
+     * @param string $name Filter name
+     *
+     * @return bool
+     */
+    private function hasFilter($name)
+    {
+        return isset($this->filters[$name]);
     }
 
     /**
