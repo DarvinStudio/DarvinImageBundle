@@ -10,8 +10,8 @@ namespace Darvin\ImageBundle\Size\Manager;
 
 use Darvin\ConfigBundle\Configuration\ConfigurationPool;
 use Darvin\ImageBundle\Configuration\ImageConfigurationInterface;
-use Darvin\ImageBundle\Size\Manager\Exception\BlockNotFoundException;
 use Darvin\ImageBundle\Size\Manager\Exception\ParsePathException;
+use Darvin\ImageBundle\Size\Manager\Exception\SizeGroupNotFoundException;
 use Darvin\ImageBundle\Size\Manager\Exception\SizeNotFoundException;
 use Darvin\ImageBundle\Size\SizeGroup;
 
@@ -100,7 +100,7 @@ class SizeManager implements SizeManagerInterface
         $size = $group->findSizeByName($sizeName);
 
         if (empty($size)) {
-            throw new SizeNotFoundException($groupName, $sizeName);
+            throw new SizeNotFoundException(sprintf('Size "%s" not found in group "%s".', $sizeName, $groupName));
         }
 
         return $size;
@@ -114,7 +114,7 @@ class SizeManager implements SizeManagerInterface
         $this->init();
 
         if (!isset($this->sizeGroups[$name])) {
-            throw new BlockNotFoundException($name);
+            throw new SizeGroupNotFoundException($name);
         }
 
         return $this->sizeGroups[$name];

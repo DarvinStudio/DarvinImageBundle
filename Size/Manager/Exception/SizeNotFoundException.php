@@ -11,13 +11,7 @@ namespace Darvin\ImageBundle\Size\Manager\Exception;
 /**
  * Size not found exception
  */
-class SizeNotFoundException extends \Exception
+class SizeNotFoundException extends SizeManagerException
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($blockName, $sizeName)
-    {
-        parent::__construct(sprintf('Size with name "%s" was not found in block "%s".', $sizeName, $blockName));
-    }
+
 }

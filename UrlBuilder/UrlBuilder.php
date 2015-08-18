@@ -99,7 +99,7 @@ class UrlBuilder implements UrlBuilderInterface
     public function addFilter(FilterInterface $filter)
     {
         if ($this->hasFilter($filter->getName())) {
-            throw new FilterAlreadyExistsException(sprintf('Filter "%s" already exists.', $filter->getName()));
+            throw new FilterAlreadyExistsException($filter->getName());
         }
 
         $this->filters[$filter->getName()] = $filter;
@@ -124,7 +124,7 @@ class UrlBuilder implements UrlBuilderInterface
     private function getFilter($name)
     {
         if (!$this->hasFilter($name)) {
-            throw new FilterNotFoundException(sprintf('Filter "%s" not found.', $name));
+            throw new FilterNotFoundException($name);
         }
 
         return $this->filters[$name];
@@ -138,7 +138,7 @@ class UrlBuilder implements UrlBuilderInterface
     private function checkIfFileExists(AbstractImage $image)
     {
         if (!$this->fileExists($image)) {
-            throw new ImageNotFoundException(sprintf('Image "%s" not found.', $this->getImagePathname($image)));
+            throw new ImageNotFoundException($this->getImagePathname($image));
         }
     }
 

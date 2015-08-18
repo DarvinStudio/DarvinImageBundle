@@ -11,7 +11,13 @@ namespace Darvin\ImageBundle\Size\Manager\Exception;
 /**
  * Parse path exception
  */
-class ParsePathException extends \Exception
+class ParsePathException extends SizeManagerException
 {
-
+    /**
+     * @param string $path Path
+     */
+    public function __construct($path)
+    {
+        parent::__construct(sprintf('Unable to parse path "%s".', $path));
+    }
 }

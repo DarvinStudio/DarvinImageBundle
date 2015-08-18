@@ -13,5 +13,11 @@ namespace Darvin\ImageBundle\UrlBuilder\Exception;
  */
 class ImageNotFoundException extends UrlBuilderException
 {
-
+    /**
+     * @param string $imagePathname Image pathname
+     */
+    public function __construct($imagePathname)
+    {
+        parent::__construct(sprintf('Image "%s" not found.', $imagePathname));
+    }
 }
