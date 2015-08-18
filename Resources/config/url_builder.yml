@@ -3,6 +3,8 @@ parameters:
 
     darvin_image.url_builder.filter.resize.class: Darvin\ImageBundle\UrlBuilder\Filter\ResizeFilter
 
+    darvin_image.url_builder.twig_extension.class: Darvin\ImageBundle\Twig\Extension\UrlBuilderExtension
+
 services:
     darvin_image.url_builder.filter.resize:
         class: %darvin_image.url_builder.filter.resize.class%
@@ -17,3 +19,11 @@ services:
         arguments:
             - "@darvin_image.size.resolver.pool"
             - "@vich_uploader.storage"
+
+    darvin_image.url_builder.twig_extension:
+        class:  %darvin_image.url_builder.twig_extension.class%
+        public: false
+        arguments:
+            - "@darvin_image.url_builder.builder"
+        tags:
+            - { name: twig.extension }
