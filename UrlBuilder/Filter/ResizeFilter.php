@@ -16,6 +16,8 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
  */
 class ResizeFilter implements FilterInterface
 {
+    const NAME = 'darvin_resize';
+
     /**
      * @var \Liip\ImagineBundle\Imagine\Filter\FilterManager
      */
@@ -61,7 +63,7 @@ class ResizeFilter implements FilterInterface
      */
     public function getName()
     {
-        return 'darvin_resize';
+        return self::NAME;
     }
 
     /**
