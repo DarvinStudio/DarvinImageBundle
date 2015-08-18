@@ -73,17 +73,15 @@ class ImageCreator implements ImageCreatorInterface
     }
 
     /**
-     * @param string $relativePathToImage Relative path to image
-     * @param array  $filters             Filters
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function createImage($relativePathToImage, array $filters = array())
+    public function createImage($imagePathname, array $filters = array())
     {
-        $path = $this->createPath($relativePathToImage, $filters);
+        $path = $this->createPath($imagePathname, $filters);
 
         if (!$this->cacheManager->isStored($path, $this->filterName)) {
-            $binary = $this->dataManager->find($this->filterName, $relativePathToImage);
+            $binary = $this->dataManager->find($this->filterName, $imagePathname);
+
             $this->cacheManager->store(
                 $this->filterManager->applyFilter($binary, $this->filterName, array(
                     'filters' => $filters,
@@ -97,23 +95,25 @@ class ImageCreator implements ImageCreatorInterface
     }
 
     /**
-     * @param string $pathToImage Path to image
-     * @param array  $filters     Filters
+     * @param string $imagePathname Image pathname
+     * @param array  $filters       Filters
      *
      * @return string
      */
-    private function createPath($pathToImage, array $filters)
+    private function createPath($imagePathname, array $filters)
     {
-        $dir = dirname($pathToImage);
-        $file = ltrim(str_replace($dir, '', $pathToImage), '/');
+        $dir = dirname($imagePathname);
+        $filename = ltrim(str_replace($dir, '', $imagePathname), '/');
         $dir = str_replace($this->removeFromPath, '', $dir);
 
-        array_walk_recursive($filters, function (&$value) {
-            $value = (string) $value;
-        });
+        array_walk_recursive($filters, 'strval');
 
-        $sign = substr(preg_replace('/[^a-zA-Z0-9-_]/', '', base64_encode(hash_hmac('sha256', serialize($filters), $this->secret, true))), 0, 8);
+        $sign = substr(
+            preg_replace('/[^a-zA-Z0-9-_]/', '', base64_encode(hash_hmac('sha256', serialize($filters), $this->secret, true))),
+            0,
+            8
+        );
 
-        return sprintf('%s/%s/%s', $dir, $sign, $file);
+        return sprintf('%s/%s/%s', $dir, $sign, $filename);
     }
 }

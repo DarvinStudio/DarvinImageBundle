@@ -14,10 +14,10 @@ namespace Darvin\ImageBundle\ImageCreator;
 interface ImageCreatorInterface
 {
     /**
-     * @param string $relativePathToImage Relative path to image
-     * @param array  $filters             Filters
+     * @param string $imagePathname Image pathname
+     * @param array  $filters       Filters
      *
      * @return string
      */
-    public function createImage($relativePathToImage, array $filters = array());
+    public function createImage($imagePathname, array $filters = array());
 }
