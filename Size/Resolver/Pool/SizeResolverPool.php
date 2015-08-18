@@ -8,7 +8,9 @@
 
 namespace Darvin\ImageBundle\Size\Resolver\Pool;
 
+use Darvin\ImageBundle\Size\Resolver\SizeResolverException;
 use Darvin\ImageBundle\Size\Resolver\SizeResolverInterface;
+use Doctrine\Common\Util\ClassUtils;
 
 /**
  * Size resolver pool
@@ -48,6 +50,8 @@ class SizeResolverPool implements SizeResolverPoolInterface
             }
         }
 
-        return null;
+        throw new SizeResolverException(
+            sprintf('Unable to find size resolver for object "%s".', ClassUtils::getClass($object))
+        );
     }
 }
