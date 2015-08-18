@@ -14,10 +14,10 @@ namespace Darvin\ImageBundle\UrlBuilder\Filter;
 interface FilterInterface
 {
     /**
-     * @param string $pathToImage Path to image
-     * @param array  $parameters  Parameters
+     * @param string $imagePathname Image pathname
+     * @param array  $parameters    Parameters
      *
      * @return string
      */
-    public function buildUrl($pathToImage, array $parameters);
+    public function buildUrl($imagePathname, array $parameters);
 }

@@ -16,9 +16,6 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
  */
 class ResizeFilter implements FilterInterface
 {
-    const FILTER_CROP   = 'crop';
-    const FILTER_RESIZE = 'thumbnail';
-
     /**
      * @var \Liip\ImagineBundle\Imagine\Filter\FilterManager
      */
@@ -40,63 +37,57 @@ class ResizeFilter implements FilterInterface
     }
 
     /**
-     * @param string $pathToImage Path to image
-     * @param array  $parameters  Parameters
-     *
-     * @return string
-     * @throws \InvalidArgumentException
+     * {@inheritdoc}
      */
-    public function buildUrl($pathToImage, array $parameters)
+    public function buildUrl($imagePathname, array $parameters)
     {
-        $type = isset($parameters['type']) ? $parameters['type'] : $this->getDefaultFilter();
-
-        if (!in_array($type, $this->getAllowedFilters())) {
-            throw new \InvalidArgumentException(
-                sprintf('Parameter type must be one of this: "%s".', implode(', ', $this->getAllowedFilters()))
-            );
-        }
-
-        $width = isset($parameters['width']) ? $parameters['width'] : null;
-        $height = isset($parameters['height']) ? $parameters['height'] : null;
-
-        if (!$width && !$height) {
-            throw new \InvalidArgumentException('Width or height must be defined.');
-        }
-
         $options = array(
-            'size' => array($width, $height),
-            'mode' => $type == self::FILTER_RESIZE ? 'inset' : 'outbound',
+            'size' => $this->getSize($parameters),
+            'mode' => isset($parameters['outbound']) && $parameters['outbound'] ? 'outbound' : 'inset',
         );
         $filters = array(
             'thumbnail' => $options,
         );
 
         if (isset($parameters['watermark'])) {
-            $watermarkOptions = $this->filterManager->getFilterConfiguration()->get($parameters['watermark']);
-
-            if (!isset($watermarkOptions['filters']) || !isset($watermarkOptions['filters']['watermark'])) {
-                throw new \InvalidArgumentException('Invalid watermark filter parameters.');
-            }
-
-            $filters['watermark'] = $watermarkOptions['filters']['watermark'];
+            $filters['watermark'] = $this->getWatermarkConfiguration($parameters['watermark']);
         }
 
-        return $this->imageCreator->createImage($pathToImage, $filters);
+        return $this->imageCreator->createImage($imagePathname, $filters);
     }
 
     /**
+     * @param array $parameters Parameters
+     *
      * @return array
+     * @throws \InvalidArgumentException
      */
-    private function getAllowedFilters()
+    private function getSize(array $parameters)
     {
-        return array(self::FILTER_CROP, self::FILTER_RESIZE);
+        $width = isset($parameters['width']) ? $parameters['width'] : null;
+        $height = isset($parameters['height']) ? $parameters['height'] : null;
+
+        if (null === $width && null === $height) {
+            throw new \InvalidArgumentException('Width or height must be provided.');
+        }
+
+        return array($width, $height);
     }
 
     /**
-     * @return string
+     * @param string $name Filter name
+     *
+     * @return array
+     * @throws \InvalidArgumentException
      */
-    private function getDefaultFilter()
+    private function getWatermarkConfiguration($name)
     {
-        return self::FILTER_RESIZE;
+        $filterConfiguration = $this->filterManager->getFilterConfiguration()->get($name);
+
+        if (!isset($filterConfiguration['filters']['watermark'])) {
+            throw new \InvalidArgumentException(sprintf('Filter "%s" does not contain watermark configuration.', $name));
+        }
+
+        return $filterConfiguration['filters']['watermark'];
     }
 }
