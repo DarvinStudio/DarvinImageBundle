@@ -43,6 +43,16 @@ class UrlBuilderExtension extends \Twig_Extension
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getFunctions()
+    {
+        return array(
+            new \Twig_SimpleFunction('image_exists', array($this->urlBuilder, 'fileExists')),
+        );
+    }
+
+    /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image               Image
      * @param string                                         $sizeName            Size name
      * @param string                                         $watermarkFilterName Watermark Imagine filter name
