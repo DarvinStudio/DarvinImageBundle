@@ -11,7 +11,7 @@ namespace Darvin\ImageBundle\Size\Resolver\Pool;
 use Darvin\ImageBundle\Size\Resolver\SizeResolverInterface;
 
 /**
- * Image size resolver pool
+ * Size resolver pool
  */
 class SizeResolverPool implements SizeResolverPoolInterface
 {
@@ -29,7 +29,7 @@ class SizeResolverPool implements SizeResolverPoolInterface
     }
 
     /**
-     * @param \Darvin\ImageBundle\Size\Resolver\SizeResolverInterface $resolver Image size resolver
+     * @param \Darvin\ImageBundle\Size\Resolver\SizeResolverInterface $resolver Size resolver
      */
     public function add(SizeResolverInterface $resolver)
     {

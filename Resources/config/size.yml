@@ -1,6 +1,13 @@
 parameters:
+    darvin_image.size.resolver.entity.class: Darvin\ImageBundle\Size\Resolver\EntitySizeResolver
+
     darvin_image.size.resolver.pool.class: Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPool
 
 services:
+    darvin_image.size.resolver.entity:
+        class: %darvin_image.size.resolver.entity.class%
+        tags:
+            - { name: darvin_image.size_resolver }
+
     darvin_image.size.resolver.pool:
         class: %darvin_image.size.resolver.pool.class%

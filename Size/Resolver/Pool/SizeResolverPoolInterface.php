@@ -9,12 +9,12 @@
 namespace Darvin\ImageBundle\Size\Resolver\Pool;
 
 /**
- * Image size resolver pool
+ * Size resolver pool
  */
 interface SizeResolverPoolInterface
 {
     /**
-     * @param object $object Image object
+     * @param object $object Object
      *
      * @return \Darvin\ImageBundle\Size\Resolver\SizeResolverInterface
      */
