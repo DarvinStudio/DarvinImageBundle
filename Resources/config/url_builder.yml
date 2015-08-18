@@ -9,6 +9,8 @@ services:
         arguments:
             - "@liip_imagine.filter.manager"
             - "@darvin_image.image.creator"
+        tags:
+            - { name: darvin_image.url_builder_filter }
 
     darvin_image.url_builder.builder:
         class: %darvin_image.url_builder.builder.class%
