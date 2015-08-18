@@ -8,10 +8,12 @@
 
 namespace Darvin\ImageBundle\Configuration;
 
+use Darvin\ConfigBundle\Configuration\ConfigurationInterface;
+
 /**
  * Image configuration
  */
-interface ImageConfigurationInterface
+interface ImageConfigurationInterface extends ConfigurationInterface
 {
     /**
      * @return \Darvin\ImageBundle\Size\Size[]
