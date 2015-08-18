@@ -9,7 +9,7 @@
 namespace Darvin\ImageBundle\UrlBuilder\Filter;
 
 /**
- * Filter
+ * URL builder filter
  */
 interface FilterInterface
 {
@@ -20,4 +20,9 @@ interface FilterInterface
      * @return string
      */
     public function buildUrl($imagePathname, array $parameters);
+
+    /**
+     * @return string
+     */
+    public function getName();
 }

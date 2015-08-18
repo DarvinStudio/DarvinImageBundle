@@ -12,7 +12,7 @@ use Darvin\ImageBundle\ImageCreator\ImageCreatorInterface;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 
 /**
- * Resize filter
+ * URL builder resize filter
  */
 class ResizeFilter implements FilterInterface
 {
@@ -57,10 +57,18 @@ class ResizeFilter implements FilterInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'darvin_resize';
+    }
+
+    /**
      * @param array $parameters Parameters
      *
      * @return array
-     * @throws \InvalidArgumentException
+     * @throws \Darvin\ImageBundle\UrlBuilder\Filter\FilterException
      */
     private function getSize(array $parameters)
     {
@@ -68,7 +76,7 @@ class ResizeFilter implements FilterInterface
         $height = isset($parameters['height']) ? $parameters['height'] : null;
 
         if (null === $width && null === $height) {
-            throw new \InvalidArgumentException('Width or height must be provided.');
+            throw new FilterException('Width or height must be provided.');
         }
 
         return array($width, $height);
@@ -78,14 +86,14 @@ class ResizeFilter implements FilterInterface
      * @param string $name Filter name
      *
      * @return array
-     * @throws \InvalidArgumentException
+     * @throws \Darvin\ImageBundle\UrlBuilder\Filter\FilterException
      */
     private function getWatermarkConfiguration($name)
     {
         $filterConfiguration = $this->filterManager->getFilterConfiguration()->get($name);
 
         if (!isset($filterConfiguration['filters']['watermark'])) {
-            throw new \InvalidArgumentException(sprintf('Filter "%s" does not contain watermark configuration.', $name));
+            throw new FilterException(sprintf('Filter "%s" does not contain watermark configuration.', $name));
         }
 
         return $filterConfiguration['filters']['watermark'];

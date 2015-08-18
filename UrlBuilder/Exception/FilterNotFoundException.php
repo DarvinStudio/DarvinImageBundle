@@ -9,15 +9,9 @@
 namespace Darvin\ImageBundle\UrlBuilder\Exception;
 
 /**
- * Filter not found exception
+ * URL builder filter not found exception
  */
-class FilterNotFoundException extends \Exception
+class FilterNotFoundException extends UrlBuilderException
 {
-    /**
-     * @param string $filterName Filter name
-     */
-    public function __construct($filterName)
-    {
-        parent::__construct(sprintf('Filter "%s" not found.', $filterName));
-    }
+
 }

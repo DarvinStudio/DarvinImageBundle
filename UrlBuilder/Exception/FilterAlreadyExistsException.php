@@ -9,15 +9,9 @@
 namespace Darvin\ImageBundle\UrlBuilder\Exception;
 
 /**
- * Filter already exists exception
+ * URL builder filter already exists exception
  */
-class FilterAlreadyExistsException extends \Exception
+class FilterAlreadyExistsException extends UrlBuilderException
 {
-    /**
-     * @param string $filterName Filter name
-     */
-    public function __construct($filterName)
-    {
-        parent::__construct(sprintf('Filter "%s" already exists.', $filterName));
-    }
+
 }

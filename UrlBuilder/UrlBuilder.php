@@ -13,6 +13,7 @@ use Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPoolInterface;
 use Darvin\ImageBundle\UrlBuilder\Exception\FilterAlreadyExistsException;
 use Darvin\ImageBundle\UrlBuilder\Exception\FilterNotFoundException;
 use Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException;
+use Darvin\ImageBundle\UrlBuilder\Exception\UrlBuilderException;
 use Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
@@ -52,17 +53,9 @@ class UrlBuilder implements UrlBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function hasFile(AbstractImage $image = null)
-    {
-        return !empty($image) ? (bool) $this->getPathToFile($image) : false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildUrlToOriginal(AbstractImage $image)
     {
-        $this->checkFile($image);
+        $this->checkIfFileExists($image);
 
         return $this->storage->resolveUri($image, self::FILE_PROPERTY, get_class($image));
     }
@@ -72,12 +65,13 @@ class UrlBuilder implements UrlBuilderInterface
      */
     public function buildUrlToFilter(AbstractImage $image, $filterName, array $parameters = array(), $includeSizes = true)
     {
-        $this->checkFile($image);
+        $this->checkIfFileExists($image);
+
         $filter = $this->getFilter($filterName);
 
         if ($includeSizes && !isset($parameters['width']) && !isset($parameters['height'])) {
             if (!isset($parameters['size_name'])) {
-                throw new \InvalidArgumentException(
+                throw new UrlBuilderException(
                     'Parameter "size_name" must be provided in order to include sizes to filter.'
                 );
             }
@@ -90,18 +84,25 @@ class UrlBuilder implements UrlBuilderInterface
     }
 
     /**
-     * @param string                                                $name   Filter name
+     * {@inheritdoc}
+     */
+    public function fileExists(AbstractImage $image = null)
+    {
+        return !empty($image) ? (bool) $this->getImagePathname($image) : false;
+    }
+
+    /**
      * @param \Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface $filter Filter
      *
      * @throws \Darvin\ImageBundle\UrlBuilder\Exception\FilterAlreadyExistsException
      */
-    public function addFilter($name, FilterInterface $filter)
+    public function addFilter(FilterInterface $filter)
     {
-        if ($this->hasFilter($name)) {
-            throw new FilterAlreadyExistsException($name);
+        if ($this->hasFilter($filter->getName())) {
+            throw new FilterAlreadyExistsException(sprintf('Filter "%s" already exists.', $filter->getName()));
         }
 
-        $this->filters[$name] = $filter;
+        $this->filters[$filter->getName()] = $filter;
     }
 
     /**
@@ -109,7 +110,7 @@ class UrlBuilder implements UrlBuilderInterface
      *
      * @return bool
      */
-    public function hasFilter($name)
+    private function hasFilter($name)
     {
         return isset($this->filters[$name]);
     }
@@ -120,10 +121,10 @@ class UrlBuilder implements UrlBuilderInterface
      * @return \Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface
      * @throws \Darvin\ImageBundle\UrlBuilder\Exception\FilterNotFoundException
      */
-    public function getFilter($name)
+    private function getFilter($name)
     {
         if (!$this->hasFilter($name)) {
-            throw new FilterNotFoundException($name);
+            throw new FilterNotFoundException(sprintf('Filter "%s" not found.', $name));
         }
 
         return $this->filters[$name];
@@ -134,10 +135,10 @@ class UrlBuilder implements UrlBuilderInterface
      *
      * @throws \Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException
      */
-    private function checkFile(AbstractImage $image)
+    private function checkIfFileExists(AbstractImage $image)
     {
-        if (!$this->hasFile($image)) {
-            throw new ImageNotFoundException($this->getPathToFile($image));
+        if (!$this->fileExists($image)) {
+            throw new ImageNotFoundException(sprintf('Image "%s" not found.', $this->getImagePathname($image)));
         }
     }
 
@@ -146,7 +147,7 @@ class UrlBuilder implements UrlBuilderInterface
      *
      * @return string
      */
-    private function getPathToFile(AbstractImage $image = null)
+    private function getImagePathname(AbstractImage $image = null)
     {
         return !empty($image) ? $this->storage->resolvePath($image, self::FILE_PROPERTY, get_class($image)) : null;
     }
