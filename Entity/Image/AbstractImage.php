@@ -72,6 +72,11 @@ abstract class AbstractImage
     }
 
     /**
+     * @return string
+     */
+    abstract public function getSizeGroupName();
+
+    /**
      * @param string $name Size name
      *
      * @return \Darvin\ImageBundle\Entity\Image\Size

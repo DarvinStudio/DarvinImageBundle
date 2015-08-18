@@ -30,11 +30,14 @@ class EntitySizeResolver implements SizeResolverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $object Image
+     * @param string                                         $name   Size name
+     *
+     * @return array
      */
     public function findSize($object, $name)
     {
-        $size = $object->findSize($name) ?: $this->sizeManager->getSize($object->getSizeBlockName(), $name);
+        $size = $object->findSize($name) ?: $this->sizeManager->getSize($object->getSizeGroupName(), $name);
 
         return array($size->getWidth(), $size->getHeight());
     }
