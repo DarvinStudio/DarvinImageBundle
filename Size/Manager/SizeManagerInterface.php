@@ -37,11 +37,4 @@ interface SizeManagerInterface
      * @return \Darvin\ImageBundle\Size\Size
      */
     public function getSize($groupName, $sizeName);
-
-    /**
-     * @param string $path Path
-     *
-     * @return \Darvin\ImageBundle\Size\Size
-     */
-    public function getSizeByPath($path);
 }

@@ -10,7 +10,6 @@ namespace Darvin\ImageBundle\Size\Manager;
 
 use Darvin\ConfigBundle\Configuration\ConfigurationPool;
 use Darvin\ImageBundle\Configuration\ImageConfigurationInterface;
-use Darvin\ImageBundle\Size\Manager\Exception\ParsePathException;
 use Darvin\ImageBundle\Size\Manager\Exception\SizeGroupNotFoundException;
 use Darvin\ImageBundle\Size\Manager\Exception\SizeNotFoundException;
 use Darvin\ImageBundle\Size\SizeGroup;
@@ -76,22 +75,6 @@ class SizeManager implements SizeManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function getSizeByPath($path)
-    {
-        $this->init();
-
-        $names = explode('.', $path);
-
-        if (2 !== count($names)) {
-            throw new ParsePathException($path);
-        }
-
-        return $this->getSize($names[0], $names[1]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSize($groupName, $sizeName)
     {
         $this->init();
@@ -100,7 +83,14 @@ class SizeManager implements SizeManagerInterface
         $size = $group->findSizeByName($sizeName);
 
         if (empty($size)) {
-            throw new SizeNotFoundException(sprintf('Size "%s" not found in group "%s".', $sizeName, $groupName));
+            $message = sprintf(
+                'Size "%s" not found in group "%s". Sizes in group: "%s".',
+                $sizeName,
+                $groupName,
+                implode('", "', $group->getSizeNames())
+            );
+
+            throw new SizeNotFoundException($message);
         }
 
         return $size;

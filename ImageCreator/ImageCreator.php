@@ -40,36 +40,36 @@ class ImageCreator implements ImageCreatorInterface
     /**
      * @var string
      */
-    private $removeFromPath;
+    private $secret;
 
     /**
      * @var string
      */
-    private $secret;
+    private $uploadPath;
 
     /**
-     * @param \Liip\ImagineBundle\Imagine\Cache\CacheManager   $cacheManager   Imagine cache manager
-     * @param \Liip\ImagineBundle\Imagine\Data\DataManager     $dataManager    Imagine data manager
-     * @param \Liip\ImagineBundle\Imagine\Filter\FilterManager $filterManager  Imagine filter manager
-     * @param string                                           $filterName     Filter name
-     * @param string                                           $removeFromPath Remove from path
-     * @param string                                           $secret         Secret
+     * @param \Liip\ImagineBundle\Imagine\Cache\CacheManager   $cacheManager  Imagine cache manager
+     * @param \Liip\ImagineBundle\Imagine\Data\DataManager     $dataManager   Imagine data manager
+     * @param \Liip\ImagineBundle\Imagine\Filter\FilterManager $filterManager Imagine filter manager
+     * @param string                                           $filterName    Filter name
+     * @param string                                           $secret        Secret
+     * @param string                                           $uploadPath    Upload path
      */
     public function __construct(
         CacheManager $cacheManager,
         DataManager $dataManager,
         FilterManager $filterManager,
         $filterName,
-        $removeFromPath,
-        $secret
+        $secret,
+        $uploadPath
     )
     {
         $this->cacheManager = $cacheManager;
         $this->dataManager = $dataManager;
         $this->filterManager = $filterManager;
-        $this->filterName=$filterName;
-        $this->removeFromPath = $removeFromPath;
+        $this->filterName = $filterName;
         $this->secret = $secret;
+        $this->uploadPath = $uploadPath;
     }
 
     /**
@@ -104,7 +104,7 @@ class ImageCreator implements ImageCreatorInterface
     {
         $dir = dirname($imagePathname);
         $filename = ltrim(str_replace($dir, '', $imagePathname), '/');
-        $dir = str_replace($this->removeFromPath, '', $dir);
+        $dir = str_replace($this->uploadPath, '', $dir);
 
         array_walk_recursive($filters, function (&$value) {
             $value = (string) $value;

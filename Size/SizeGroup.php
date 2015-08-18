@@ -31,6 +31,14 @@ class SizeGroup
     }
 
     /**
+     * @return array
+     */
+    public function getSizeNames()
+    {
+        return array_keys($this->sizes);
+    }
+
+    /**
      * @param string $name Size name
      *
      * @return \Darvin\ImageBundle\Size\Size

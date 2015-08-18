@@ -11,8 +11,8 @@ services:
             - "@liip_imagine.data.manager"
             - "@liip_imagine.filter.manager"
             - %darvin_image.imagine_filter%
-            - %darvin_image.upload_path%
             - %secret%
+            - %darvin_image.upload_path%
 
     darvin_image.image.form_type:
         class: %darvin_image.image.form_type.class%
