@@ -106,7 +106,9 @@ class ImageCreator implements ImageCreatorInterface
         $filename = ltrim(str_replace($dir, '', $imagePathname), '/');
         $dir = str_replace($this->removeFromPath, '', $dir);
 
-        array_walk_recursive($filters, 'strval');
+        array_walk_recursive($filters, function (&$value) {
+            $value = (string) $value;
+        });
 
         $sign = substr(
             preg_replace('/[^a-zA-Z0-9-_]/', '', base64_encode(hash_hmac('sha256', serialize($filters), $this->secret, true))),
