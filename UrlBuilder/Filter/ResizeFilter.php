@@ -9,6 +9,8 @@
 namespace Darvin\ImageBundle\UrlBuilder\Filter;
 
 use Darvin\ImageBundle\ImageCreator\ImageCreatorInterface;
+use Darvin\ImageBundle\UrlBuilder\Exception\FilterNotFoundException;
+use Liip\ImagineBundle\Exception\Imagine\Filter\NonExistingFilterException;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 
 /**
@@ -89,11 +91,15 @@ class ResizeFilter implements FilterInterface
      *
      * @return array
      * @throws \Darvin\ImageBundle\UrlBuilder\Filter\FilterException
+     * @throws \Darvin\ImageBundle\UrlBuilder\Exception\FilterNotFoundException
      */
     private function getWatermarkConfiguration($name)
     {
-        $filterConfiguration = $this->filterManager->getFilterConfiguration()->get($name);
-
+        try {
+            $filterConfiguration = $this->filterManager->getFilterConfiguration()->get($name);
+        } catch (NonExistingFilterException $ex) {
+            throw new FilterNotFoundException($name);
+        }
         if (!isset($filterConfiguration['filters']['watermark'])) {
             throw new FilterException(sprintf('Filter "%s" does not contain watermark configuration.', $name));
         }
