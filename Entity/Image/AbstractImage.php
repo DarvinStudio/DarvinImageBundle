@@ -72,16 +72,6 @@ abstract class AbstractImage
     }
 
     /**
-     * @return \Darvin\ImageBundle\Size\Size[]
-     */
-    abstract public function getDefaultSizes();
-
-    /**
-     * @return string
-     */
-    abstract public function getSizeBlockName();
-
-    /**
      * @param string $name Size name
      *
      * @return \Darvin\ImageBundle\Entity\Image\Size
