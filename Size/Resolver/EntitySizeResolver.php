@@ -9,7 +9,7 @@
 namespace Darvin\ImageBundle\Size\Resolver;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
-use Darvin\ImageBundle\SizeManager\SizeManagerInterface;
+use Darvin\ImageBundle\Size\Manager\SizeManagerInterface;
 
 /**
  * Entity size resolver
@@ -17,17 +17,17 @@ use Darvin\ImageBundle\SizeManager\SizeManagerInterface;
 class EntitySizeResolver implements SizeResolverInterface
 {
     /**
-     * @var \Darvin\ImageBundle\SizeManager\SizeManagerInterface
+     * @var \Darvin\ImageBundle\Size\Manager\SizeManagerInterface
      */
     private $sizeManager;
 
     /**
-     * @param \Darvin\ImageBundle\SizeManager\SizeManagerInterface $sizeManager Size manager
+     * @param \Darvin\ImageBundle\Size\Manager\SizeManagerInterface $sizeManager Size manager
      */
-//    public function __construct(SizeManagerInterface $sizeManager)
-//    {
-//        $this->sizeManager = $sizeManager;
-//    }
+    public function __construct(SizeManagerInterface $sizeManager)
+    {
+        $this->sizeManager = $sizeManager;
+    }
 
     /**
      * {@inheritdoc}

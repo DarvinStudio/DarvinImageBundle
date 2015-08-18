@@ -1,6 +1,8 @@
 parameters:
     darvin_image.size.form_type.class: Darvin\ImageBundle\Form\Type\SizeType
 
+    darvin_image.size.manager.class: Darvin\ImageBundle\Size\Manager\SizeManager
+
     darvin_image.size.resolver.entity.class: Darvin\ImageBundle\Size\Resolver\EntitySizeResolver
 
     darvin_image.size.resolver.pool.class: Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPool
@@ -11,8 +13,15 @@ services:
         tags:
             - { name: form.type, alias: darvin_image_size }
 
+    darvin_image.size.manager:
+        class: %darvin_image.size.manager.class%
+        arguments:
+            - "@darvin_config.configuration.pool"
+
     darvin_image.size.resolver.entity:
         class: %darvin_image.size.resolver.entity.class%
+        arguments:
+            - "@darvin_image.size.manager"
         tags:
             - { name: darvin_image.size_resolver }
 

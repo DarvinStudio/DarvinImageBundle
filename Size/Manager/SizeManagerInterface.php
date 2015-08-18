@@ -14,48 +14,34 @@ namespace Darvin\ImageBundle\Size\Manager;
 interface SizeManagerInterface
 {
     /**
-     * @throws \Darvin\ImageBundle\Size\Manager\Exception\LoadSizeException
-     */
-    public function loadSizes();
-
-    /**
-     * @throws \Darvin\ImageBundle\Size\Manager\Exception\SizesNotLoadedException
-     * @throws \Darvin\ImageBundle\Size\Manager\Exception\OnSizeSaveException
+     * Saves sizes.
      */
     public function saveSizes();
 
     /**
-     * @return \Darvin\ImageBundle\Size\SizeBlock[]
-     * @throws \Darvin\ImageBundle\Size\Manager\Exception\SizesNotLoadedException
+     * @return \Darvin\ImageBundle\Size\SizeGroup[]
      */
-    public function getAllBlocks();
+    public function getAllGroups();
 
     /**
-     * @param string $name Size block name
+     * @param string $name Size group name
      *
-     * @return \Darvin\ImageBundle\Size\SizeBlock
-     * @throws \Darvin\ImageBundle\Size\Manager\Exception\SizesNotLoadedException
-     * @throws \Darvin\ImageBundle\Size\Manager\Exception\BlockNotFoundException
+     * @return \Darvin\ImageBundle\Size\SizeGroup
      */
-    public function getBlock($name);
+    public function getGroup($name);
 
     /**
-     * @param string $blockName Size block name
+     * @param string $groupName Size group name
      * @param string $sizeName  Size name
      *
      * @return \Darvin\ImageBundle\Size\Size
-     * @throws \Darvin\ImageBundle\Size\Manager\Exception\SizesNotLoadedException
-     * @throws \Darvin\ImageBundle\Size\Manager\Exception\BlockNotFoundException
      */
-    public function getSize($blockName, $sizeName);
+    public function getSize($groupName, $sizeName);
 
     /**
      * @param string $path Path
      *
      * @return \Darvin\ImageBundle\Size\Size
-     * @throws \Darvin\ImageBundle\Size\Manager\Exception\SizesNotLoadedException
-     * @throws \Darvin\ImageBundle\Size\Manager\Exception\BlockNotFoundException
-     * @throws \Darvin\ImageBundle\Size\Manager\Exception\ParsePathException
      */
     public function getSizeByPath($path);
 }
