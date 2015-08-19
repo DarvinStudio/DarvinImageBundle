@@ -29,6 +29,8 @@ abstract class AbstractImage
 {
     const CLASS_NAME = 'Darvin\\ImageBundle\\Entity\\Image\\AbstractImage';
 
+    const PROPERTY_FILE = 'file';
+
     /**
      * @var int
      *
@@ -44,6 +46,20 @@ abstract class AbstractImage
      * @ORM\OneToMany(targetEntity="Darvin\ImageBundle\Entity\Image\Size", mappedBy="image", cascade={"persist"}, orphanRemoval=true)
      */
     private $sizes;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string")
+     */
+    private $extension;
 
     /**
      * @var string
@@ -164,6 +180,46 @@ abstract class AbstractImage
         }
 
         return $this;
+    }
+
+    /**
+     * @param string $name name
+     *
+     * @return AbstractImage
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $extension extension
+     *
+     * @return AbstractImage
+     */
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtension()
+    {
+        return $this->extension;
     }
 
     /**

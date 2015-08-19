@@ -43,7 +43,11 @@ class FileNamer implements NamerInterface
         /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
         $file = $mapping->getFile($object);
 
-        $name = $suffix = $this->transliterator->transliterate($file->getClientOriginalName(), true, array('_', '.'));
+        $name = preg_replace(sprintf('/\.%s$/', $file->getClientOriginalExtension()), '', $file->getClientOriginalName());
+
+        $name = str_replace('.', '_', $name);
+
+        $name = $suffix = $this->transliterator->transliterate($name).'.'.$file->guessExtension();
 
         $prefix = 0;
 

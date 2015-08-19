@@ -25,8 +25,6 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 class UrlBuilder implements UrlBuilderInterface
 {
-    const FILE_PROPERTY = 'file';
-
     /**
      * @var \Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPoolInterface
      */
@@ -60,7 +58,7 @@ class UrlBuilder implements UrlBuilderInterface
     {
         $this->checkIfFileExists($image);
 
-        return $this->storage->resolveUri($image, self::FILE_PROPERTY, get_class($image));
+        return $this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, get_class($image));
     }
 
     /**
@@ -158,6 +156,6 @@ class UrlBuilder implements UrlBuilderInterface
      */
     private function getImagePathname(AbstractImage $image = null)
     {
-        return !empty($image) ? $this->storage->resolvePath($image, self::FILE_PROPERTY, get_class($image)) : null;
+        return !empty($image) ? $this->storage->resolvePath($image, AbstractImage::PROPERTY_FILE, get_class($image)) : null;
     }
 }

@@ -1,6 +1,8 @@
 parameters:
     darvin_image.image.creator.class: Darvin\ImageBundle\ImageCreator\ImageCreator
 
+    darvin_image.image.event_listener.class: Darvin\ImageBundle\EventListener\ImageListener
+
     darvin_image.image.form_type.class: Darvin\ImageBundle\Form\Type\ImageType
 
 services:
@@ -13,6 +15,14 @@ services:
             - %darvin_image.imagine_filter%
             - %secret%
             - %darvin_image.upload_path%
+
+    darvin_image.image.event_listener:
+        class: %darvin_image.image.event_listener.class%
+        arguments:
+            - "@vich_uploader.storage"
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: kernel.event_listener,   event: vich_uploader.post_upload, method: postUpload }
 
     darvin_image.image.form_type:
         class: %darvin_image.image.form_type.class%
