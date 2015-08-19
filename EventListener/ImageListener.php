@@ -13,6 +13,7 @@ namespace Darvin\ImageBundle\EventListener;
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
@@ -87,12 +88,12 @@ class ImageListener
         }
 
         $pathname = $this->storage->resolvePath($image, AbstractImage::PROPERTY_FILE);
-
-        $image->setFilename($image->getName().'.'.$image->getExtension());
+        $tmpPathname = tempnam(sys_get_temp_dir(), 'darvin_image_');
 
         $fs = new Filesystem();
-        $fs->rename($pathname, dirname($pathname).DIRECTORY_SEPARATOR.$image->getFilename());
+        $fs->rename($pathname, $tmpPathname, true);
 
-        $this->uow->recomputeSingleEntityChangeSet($this->em->getClassMetadata(AbstractImage::CLASS_NAME), $image);
+        $filename = $image->getName().'.'.$image->getExtension();
+        $image->setFile(new UploadedFile($tmpPathname, $filename, null, null, null, true));
     }
 }

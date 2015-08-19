@@ -51,6 +51,7 @@ abstract class AbstractImage
      * @var string
      *
      * @ORM\Column(type="string")
+     * @Assert\NotBlank
      */
     private $name;
 
