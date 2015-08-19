@@ -62,8 +62,7 @@ class ImageCreator implements ImageCreatorInterface
         $filterName,
         $secret,
         $uploadPath
-    )
-    {
+    ) {
         $this->cacheManager = $cacheManager;
         $this->dataManager = $dataManager;
         $this->filterManager = $filterManager;

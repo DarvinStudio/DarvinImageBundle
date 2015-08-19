@@ -61,7 +61,7 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     public function cropImage(AbstractImage $image, $sizeName, $watermarkFilterName = null)
     {
-        return $this->makeImageThumbnail($image, $sizeName, true, $watermarkFilterName);
+        return $this->makeImageResize($image, $sizeName, true, $watermarkFilterName);
     }
 
     /**
@@ -73,7 +73,7 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     public function resizeImage(AbstractImage $image, $sizeName, $watermarkFilterName = null)
     {
-        return $this->makeImageThumbnail($image, $sizeName, false, $watermarkFilterName);
+        return $this->makeImageResize($image, $sizeName, false, $watermarkFilterName);
     }
 
     /**
@@ -92,7 +92,7 @@ class UrlBuilderExtension extends \Twig_Extension
      *
      * @return string
      */
-    private function makeImageThumbnail(AbstractImage $image, $sizeName, $outbound, $watermarkFilterName)
+    private function makeImageResize(AbstractImage $image, $sizeName, $outbound, $watermarkFilterName)
     {
         $parameters = array(
             'size_name' => $sizeName,
