@@ -91,7 +91,13 @@ class UrlBuilder implements UrlBuilderInterface
      */
     public function fileExists(AbstractImage $image = null)
     {
-        return !empty($image) ? (bool) $this->getImagePathname($image) : false;
+        if (empty($image)) {
+            return false;
+        }
+
+        $pathname = $this->getImagePathname($image);
+
+        return is_file($pathname);
     }
 
     /**
