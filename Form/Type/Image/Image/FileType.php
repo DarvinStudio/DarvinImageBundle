@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Darvin\ImageBundle\Form\Type;
+namespace Darvin\ImageBundle\Form\Type\Image\Image;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Symfony\Component\Form\AbstractType;
@@ -16,9 +16,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Image form type
+ * Image file form type
  */
-class ImageType extends AbstractType
+class FileType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -47,6 +47,6 @@ class ImageType extends AbstractType
      */
     public function getName()
     {
-        return 'darvin_image_image';
+        return 'darvin_image_image_file';
     }
 }

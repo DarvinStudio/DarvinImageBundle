@@ -8,15 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Darvin\ImageBundle\Form\Type;
+namespace Darvin\ImageBundle\Form\Type\Image;
 
-use Darvin\ImageBundle\Size\Size;
+use Darvin\ImageBundle\Entity\Image\Size;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Size form type
+ * Image size form type
  */
 class SizeType extends AbstractType
 {
@@ -26,7 +26,6 @@ class SizeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'hidden')
             ->add('width')
             ->add('height');
     }
@@ -47,6 +46,6 @@ class SizeType extends AbstractType
      */
     public function getName()
     {
-        return 'darvin_image_size';
+        return 'darvin_image_image_size';
     }
 }

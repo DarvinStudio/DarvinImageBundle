@@ -21,4 +21,9 @@ interface ImageConfigurationInterface extends ConfigurationInterface
      * @return \Darvin\ImageBundle\Size\Size[]
      */
     public function getSizes();
+
+    /**
+     * @return string
+     */
+    public function getSizeGroupName();
 }

@@ -10,6 +10,7 @@
 
 namespace Darvin\ImageBundle\Entity\Image;
 
+use Darvin\ImageBundle\Size\Size as SizeModel;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -21,6 +22,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Size
 {
+    const CLASS_NAME = 'Darvin\\ImageBundle\\Entity\\Image\\Size';
+
     /**
      * @var int
      *
@@ -62,6 +65,21 @@ class Size
      * @Assert\NotBlank
      */
     private $height;
+
+    /**
+     * @param SizeModel $model Size model
+     *
+     * @return Size
+     */
+    public static function fromModel(SizeModel $model)
+    {
+        $size = new self();
+
+        return $size
+            ->setName($model->getName())
+            ->setWidth($model->getWidth())
+            ->setHeight($model->getHeight());
+    }
 
     /**
      * @return int

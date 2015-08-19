@@ -78,6 +78,16 @@ class SizeManager implements SizeManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function getConfiguration($sizeGroupName)
+    {
+        $this->init();
+
+        return $this->imageConfigurations[$sizeGroupName];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getSize($groupName, $sizeName)
     {
         $this->init();
@@ -123,8 +133,8 @@ class SizeManager implements SizeManagerInterface
                 continue;
             }
 
-            $this->imageConfigurations[] = $configuration;
-            $this->sizeGroups[$configuration->getName()] = new SizeGroup($configuration->getSizes());
+            $this->imageConfigurations[$configuration->getSizeGroupName()] = $configuration;
+            $this->sizeGroups[$configuration->getSizeGroupName()] = new SizeGroup($configuration->getSizes());
         }
 
         $this->initialized = true;
