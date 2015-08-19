@@ -10,6 +10,8 @@
 
 namespace Darvin\ImageBundle\Size;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Size
  */
@@ -19,16 +21,24 @@ class Size
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank
      */
     private $name;
 
     /**
      * @var int
+     *
+     * @Assert\GreaterThan(0)
+     * @Assert\NotBlank
      */
     private $width;
 
     /**
      * @var int
+     *
+     * @Assert\GreaterThan(0)
+     * @Assert\NotBlank
      */
     private $height;
 
