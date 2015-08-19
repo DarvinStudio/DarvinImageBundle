@@ -1,6 +1,7 @@
 <?php
 /**
- * @author    Lev Semin <lev@darvin-studio.ru>
+ * @author    Lev Semin     <lev@darvin-studio.ru>
+ * @author    Igor Nikolaev <igor.sv.n@gmail.com>
  * @copyright Copyright (c) 2015, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
