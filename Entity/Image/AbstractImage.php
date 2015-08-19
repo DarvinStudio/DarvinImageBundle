@@ -76,6 +76,14 @@ abstract class AbstractImage
     /**
      * @return string
      */
+    public function __toString()
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @return string
+     */
     abstract public function getSizeGroupName();
 
     /**
