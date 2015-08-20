@@ -11,8 +11,8 @@
 namespace Darvin\ImageBundle\EventListener;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
+use Darvin\Utils\EventListener\AbstractOnFlushListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Doctrine\ORM\UnitOfWork;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Event\Event;
@@ -21,7 +21,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 /**
  * Image event listener
  */
-class ImageListener
+class ImageListener extends AbstractOnFlushListener
 {
     /**
      * @var \Vich\UploaderBundle\Storage\StorageInterface
@@ -53,26 +53,21 @@ class ImageListener
     }
 
     /**
-     * @param \Doctrine\ORM\Event\OnFlushEventArgs $args Event arguments
+     * {@inheritdoc}
      */
     public function onFlush(OnFlushEventArgs $args)
     {
-        $uow = $args->getEntityManager()->getUnitOfWork();
+        parent::onFlush($args);
 
-        foreach ($uow->getScheduledEntityUpdates() as $entity) {
-            if ($entity instanceof AbstractImage) {
-                $this->onImageUpdate($entity, $uow);
-            }
-        }
+        $this->onUpdate(AbstractImage::CLASS_NAME, array($this, 'onImageUpdate'));
     }
 
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Updated image
-     * @param \Doctrine\ORM\UnitOfWork                       $uow   Unit of work
      */
-    private function onImageUpdate(AbstractImage $image, UnitOfWork $uow)
+    protected function onImageUpdate(AbstractImage $image)
     {
-        $changeSet = $uow->getEntityChangeSet($image);
+        $changeSet = $this->uow->getEntityChangeSet($image);
 
         if (!isset($changeSet['name'])) {
             return;
