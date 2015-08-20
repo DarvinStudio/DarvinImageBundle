@@ -17,16 +17,6 @@ namespace Darvin\ImageBundle\Size\Manager;
 interface SizeManagerInterface
 {
     /**
-     * Saves sizes.
-     */
-    public function saveSizes();
-
-    /**
-     * @return \Darvin\ImageBundle\Size\SizeGroup[]
-     */
-    public function getAllGroups();
-
-    /**
      * @param string $groupName Size group name
      * @param string $sizeName  Size name
      *

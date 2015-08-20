@@ -49,26 +49,6 @@ class SizeManager implements SizeManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function saveSizes()
-    {
-        foreach ($this->configurationPool->getAll() as $configuration) {
-            $configuration->save();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getAllGroups()
-    {
-        $this->init();
-
-        return $this->sizeGroups;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSize($groupName, $sizeName)
     {
         $this->init();
