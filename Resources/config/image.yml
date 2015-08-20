@@ -34,6 +34,6 @@ services:
     darvin_image.image.form_type.sizes:
         class: %darvin_image.image.form_type.sizes.class%
         arguments:
-            - "@darvin_image.size.manager"
+            - "@darvin_image.configuration.pool"
         tags:
             - { name: form.type, alias: darvin_image_image_sizes }

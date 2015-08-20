@@ -10,10 +10,10 @@
 
 namespace Darvin\ImageBundle\Form\Type\Image\Image;
 
+use Darvin\ImageBundle\Configuration\ConfigurationPool;
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\Entity\Image\Size;
 use Darvin\ImageBundle\Form\Type\Image\SizeType;
-use Darvin\ImageBundle\Size\Manager\SizeManagerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -27,16 +27,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SizesType extends AbstractType
 {
     /**
-     * @var \Darvin\ImageBundle\Size\Manager\SizeManagerInterface
+     * @var \Darvin\ImageBundle\Configuration\ConfigurationPool
      */
-    private $sizeManager;
+    private $configurationPool;
 
     /**
-     * @param \Darvin\ImageBundle\Size\Manager\SizeManagerInterface $sizeManager Size manager
+     * @param \Darvin\ImageBundle\Configuration\ConfigurationPool $configurationPool Configuration pool
      */
-    public function __construct(SizeManagerInterface $sizeManager)
+    public function __construct(ConfigurationPool $configurationPool)
     {
-        $this->sizeManager = $sizeManager;
+        $this->configurationPool = $configurationPool;
     }
 
     /**
@@ -44,17 +44,17 @@ class SizesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $sizeManager = $this->sizeManager;
+        $configurationPool = $this->configurationPool;
 
         $builder
             ->add('sizes', 'collection', array(
                 'type' => new SizeType(),
             ))
-            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($sizeManager) {
+            ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($configurationPool) {
                 /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $image */
                 $image = $event->getData();
 
-                $configuration = $sizeManager->getConfiguration($image->getSizeGroupName());
+                $configuration = $configurationPool->get($image->getSizeGroupName());
 
                 $sizes = array();
 
