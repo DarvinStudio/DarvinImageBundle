@@ -98,7 +98,7 @@ abstract class AbstractImage
      */
     public function __toString()
     {
-        return $this->filename;
+        return $this->name;
     }
 
     /**

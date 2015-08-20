@@ -18,6 +18,7 @@ use Darvin\ImageBundle\UrlBuilder\Exception\FilterNotFoundException;
 use Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException;
 use Darvin\ImageBundle\UrlBuilder\Exception\UrlBuilderException;
 use Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface;
+use Doctrine\Common\Util\ClassUtils;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -41,7 +42,7 @@ class UrlBuilder implements UrlBuilderInterface
     private $filters;
 
     /**
-     * @param \Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPoolInterface $sizeResolverPool Image size resolver pool
+     * @param \Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPoolInterface $sizeResolverPool Size resolver pool
      * @param \Vich\UploaderBundle\Storage\StorageInterface                    $storage          Storage
      */
     public function __construct(SizeResolverPoolInterface $sizeResolverPool, StorageInterface $storage)
@@ -58,7 +59,7 @@ class UrlBuilder implements UrlBuilderInterface
     {
         $this->checkIfFileExists($image);
 
-        return $this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, get_class($image));
+        return $this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image));
     }
 
     /**
@@ -156,6 +157,8 @@ class UrlBuilder implements UrlBuilderInterface
      */
     private function getImagePathname(AbstractImage $image = null)
     {
-        return !empty($image) ? $this->storage->resolvePath($image, AbstractImage::PROPERTY_FILE, get_class($image)) : null;
+        return !empty($image)
+            ? $this->storage->resolvePath($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image))
+            : null;
     }
 }
