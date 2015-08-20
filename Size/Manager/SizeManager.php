@@ -11,8 +11,7 @@
 
 namespace Darvin\ImageBundle\Size\Manager;
 
-use Darvin\ConfigBundle\Configuration\ConfigurationPool;
-use Darvin\ImageBundle\Configuration\ImageConfigurationInterface;
+use Darvin\ImageBundle\Configuration\ConfigurationPool;
 use Darvin\ImageBundle\Size\Manager\Exception\SizeGroupNotFoundException;
 use Darvin\ImageBundle\Size\Manager\Exception\SizeNotFoundException;
 use Darvin\ImageBundle\Size\SizeGroup;
@@ -23,14 +22,9 @@ use Darvin\ImageBundle\Size\SizeGroup;
 class SizeManager implements SizeManagerInterface
 {
     /**
-     * @var \Darvin\ConfigBundle\Configuration\ConfigurationPool
+     * @var \Darvin\ImageBundle\Configuration\ConfigurationPool
      */
     private $configurationPool;
-
-    /**
-     * @var \Darvin\ImageBundle\Configuration\ImageConfigurationInterface[]
-     */
-    private $imageConfigurations;
 
     /**
      * @var \Darvin\ImageBundle\Size\SizeGroup[]
@@ -43,12 +37,11 @@ class SizeManager implements SizeManagerInterface
     private $initialized;
 
     /**
-     * @param \Darvin\ConfigBundle\Configuration\ConfigurationPool $configurationPool Configuration pool
+     * @param \Darvin\ImageBundle\Configuration\ConfigurationPool $configurationPool Configuration pool
      */
     public function __construct(ConfigurationPool $configurationPool)
     {
         $this->configurationPool = $configurationPool;
-        $this->imageConfigurations = array();
         $this->sizeGroups = array();
         $this->initialized = false;
     }
@@ -58,11 +51,9 @@ class SizeManager implements SizeManagerInterface
      */
     public function saveSizes()
     {
-        $this->init();
-
-        array_map(function (ImageConfigurationInterface $configuration) {
+        foreach ($this->configurationPool->getAll() as $configuration) {
             $configuration->save();
-        }, $this->imageConfigurations);
+        }
     }
 
     /**
@@ -73,16 +64,6 @@ class SizeManager implements SizeManagerInterface
         $this->init();
 
         return $this->sizeGroups;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfiguration($sizeGroupName)
-    {
-        $this->init();
-
-        return $this->imageConfigurations[$sizeGroupName];
     }
 
     /**
@@ -129,11 +110,6 @@ class SizeManager implements SizeManagerInterface
             return;
         }
         foreach ($this->configurationPool->getAll() as $configuration) {
-            if (!$configuration instanceof ImageConfigurationInterface) {
-                continue;
-            }
-
-            $this->imageConfigurations[$configuration->getSizeGroupName()] = $configuration;
             $this->sizeGroups[$configuration->getSizeGroupName()] = new SizeGroup($configuration->getSizes());
         }
 

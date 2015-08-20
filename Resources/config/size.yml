@@ -16,7 +16,7 @@ services:
     darvin_image.size.manager:
         class: %darvin_image.size.manager.class%
         arguments:
-            - "@darvin_config.configuration.pool"
+            - "@darvin_image.configuration.pool"
 
     darvin_image.size.resolver.entity:
         class: %darvin_image.size.resolver.entity.class%

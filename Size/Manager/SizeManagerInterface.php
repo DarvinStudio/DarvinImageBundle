@@ -34,13 +34,6 @@ interface SizeManagerInterface
     public function getGroup($name);
 
     /**
-     * @param string $sizeGroupName Size group name
-     *
-     * @return \Darvin\ImageBundle\Configuration\ImageConfigurationInterface
-     */
-    public function getConfiguration($sizeGroupName);
-
-    /**
      * @param string $groupName Size group name
      * @param string $sizeName  Size name
      *

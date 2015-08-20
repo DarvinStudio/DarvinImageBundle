@@ -45,6 +45,14 @@ class ConfigurationPool
     }
 
     /**
+     * @return \Darvin\ImageBundle\Configuration\ImageConfigurationInterface[]
+     */
+    public function getAll()
+    {
+        return $this->configurations;
+    }
+
+    /**
      * @param string $sizeGroupName Size group name
      *
      * @return \Darvin\ImageBundle\Configuration\ImageConfigurationInterface
