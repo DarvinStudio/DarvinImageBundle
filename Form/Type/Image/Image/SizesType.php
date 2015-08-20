@@ -19,6 +19,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -48,7 +50,8 @@ class SizesType extends AbstractType
 
         $builder
             ->add('sizes', 'collection', array(
-                'type' => new SizeType(),
+                'label' => 'image.sizes',
+                'type'  => new SizeType(),
             ))
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($configurationPool) {
                 /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $image */
@@ -72,6 +75,18 @@ class SizesType extends AbstractType
 
                 $image->setSizes(new ArrayCollection($sizes));
             });
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $sizesField = $view->children['sizes'];
+
+        foreach ($sizesField->children as $sizeField) {
+            $sizeField->vars['label'] = 'image.size.'.$sizeField->vars['name'];
+        }
     }
 
     /**

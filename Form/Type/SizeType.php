@@ -13,6 +13,8 @@ namespace Darvin\ImageBundle\Form\Type;
 use Darvin\ImageBundle\Size\Size;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -27,8 +29,20 @@ class SizeType extends AbstractType
     {
         $builder
             ->add('name', 'hidden')
-            ->add('width')
-            ->add('height');
+            ->add('width', null, array(
+                'label' => 'size.width',
+            ))
+            ->add('height', null, array(
+                'label' => 'size.height',
+            ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['label'] = 'image.size.'.$view->vars['name'];
     }
 
     /**
