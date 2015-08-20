@@ -47,7 +47,7 @@ class FileNamer implements NamerInterface
 
         $name = str_replace('.', '_', $name);
 
-        $name = $suffix = $this->transliterator->transliterate($name).'.'.$file->guessExtension();
+        $name = $suffix = $this->transliterator->transliterate($name, true, array('_'), '_').'.'.$file->guessExtension();
 
         $prefix = 0;
 
