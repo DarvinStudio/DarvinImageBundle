@@ -77,23 +77,39 @@ class SizeManager implements SizeManagerInterface
         $size = $group->findSizeByName($sizeName);
 
         if (empty($size)) {
-            $message = sprintf(
-                'Size "%s" not found in group "%s". Sizes in group: "%s".',
-                $sizeName,
-                $groupName,
-                implode('", "', $group->getSizeNames())
-            );
+            foreach ($this->sizeGroups as $group) {
+                if (!$group->isGlobal()) {
+                    continue;
+                }
 
-            throw new SizeNotFoundException($message);
+                $size = $group->findSizeByName($sizeName);
+
+                if (!empty($size)) {
+                    break;
+                }
+            }
+            if (empty($size)) {
+                $message = sprintf(
+                    'Size "%s" not found in group "%s" and global groups. Sizes in group: "%s".',
+                    $sizeName,
+                    $groupName,
+                    implode('", "', $group->getSizeNames())
+                );
+
+                throw new SizeNotFoundException($message);
+            }
         }
 
         return $size;
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $name Size group name
+     *
+     * @return \Darvin\ImageBundle\Size\SizeGroup
+     * @throws \Darvin\ImageBundle\Size\Manager\Exception\SizeGroupNotFoundException
      */
-    public function getGroup($name)
+    private function getGroup($name)
     {
         $this->init();
 
@@ -110,7 +126,10 @@ class SizeManager implements SizeManagerInterface
             return;
         }
         foreach ($this->configurationPool->getAll() as $configuration) {
-            $this->sizeGroups[$configuration->getImageSizeGroupName()] = new SizeGroup($configuration->getImageSizes());
+            $this->sizeGroups[$configuration->getImageSizeGroupName()] = new SizeGroup(
+                $configuration->isImageSizesGlobal(),
+                $configuration->getImageSizes()
+            );
         }
 
         $this->initialized = true;

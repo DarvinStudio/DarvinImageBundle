@@ -27,13 +27,6 @@ interface SizeManagerInterface
     public function getAllGroups();
 
     /**
-     * @param string $name Size group name
-     *
-     * @return \Darvin\ImageBundle\Size\SizeGroup
-     */
-    public function getGroup($name);
-
-    /**
      * @param string $groupName Size group name
      * @param string $sizeName  Size name
      *

@@ -16,15 +16,23 @@ namespace Darvin\ImageBundle\Size;
 class SizeGroup
 {
     /**
+     * @var bool
+     */
+    private $global;
+
+    /**
      * @var \Darvin\ImageBundle\Size\Size[]
      */
     private $sizes;
 
     /**
-     * @param \Darvin\ImageBundle\Size\Size[] $sizes Sizes
+     * @param bool                            $global Is group global
+     * @param \Darvin\ImageBundle\Size\Size[] $sizes  Sizes
      */
-    public function __construct(array $sizes = array())
+    public function __construct($global, array $sizes = array())
     {
+        $this->global = $global;
+
         $this->sizes = array();
 
         foreach ($sizes as $size) {
@@ -48,5 +56,13 @@ class SizeGroup
     public function findSizeByName($name)
     {
         return isset($this->sizes[$name]) ? $this->sizes[$name] : null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isGlobal()
+    {
+        return $this->global;
     }
 }
