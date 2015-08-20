@@ -23,12 +23,12 @@ interface ImageConfigurationInterface extends ConfigurationInterface
     public function getImageSizes();
 
     /**
-     * @return string
-     */
-    public function getImageSizeGroupName();
-
-    /**
      * @return bool
      */
     public function isImageSizesGlobal();
+
+    /**
+     * @return string
+     */
+    public function getImageSizeGroupName();
 }
