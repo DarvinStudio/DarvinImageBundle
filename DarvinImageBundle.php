@@ -2,6 +2,7 @@
 
 namespace Darvin\ImageBundle;
 
+use Darvin\ImageBundle\DependencyInjection\Compiler\ConfigurationPoolPass;
 use Darvin\ImageBundle\DependencyInjection\Compiler\SizeResolverPass;
 use Darvin\ImageBundle\DependencyInjection\Compiler\UrlBuilderFilterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -20,6 +21,7 @@ class DarvinImageBundle extends Bundle
         parent::build($container);
 
         $container
+            ->addCompilerPass(new ConfigurationPoolPass())
             ->addCompilerPass(new SizeResolverPass())
             ->addCompilerPass(new UrlBuilderFilterPass());
     }

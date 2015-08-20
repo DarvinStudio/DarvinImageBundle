@@ -26,6 +26,7 @@ class DarvinImageExtension extends Extension
         $container->setParameter('darvin_image.upload_path', $config['upload_path']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('configuration.yml');
         $loader->load('image.yml');
         $loader->load('namer.yml');
         $loader->load('size.yml');
