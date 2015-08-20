@@ -35,13 +35,13 @@ class ConfigurationPool
      */
     public function add(ImageConfigurationInterface $configuration)
     {
-        if (isset($this->configurations[$configuration->getSizeGroupName()])) {
+        if (isset($this->configurations[$configuration->getImageSizeGroupName()])) {
             throw new ConfigurationException(
-                sprintf('Configuration for size group name "%s" already added.', $configuration->getSizeGroupName())
+                sprintf('Configuration for size group name "%s" already added.', $configuration->getImageSizeGroupName())
             );
         }
 
-        $this->configurations[$configuration->getSizeGroupName()] = $configuration;
+        $this->configurations[$configuration->getImageSizeGroupName()] = $configuration;
     }
 
     /**

@@ -64,7 +64,7 @@ class SizesType extends AbstractType
                 foreach ($image->getSizes() as $size) {
                     $sizes[$size->getName()] = $size;
                 }
-                foreach ($configuration->getSizes() as $model) {
+                foreach ($configuration->getImageSizes() as $model) {
                     if (isset($sizes[$model->getName()])) {
                         continue;
                     }
