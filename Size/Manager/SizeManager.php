@@ -13,6 +13,7 @@ namespace Darvin\ImageBundle\Size\Manager;
 
 use Darvin\ImageBundle\Configuration\ConfigurationPool;
 use Darvin\ImageBundle\Size\Manager\Exception\SizeGroupNotFoundException;
+use Darvin\ImageBundle\Size\Manager\Exception\SizeManagerException;
 use Darvin\ImageBundle\Size\Manager\Exception\SizeNotFoundException;
 use Darvin\ImageBundle\Size\SizeGroup;
 
@@ -25,6 +26,11 @@ class SizeManager implements SizeManagerInterface
      * @var \Darvin\ImageBundle\Configuration\ConfigurationPool
      */
     private $configurationPool;
+
+    /**
+     * @var \Darvin\ImageBundle\Size\Size[]
+     */
+    private $globalSizes;
 
     /**
      * @var \Darvin\ImageBundle\Size\SizeGroup[]
@@ -42,6 +48,7 @@ class SizeManager implements SizeManagerInterface
     public function __construct(ConfigurationPool $configurationPool)
     {
         $this->configurationPool = $configurationPool;
+        $this->globalSizes = array();
         $this->sizeGroups = array();
         $this->initialized = false;
     }
@@ -57,27 +64,18 @@ class SizeManager implements SizeManagerInterface
         $size = $group->findSizeByName($sizeName);
 
         if (empty($size)) {
-            foreach ($this->sizeGroups as $group) {
-                if (!$group->isGlobal()) {
-                    continue;
-                }
-
-                $size = $group->findSizeByName($sizeName);
-
-                if (!empty($size)) {
-                    break;
-                }
+            if (isset($this->globalSizes[$sizeName])) {
+                return $this->globalSizes[$sizeName];
             }
-            if (empty($size)) {
-                $message = sprintf(
-                    'Size "%s" not found in group "%s" and global groups. Sizes in group: "%s".',
-                    $sizeName,
-                    $groupName,
-                    implode('", "', $group->getSizeNames())
-                );
 
-                throw new SizeNotFoundException($message);
-            }
+            $message = sprintf(
+                'Size "%s" not found in group "%s" and among global sizes. Sizes in group: "%s".',
+                $sizeName,
+                $groupName,
+                implode('", "', $group->getSizeNames())
+            );
+
+            throw new SizeNotFoundException($message);
         }
 
         return $size;
@@ -106,10 +104,18 @@ class SizeManager implements SizeManagerInterface
             return;
         }
         foreach ($this->configurationPool->getAll() as $configuration) {
-            $this->sizeGroups[$configuration->getImageSizeGroupName()] = new SizeGroup(
-                $configuration->isImageSizesGlobal(),
-                $configuration->getImageSizes()
-            );
+            $this->sizeGroups[$configuration->getImageSizeGroupName()] = new SizeGroup($configuration->getImageSizes());
+
+            if (!$configuration->isImageSizesGlobal()) {
+                continue;
+            }
+            foreach ($configuration->getImageSizes() as $size) {
+                if (isset($this->globalSizes[$size->getName()])) {
+                    throw new SizeManagerException(sprintf('Global size "%s" already exists.', $size->getName()));
+                }
+
+                $this->globalSizes[$size->getName()] = $size;
+            }
         }
 
         $this->initialized = true;
