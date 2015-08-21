@@ -10,6 +10,7 @@
 
 namespace Darvin\ImageBundle\DependencyInjection;
 
+use Darvin\Utils\DependencyInjection\ConfigInjector;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
@@ -30,8 +31,7 @@ class DarvinImageExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('darvin_image.imagine_filter', $config['imagine_filter']);
-        $container->setParameter('darvin_image.upload_path', $config['upload_path']);
+        ConfigInjector::inject($config, $container, $this->getAlias());
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('configuration.yml');
