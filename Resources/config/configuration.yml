@@ -4,3 +4,5 @@ parameters:
 services:
     darvin_image.configuration.pool:
         class: %darvin_image.configuration.pool.class%
+        arguments:
+            - "@darvin_config.security.configuration_authorization_checker"

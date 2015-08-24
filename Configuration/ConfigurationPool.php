@@ -10,22 +10,36 @@
 
 namespace Darvin\ImageBundle\Configuration;
 
+use Darvin\ConfigBundle\Security\Authorization\ConfigurationAuthorizationChecker;
+
 /**
  * Configuration pool
  */
 class ConfigurationPool
 {
     /**
+     * @var \Darvin\ConfigBundle\Security\Authorization\ConfigurationAuthorizationChecker
+     */
+    private $configurationAuthorizationChecker;
+
+    /**
      * @var \Darvin\ImageBundle\Configuration\ImageConfigurationInterface[]
      */
     private $configurations;
 
     /**
-     * Constructor
+     * @var bool
      */
-    public function __construct()
+    private $initialized;
+
+    /**
+     * @param \Darvin\ConfigBundle\Security\Authorization\ConfigurationAuthorizationChecker $configurationAuthorizationChecker Configuration authorization checker
+     */
+    public function __construct(ConfigurationAuthorizationChecker $configurationAuthorizationChecker)
     {
+        $this->configurationAuthorizationChecker = $configurationAuthorizationChecker;
         $this->configurations = array();
+        $this->initialized = false;
     }
 
     /**
@@ -49,6 +63,8 @@ class ConfigurationPool
      */
     public function getAll()
     {
+        $this->init();
+
         return $this->configurations;
     }
 
@@ -60,6 +76,8 @@ class ConfigurationPool
      */
     public function get($sizeGroupName)
     {
+        $this->init();
+
         if (!isset($this->configurations[$sizeGroupName])) {
             throw new ConfigurationException(
                 sprintf('Configuration for size group name "%s" does not exist.', $sizeGroupName)
@@ -67,5 +85,19 @@ class ConfigurationPool
         }
 
         return $this->configurations[$sizeGroupName];
+    }
+
+    private function init()
+    {
+        if ($this->initialized) {
+            return;
+        }
+        foreach ($this->configurations as $sizeGroupName => $configuration) {
+            if (!$this->configurationAuthorizationChecker->isAccessible($configuration)) {
+                unset($this->configurations[$sizeGroupName]);
+            }
+        }
+
+        $this->initialized = true;
     }
 }
