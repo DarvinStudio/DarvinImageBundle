@@ -1,0 +1,7 @@
+liip_imagine:
+    filter_sets:
+        %image_imagine_filter%: ~
+    resolvers:
+        default:
+            web_path:
+                cache_prefix: cache

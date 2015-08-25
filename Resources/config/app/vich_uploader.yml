@@ -1,0 +1,8 @@
+vich_uploader:
+    db_driver: orm
+    mappings:
+        darvin_image:
+            uri_prefix:         /%image_upload_path%
+            upload_destination: %kernel.root_dir%/../web/%image_upload_path%
+            directory_namer:    darvin_image.namer.directory
+            namer:              darvin_image.namer.file
