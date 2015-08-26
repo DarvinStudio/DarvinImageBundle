@@ -16,9 +16,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Image file form type
+ * Image form type
  */
-class FileType extends AbstractType
+class ImageType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -47,6 +47,6 @@ class FileType extends AbstractType
      */
     public function getName()
     {
-        return 'darvin_image_image_file';
+        return 'darvin_image_image';
     }
 }
