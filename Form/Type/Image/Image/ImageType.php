@@ -10,7 +10,6 @@
 
 namespace Darvin\ImageBundle\Form\Type\Image\Image;
 
-use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -36,10 +35,16 @@ class ImageType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'data_class' => AbstractImage::CLASS_NAME,
-            'intention'  => md5(__FILE__.$this->getName()),
-        ));
+        $resolver
+            ->setDefaults(array(
+                'intention' => md5(__FILE__.$this->getName()),
+            ))
+            ->remove(array(
+                'data_class',
+            ))
+            ->setRequired(array(
+                'data_class',
+            ));
     }
 
     /**
