@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Size
 {
-    const CLASS_NAME = 'Darvin\\ImageBundle\\Size\\Size';
+    const CLASS_NAME = __CLASS__;
 
     /**
      * @var string
