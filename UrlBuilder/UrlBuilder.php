@@ -94,9 +94,7 @@ class UrlBuilder implements UrlBuilderInterface
             return false;
         }
 
-        $pathname = $this->getImagePathname($image);
-
-        return is_file($pathname);
+        return (bool) $this->getImagePathname($image);
     }
 
     /**
