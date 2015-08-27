@@ -1,4 +1,5 @@
 darvin_image_image_delete:
     path:         /{id}/delete
     defaults:     { _controller: DarvinImageBundle:Image:delete }
-    requirements: { _method: post, id: \d+ }
+    methods:      [ post ]
+    requirements: { id: \d+ }
