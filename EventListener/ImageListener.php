@@ -11,6 +11,7 @@
 namespace Darvin\ImageBundle\EventListener;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
+use Darvin\Utils\Event\CloneEvent;
 use Darvin\Utils\EventListener\AbstractOnFlushListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Symfony\Component\Filesystem\Filesystem;
@@ -37,6 +38,33 @@ class ImageListener extends AbstractOnFlushListener
     }
 
     /**
+     * @param \Darvin\Utils\Event\CloneEvent $event Event
+     */
+    public function postClone(CloneEvent $event)
+    {
+        $original = $event->getOriginal();
+
+        if (!$original instanceof AbstractImage) {
+            return;
+        }
+
+        /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $clone */
+        $clone = $event->getClone();
+
+        $pathname = $this->storage->resolvePath($original, AbstractImage::PROPERTY_FILE);
+        $tmpPathname = $this->generateTmpPathname();
+
+        $fs = new Filesystem();
+        $fs->copy($pathname, $tmpPathname, true);
+
+        $file = new UploadedFile($tmpPathname, $original->getFilename(), null, null, null, true);
+
+        $clone
+            ->setFile($file)
+            ->setName($original->getName());
+    }
+
+    /**
      * @param \Vich\UploaderBundle\Event\Event $event Event
      */
     public function postUpload(Event $event)
@@ -47,9 +75,11 @@ class ImageListener extends AbstractOnFlushListener
             return;
         }
 
-        $image
-            ->setExtension(pathinfo($image->getFilename(), PATHINFO_EXTENSION))
-            ->setName(preg_replace(sprintf('/\.%s$/', $image->getExtension()), '', $image->getFilename()));
+        $image->setExtension(pathinfo($image->getFilename(), PATHINFO_EXTENSION));
+
+        if (null === $image->getName()) {
+            $image->setName(preg_replace(sprintf('/\.%s$/', $image->getExtension()), '', $image->getFilename()));
+        }
     }
 
     /**
@@ -74,12 +104,20 @@ class ImageListener extends AbstractOnFlushListener
         }
 
         $pathname = $this->storage->resolvePath($image, AbstractImage::PROPERTY_FILE);
-        $tmpPathname = tempnam(sys_get_temp_dir(), 'darvin_image_');
+        $tmpPathname = $this->generateTmpPathname();
 
         $fs = new Filesystem();
         $fs->rename($pathname, $tmpPathname, true);
 
         $filename = $image->getName().'.'.$image->getExtension();
         $image->setFile(new UploadedFile($tmpPathname, $filename, null, null, null, true));
+    }
+
+    /**
+     * @return string
+     */
+    private function generateTmpPathname()
+    {
+        return tempnam(sys_get_temp_dir(), 'darvin_image_');
     }
 }
