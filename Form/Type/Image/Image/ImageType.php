@@ -38,6 +38,7 @@ class ImageType extends AbstractType
         $resolver
             ->setDefaults(array(
                 'intention' => md5(__FILE__.$this->getName()),
+                'required'  => false,
             ))
             ->remove(array(
                 'data_class',
