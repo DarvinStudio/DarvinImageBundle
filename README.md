@@ -1,2 +1,2 @@
 # DarvinImageBundle
-This bundle provides images management functionality.
+This bundle provides images management functionality for Symfony2-based applications.
