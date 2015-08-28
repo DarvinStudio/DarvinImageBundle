@@ -1,11 +1,11 @@
 parameters:
     darvin_image.image.creator.class: Darvin\ImageBundle\ImageCreator\ImageCreator
 
-    darvin_image.image.event_listener.class: Darvin\ImageBundle\EventListener\ImageListener
-
     darvin_image.image.form_type.image.class: Darvin\ImageBundle\Form\Type\Image\Image\ImageType
 
     darvin_image.image.form_type.sizes.class: Darvin\ImageBundle\Form\Type\Image\Image\SizesType
+
+    darvin_image.image.listener.class: Darvin\ImageBundle\EventListener\ImageListener
 
 services:
     darvin_image.image.creator:
@@ -18,15 +18,6 @@ services:
             - %secret%
             - %darvin_image.upload_path%
 
-    darvin_image.image.event_listener:
-        class: %darvin_image.image.event_listener.class%
-        arguments:
-            - "@vich_uploader.storage"
-        tags:
-            - { name: doctrine.event_listener, event: onFlush }
-            - { name: kernel.event_listener,   event: darvin_utils.post_clone,   method: postClone }
-            - { name: kernel.event_listener,   event: vich_uploader.post_upload, method: postUpload }
-
     darvin_image.image.form_type.image:
         class: %darvin_image.image.form_type.image.class%
         tags:
@@ -38,3 +29,12 @@ services:
             - "@darvin_image.configuration.pool"
         tags:
             - { name: form.type, alias: darvin_image_image_sizes }
+
+    darvin_image.image.listener:
+        class: %darvin_image.image.listener.class%
+        arguments:
+            - "@vich_uploader.storage"
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
+            - { name: kernel.event_listener,   event: darvin_utils.post_clone,   method: postClone }
+            - { name: kernel.event_listener,   event: vich_uploader.post_upload, method: postUpload }
