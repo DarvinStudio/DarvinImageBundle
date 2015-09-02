@@ -37,7 +37,7 @@ class Size
      * @var \Darvin\ImageBundle\Entity\Image\AbstractImage
      *
      * @ORM\ManyToOne(targetEntity="Darvin\ImageBundle\Entity\Image\AbstractImage", inversedBy="sizes")
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $image;
 
