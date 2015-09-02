@@ -11,7 +11,7 @@
 
 namespace Darvin\ImageBundle\Namer;
 
-use Darvin\Utils\Strings\Transliterator\TransliteratorInterface;
+use Darvin\Utils\Transliteratable\TransliteratorInterface;
 use Vich\UploaderBundle\Mapping\PropertyMapping;
 use Vich\UploaderBundle\Naming\NamerInterface;
 
@@ -21,12 +21,12 @@ use Vich\UploaderBundle\Naming\NamerInterface;
 class FileNamer implements NamerInterface
 {
     /**
-     * @var \Darvin\Utils\Strings\Transliterator\TransliteratorInterface
+     * @var \Darvin\Utils\Transliteratable\TransliteratorInterface
      */
     private $transliterator;
 
     /**
-     * @param \Darvin\Utils\Strings\Transliterator\TransliteratorInterface $transliterator Transliterator
+     * @param \Darvin\Utils\Transliteratable\TransliteratorInterface $transliterator Transliterator
      */
     public function __construct(TransliteratorInterface $transliterator)
     {
