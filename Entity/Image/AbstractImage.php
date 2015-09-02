@@ -21,8 +21,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * Image abstract implementation
  *
  * @ORM\Entity
- * @ORM\Table(name="image")
  * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\Table(name="image")
  * @Vich\Uploadable
  */
 abstract class AbstractImage
