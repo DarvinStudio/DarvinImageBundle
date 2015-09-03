@@ -27,7 +27,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 abstract class AbstractImage
 {
-    const CLASS_NAME = __CLASS__;
+    const ABSTRACT_IMAGE_CLASS = __CLASS__;
 
     const PROPERTY_FILE = 'file';
 

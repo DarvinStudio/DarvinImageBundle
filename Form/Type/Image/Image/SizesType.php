@@ -95,7 +95,7 @@ class SizesType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => AbstractImage::CLASS_NAME,
+            'data_class' => AbstractImage::ABSTRACT_IMAGE_CLASS,
             'intention'  => md5(__FILE__.$this->getName()),
         ));
     }

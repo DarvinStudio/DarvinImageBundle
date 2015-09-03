@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Size
 {
-    const CLASS_NAME = __CLASS__;
+    const SIZE_CLASS = __CLASS__;
 
     /**
      * @var string

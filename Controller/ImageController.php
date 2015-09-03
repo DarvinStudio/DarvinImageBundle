@@ -29,7 +29,7 @@ class ImageController extends Controller
     {
         $em = $this->getEntityManager();
 
-        $image = $em->getRepository(AbstractImage::CLASS_NAME)->find($id);
+        $image = $em->getRepository(AbstractImage::ABSTRACT_IMAGE_CLASS)->find($id);
 
         if (empty($image)) {
             throw $this->createNotFoundException(sprintf('Unable to find image by ID "%d".', $id));

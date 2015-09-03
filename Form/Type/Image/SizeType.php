@@ -40,7 +40,7 @@ class SizeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => Size::CLASS_NAME,
+            'data_class' => Size::SIZE_CLASS,
             'intention'  => md5(__FILE__.$this->getName()),
         ));
     }
