@@ -27,7 +27,7 @@ class ImageController extends Controller
      */
     public function deleteAction($id)
     {
-        $em = $this->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
 
         $image = $em->getRepository(AbstractImage::ABSTRACT_IMAGE_CLASS)->find($id);
 
@@ -39,13 +39,5 @@ class ImageController extends Controller
         $em->flush();
 
         return new Response();
-    }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    private function getEntityManager()
-    {
-        return $this->get('doctrine.orm.entity_manager');
     }
 }
