@@ -46,6 +46,6 @@ class ImageController extends Controller
      */
     private function getEntityManager()
     {
-        return $this->container->get('doctrine.orm.entity_manager');
+        return $this->get('doctrine.orm.entity_manager');
     }
 }
