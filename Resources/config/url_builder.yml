@@ -21,7 +21,8 @@ services:
             - "@vich_uploader.storage"
 
     darvin_image.url_builder.twig_extension:
-        class: %darvin_image.url_builder.twig_extension.class%
+        class:  %darvin_image.url_builder.twig_extension.class%
+        public: false
         arguments:
             - "@darvin_image.url_builder.builder"
         tags:
