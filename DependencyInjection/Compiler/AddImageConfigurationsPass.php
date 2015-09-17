@@ -15,21 +15,33 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Size resolver compiler pass
+ * Add image configurations compiler pass
  */
-class SizeResolverPass implements CompilerPassInterface
+class AddImageConfigurationsPass implements CompilerPassInterface
 {
-    const TAG_SIZE_RESOLVER = 'darvin_image.size_resolver';
+    const POOL_ID = 'darvin_image.configuration.pool';
+
+    const TAG_IMAGE_CONFIGURATION = 'darvin_image.configuration';
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $pool = $container->getDefinition('darvin_image.size.resolver.pool');
+        if (!$container->hasDefinition(self::POOL_ID)) {
+            return;
+        }
 
-        foreach ($container->findTaggedServiceIds(self::TAG_SIZE_RESOLVER) as $id => $attr) {
-            $pool->addMethodCall('add', array(
+        $imageConfigurationIds = $container->findTaggedServiceIds(self::TAG_IMAGE_CONFIGURATION);
+
+        if (empty($imageConfigurationIds)) {
+            return;
+        }
+
+        $poolDefinition = $container->getDefinition(self::POOL_ID);
+
+        foreach ($imageConfigurationIds as $id => $attr) {
+            $poolDefinition->addMethodCall('add', array(
                 new Reference($id),
             ));
         }

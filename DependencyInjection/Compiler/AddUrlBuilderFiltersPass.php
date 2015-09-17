@@ -15,21 +15,33 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Configuration pool compiler pass
+ * Add URL builder filters compiler pass
  */
-class ConfigurationPoolPass implements CompilerPassInterface
+class AddUrlBuilderFiltersPass implements CompilerPassInterface
 {
-    const TAG_CONFIGURATION = 'darvin_image.configuration';
+    const TAG_URL_BUILDER_FILTER = 'darvin_image.url_builder_filter';
+
+    const URL_BUILDER_ID = 'darvin_image.url_builder.builder';
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $pool = $container->getDefinition('darvin_image.configuration.pool');
+        if (!$container->hasDefinition(self::URL_BUILDER_ID)) {
+            return;
+        }
 
-        foreach ($container->findTaggedServiceIds(self::TAG_CONFIGURATION) as $id => $attr) {
-            $pool->addMethodCall('add', array(
+        $urlBuilderFilterIds = $container->findTaggedServiceIds(self::TAG_URL_BUILDER_FILTER);
+
+        if (empty($urlBuilderFilterIds)) {
+            return;
+        }
+
+        $urlBuilderDefinition = $container->getDefinition(self::URL_BUILDER_ID);
+
+        foreach ($urlBuilderFilterIds as $id => $attr) {
+            $urlBuilderDefinition->addMethodCall('addFilter', array(
                 new Reference($id),
             ));
         }

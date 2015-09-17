@@ -15,21 +15,33 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * URL builder filter compiler pass
+ * Add size resolvers compiler pass
  */
-class UrlBuilderFilterPass implements CompilerPassInterface
+class AddSizeResolversPass implements CompilerPassInterface
 {
-    const TAG_URL_BUILDER_FILTER = 'darvin_image.url_builder_filter';
+    const POOL_ID = 'darvin_image.size.resolver.pool';
+
+    const TAG_SIZE_RESOLVER = 'darvin_image.size_resolver';
 
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        $urlBuilder = $container->getDefinition('darvin_image.url_builder.builder');
+        if (!$container->hasDefinition(self::POOL_ID)) {
+            return;
+        }
 
-        foreach ($container->findTaggedServiceIds(self::TAG_URL_BUILDER_FILTER) as $id => $attr) {
-            $urlBuilder->addMethodCall('addFilter', array(
+        $sizeResolverIds = $container->findTaggedServiceIds(self::TAG_SIZE_RESOLVER);
+
+        if (empty($sizeResolverIds)) {
+            return;
+        }
+
+        $poolDefinition = $container->getDefinition(self::POOL_ID);
+
+        foreach ($sizeResolverIds as $id => $attr) {
+            $poolDefinition->addMethodCall('add', array(
                 new Reference($id),
             ));
         }
