@@ -36,7 +36,7 @@ class SizeResolverPool implements SizeResolverPoolInterface
     /**
      * @param \Darvin\ImageBundle\Size\Resolver\SizeResolverInterface $resolver Size resolver
      */
-    public function add(SizeResolverInterface $resolver)
+    public function addResolver(SizeResolverInterface $resolver)
     {
         $this->resolvers[] = $resolver;
     }
@@ -44,7 +44,7 @@ class SizeResolverPool implements SizeResolverPoolInterface
     /**
      * {@inheritdoc}
      */
-    public function getForObject($object)
+    public function getResolverForObject($object)
     {
         /** @var \Darvin\ImageBundle\Size\Resolver\SizeResolverInterface $resolver */
         foreach ($this->resolvers as $resolver) {

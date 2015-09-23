@@ -33,7 +33,7 @@ class ConfigurationPool
      *
      * @throws \Darvin\ImageBundle\Configuration\ConfigurationException
      */
-    public function add(ImageConfigurationInterface $configuration)
+    public function addConfiguration(ImageConfigurationInterface $configuration)
     {
         if (isset($this->configurations[$configuration->getImageSizeGroupName()])) {
             throw new ConfigurationException(
@@ -47,7 +47,7 @@ class ConfigurationPool
     /**
      * @return \Darvin\ImageBundle\Configuration\ImageConfigurationInterface[]
      */
-    public function getAll()
+    public function getAllConfiguration()
     {
         return $this->configurations;
     }
@@ -58,7 +58,7 @@ class ConfigurationPool
      * @return \Darvin\ImageBundle\Configuration\ImageConfigurationInterface
      * @throws \Darvin\ImageBundle\Configuration\ConfigurationException
      */
-    public function get($sizeGroupName)
+    public function getConfiguration($sizeGroupName)
     {
         if (!isset($this->configurations[$sizeGroupName])) {
             throw new ConfigurationException(

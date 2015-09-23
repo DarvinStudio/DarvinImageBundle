@@ -21,5 +21,5 @@ interface SizeResolverPoolInterface
      *
      * @return \Darvin\ImageBundle\Size\Resolver\SizeResolverInterface
      */
-    public function getForObject($object);
+    public function getResolverForObject($object);
 }

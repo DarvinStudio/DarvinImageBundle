@@ -78,7 +78,7 @@ class UrlBuilder implements UrlBuilderInterface
                 );
             }
 
-            $sizeResolver = $this->sizeResolverPool->getForObject($image);
+            $sizeResolver = $this->sizeResolverPool->getResolverForObject($image);
             list($parameters['width'], $parameters['height']) = $sizeResolver->findSize($image, $parameters['size_name']);
         }
 

@@ -41,7 +41,7 @@ class AddSizeResolversPass implements CompilerPassInterface
         $poolDefinition = $container->getDefinition(self::POOL_ID);
 
         foreach ($sizeResolverIds as $id => $attr) {
-            $poolDefinition->addMethodCall('add', array(
+            $poolDefinition->addMethodCall('addResolver', array(
                 new Reference($id),
             ));
         }

@@ -57,7 +57,7 @@ class SizesType extends AbstractType
                 /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $image */
                 $image = $event->getData();
 
-                $configuration = $configurationPool->get($image->getSizeGroupName());
+                $configuration = $configurationPool->getConfiguration($image->getSizeGroupName());
 
                 $sizes = array();
 
