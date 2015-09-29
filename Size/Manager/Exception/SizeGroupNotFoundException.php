@@ -21,6 +21,6 @@ class SizeGroupNotFoundException extends SizeManagerException
      */
     public function __construct($groupName)
     {
-        parent::__construct(sprintf('Size group "%s" not found.'));
+        parent::__construct(sprintf('Size group "%s" not found.', $groupName));
     }
 }
