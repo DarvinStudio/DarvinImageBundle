@@ -94,6 +94,26 @@ class ImageConfiguration extends AbstractConfiguration implements ImageConfigura
 
 - "getImageSizeGroupName()" возвращает название группы размеров изображений.
 
+Объявляем класс сервисом и помечаем его тегами "darvin_image.configuration" и "darvin_config.configuration".
+
+Последний тег имеет один аргумент:
+
+- **position** *(опционально)* - позиция конфигурации в форме редактирования в панели администрирования.
+
+Пример определения сервиса:
+
+```yaml
+parameters:
+    app.configuration.image.class: App\Configuration\ImageConfiguration
+
+services:
+    app.configuration.image:
+        class: %app.configuration.image.class%
+        tags:
+            - { name: darvin_config.configuration }
+            - { name: darvin_image.configuration }
+```
+
 **2. Создаем класс сущности, который наследуется от "Darvin\ImageBundle\Entity\Image\AbstractImage":**
 
 ```php
