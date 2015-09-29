@@ -88,7 +88,7 @@ class ImageConfiguration extends AbstractConfiguration implements ImageConfigura
 
 - "getImageSizes()" должен проксировать вызов на магический метод, соответствующий названию параметра (в примере параметр
  называется "image_sizes", поэтому метод вызывает "getImageSizes", т. е. магический метод с названием, равным значению
- константы "__FUNCTION__");
+ константы "\__FUNCTION\__");
 
 - метод "isImageSizesGlobal()" определяет, является ли группа размеров изображений глобальной;
 
