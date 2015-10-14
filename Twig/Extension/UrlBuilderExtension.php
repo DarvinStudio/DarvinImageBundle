@@ -38,7 +38,7 @@ class UrlBuilderExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('image_original', array($this->urlBuilder, 'buildUrlToOriginal')),
+            new \Twig_SimpleFilter('image_original', array($this, 'buildUrlToOriginal')),
             new \Twig_SimpleFilter('image_crop', array($this, 'cropImage')),
             new \Twig_SimpleFilter('image_resize', array($this, 'resizeImage')),
         );
@@ -52,6 +52,17 @@ class UrlBuilderExtension extends \Twig_Extension
         return array(
             new \Twig_SimpleFunction('image_exists', array($this->urlBuilder, 'fileExists')),
         );
+    }
+
+    /**
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image    Image
+     * @param bool                                           $absolute Whether to build absolute URL
+     *
+     * @return string
+     */
+    public function buildUrlToOriginal(AbstractImage $image, $absolute = false)
+    {
+        return $this->urlBuilder->buildUrlToOriginal($image, $absolute);
     }
 
     /**

@@ -19,6 +19,7 @@ use Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException;
 use Darvin\ImageBundle\UrlBuilder\Exception\UrlBuilderException;
 use Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface;
 use Doctrine\Common\Util\ClassUtils;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -26,6 +27,11 @@ use Vich\UploaderBundle\Storage\StorageInterface;
  */
 class UrlBuilder implements UrlBuilderInterface
 {
+    /**
+     * @var \Symfony\Component\HttpFoundation\RequestStack
+     */
+    private $requestStack;
+
     /**
      * @var \Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPoolInterface
      */
@@ -42,11 +48,16 @@ class UrlBuilder implements UrlBuilderInterface
     private $filters;
 
     /**
+     * @param \Symfony\Component\HttpFoundation\RequestStack                   $requestStack     Request stack
      * @param \Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPoolInterface $sizeResolverPool Size resolver pool
      * @param \Vich\UploaderBundle\Storage\StorageInterface                    $storage          Storage
      */
-    public function __construct(SizeResolverPoolInterface $sizeResolverPool, StorageInterface $storage)
-    {
+    public function __construct(
+        RequestStack $requestStack,
+        SizeResolverPoolInterface $sizeResolverPool,
+        StorageInterface $storage
+    ) {
+        $this->requestStack = $requestStack;
         $this->sizeResolverPool = $sizeResolverPool;
         $this->storage = $storage;
         $this->filters = array();
@@ -55,11 +66,23 @@ class UrlBuilder implements UrlBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildUrlToOriginal(AbstractImage $image)
+    public function buildUrlToOriginal(AbstractImage $image, $addHost = false)
     {
         $this->checkIfFileExists($image);
 
-        return $this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image));
+        $url = $this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image));
+
+        if (!$addHost) {
+            return $url;
+        }
+
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (empty($request)) {
+            throw new UrlBuilderException('Unable to add host to URL: current request is empty.');
+        }
+
+        return $request->getSchemeAndHttpHost().$url;
     }
 
     /**

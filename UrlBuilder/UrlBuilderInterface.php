@@ -19,11 +19,12 @@ use Darvin\ImageBundle\Entity\Image\AbstractImage;
 interface UrlBuilderInterface
 {
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Image
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image   Image
+     * @param bool                                           $addHost Whether to add host to URL
      *
      * @return string
      */
-    public function buildUrlToOriginal(AbstractImage $image);
+    public function buildUrlToOriginal(AbstractImage $image, $addHost = false);
 
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image      Image
