@@ -60,6 +60,14 @@ class SizeManager implements SizeManagerInterface
     {
         $this->init();
 
+        if (empty($groupName)) {
+            if (!isset($this->globalSizes[$sizeName])) {
+                throw new SizeNotFoundException(sprintf('Size "%s" not found among global sizes.', $sizeName));
+            }
+
+            return $this->globalSizes[$sizeName];
+        }
+
         $group = $this->getGroup($groupName);
         $size = $group->findSizeByName($sizeName);
 
