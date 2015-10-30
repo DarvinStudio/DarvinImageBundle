@@ -52,7 +52,7 @@ abstract class AbstractImage
      * @var string
      *
      * @ORM\Column(type="string")
-     * @Assert\NotBlank(groups={"UpdateProperty"})
+     * @Assert\NotBlank(groups={"AdminUpdateProperty"})
      */
     private $name;
 
