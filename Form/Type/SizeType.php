@@ -30,7 +30,7 @@ class SizeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\HiddenType')
+            ->add('name', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('width', null, array(
                 'label' => 'size.width',
             ))

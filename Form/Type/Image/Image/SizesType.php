@@ -49,7 +49,7 @@ class SizesType extends AbstractType
         $configurationPool = $this->configurationPool;
 
         $builder
-            ->add('sizes', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\CollectionType', array(
+            ->add('sizes', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', array(
                 'label' => 'image.sizes',
                 'type'  => SizeType::SIZE_TYPE_CLASS,
             ))
