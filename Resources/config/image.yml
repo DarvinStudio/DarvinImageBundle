@@ -21,14 +21,14 @@ services:
     darvin_image.image.form_type.image:
         class: %darvin_image.image.form_type.image.class%
         tags:
-            - { name: form.type, alias: darvin_image_image }
+            - { name: form.type }
 
     darvin_image.image.form_type.sizes:
         class: %darvin_image.image.form_type.sizes.class%
         arguments:
             - "@darvin_image.configuration.pool"
         tags:
-            - { name: form.type, alias: darvin_image_image_sizes }
+            - { name: form.type }
 
     darvin_image.image.listener:
         class: %darvin_image.image.listener.class%

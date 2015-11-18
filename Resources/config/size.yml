@@ -11,7 +11,7 @@ services:
     darvin_image.size.form_type:
         class: %darvin_image.size.form_type.class%
         tags:
-            - { name: form.type, alias: darvin_image_size }
+            - { name: form.type }
 
     darvin_image.size.manager:
         class: %darvin_image.size.manager.class%
