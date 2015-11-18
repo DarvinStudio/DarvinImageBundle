@@ -20,6 +20,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SizeType extends AbstractType
 {
+    const SIZE_TYPE_CLASS = __CLASS__;
+
     /**
      * {@inheritdoc}
      */

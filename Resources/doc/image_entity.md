@@ -39,6 +39,7 @@
 use Darvin\ConfigBundle\Configuration\AbstractConfiguration;
 use Darvin\ConfigBundle\Parameter\ParameterModel;
 use Darvin\ImageBundle\Configuration\ImageConfigurationInterface;
+use Darvin\ImageBundle\Form\Type\SizeType;
 use Darvin\ImageBundle\Size\Size;
 
 class ImageConfiguration extends AbstractConfiguration implements ImageConfigurationInterface
@@ -55,7 +56,7 @@ class ImageConfiguration extends AbstractConfiguration implements ImageConfigura
                 array(
                     'form' => array(
                         'options' => array(
-                            'type' => 'darvin_image_size',
+                            'type' => SizeType::SIZE_TYPE_CLASS,
                         ),
                     ),
                 )
