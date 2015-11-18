@@ -37,7 +37,7 @@ class ImageType extends AbstractType
     {
         $resolver
             ->setDefaults(array(
-                'intention' => md5(__FILE__.$this->getName()),
+                'intention' => md5(__FILE__.$this->getBlockPrefix()),
                 'required'  => false,
             ))
             ->remove(array(
@@ -51,7 +51,7 @@ class ImageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'darvin_image_image';
     }

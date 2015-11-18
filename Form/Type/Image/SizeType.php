@@ -41,14 +41,14 @@ class SizeType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => Size::SIZE_CLASS,
-            'intention'  => md5(__FILE__.$this->getName()),
+            'intention'  => md5(__FILE__.$this->getBlockPrefix()),
         ));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'darvin_image_image_size';
     }
