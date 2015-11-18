@@ -24,7 +24,7 @@ class ImageType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('file', 'file', array(
+        $builder->add('file', 'Symfony\\Component\\Form\\Extension\\Core\\Type\\FileType', array(
             'label'    => false,
             'required' => false,
         ));
