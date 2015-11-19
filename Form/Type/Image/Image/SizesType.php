@@ -50,8 +50,8 @@ class SizesType extends AbstractType
 
         $builder
             ->add('sizes', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', array(
-                'label' => 'image.sizes',
-                'type'  => SizeType::SIZE_TYPE_CLASS,
+                'label'      => 'image.sizes',
+                'entry_type' => SizeType::SIZE_TYPE_CLASS,
             ))
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($configurationPool) {
                 /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $image */
