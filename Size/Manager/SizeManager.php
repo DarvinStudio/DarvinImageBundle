@@ -111,7 +111,7 @@ class SizeManager implements SizeManagerInterface
         if ($this->initialized) {
             return;
         }
-        foreach ($this->configurationPool->getAllConfiguration() as $configuration) {
+        foreach ($this->configurationPool->getAllConfigurations() as $configuration) {
             $this->sizeGroups[$configuration->getImageSizeGroupName()] = new SizeGroup($configuration->getImageSizes());
 
             if (!$configuration->isImageSizesGlobal()) {

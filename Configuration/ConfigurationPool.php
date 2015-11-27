@@ -47,7 +47,7 @@ class ConfigurationPool
     /**
      * @return \Darvin\ImageBundle\Configuration\ImageConfigurationInterface[]
      */
-    public function getAllConfiguration()
+    public function getAllConfigurations()
     {
         return $this->configurations;
     }
