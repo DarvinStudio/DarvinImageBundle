@@ -37,8 +37,8 @@ class ImageType extends AbstractType
     {
         $resolver
             ->setDefaults(array(
-                'intention' => md5(__FILE__.$this->getBlockPrefix()),
-                'required'  => false,
+                'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
+                'required'      => false,
             ))
             ->remove(array(
                 'data_class',
