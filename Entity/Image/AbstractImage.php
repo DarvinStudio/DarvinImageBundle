@@ -289,10 +289,12 @@ abstract class AbstractImage
     }
 
     /**
-     * Refreshes updated at datetime.
+     * @return AbstractImage
      */
     protected function refreshUpdatedAt()
     {
         $this->updatedAt = new \DateTime();
+
+        return $this;
     }
 }
