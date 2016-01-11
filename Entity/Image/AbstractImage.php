@@ -265,14 +265,6 @@ abstract class AbstractImage
     }
 
     /**
-     * Refreshes updated at datetime.
-     */
-    public function refreshUpdatedAt()
-    {
-        $this->updatedAt = new \DateTime();
-    }
-
-    /**
      * @param \Symfony\Component\HttpFoundation\File\File $file file
      *
      * @return AbstractImage
@@ -294,5 +286,13 @@ abstract class AbstractImage
     public function getFile()
     {
         return $this->file;
+    }
+
+    /**
+     * Refreshes updated at datetime.
+     */
+    protected function refreshUpdatedAt()
+    {
+        $this->updatedAt = new \DateTime();
     }
 }
