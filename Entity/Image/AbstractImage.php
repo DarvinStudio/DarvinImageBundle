@@ -43,7 +43,7 @@ abstract class AbstractImage
     /**
      * @var \Darvin\ImageBundle\Entity\Image\Size[]|\Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Darvin\ImageBundle\Entity\Image\Size", mappedBy="image", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="Darvin\ImageBundle\Entity\Image\Size", mappedBy="image", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
      * @Assert\Valid
      */
     private $sizes;
