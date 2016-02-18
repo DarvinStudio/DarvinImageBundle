@@ -13,8 +13,6 @@ namespace Darvin\ImageBundle\Form\Type;
 use Darvin\ImageBundle\Size\Size;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -42,19 +40,12 @@ class SizeType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        $view->vars['label'] = 'image.size.'.$view->vars['name'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
             'data_class'    => Size::SIZE_CLASS,
+            'label_format'  => 'image.size.%name%',
         ));
     }
 
