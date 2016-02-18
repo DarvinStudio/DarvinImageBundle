@@ -30,11 +30,18 @@ class ImageListener extends AbstractOnFlushListener
     private $storage;
 
     /**
-     * @param \Vich\UploaderBundle\Storage\StorageInterface $storage Storage
+     * @var string
      */
-    public function __construct(StorageInterface $storage)
+    private $cacheDir;
+
+    /**
+     * @param \Vich\UploaderBundle\Storage\StorageInterface $storage  Storage
+     * @param string                                        $cacheDir Cache directory
+     */
+    public function __construct(StorageInterface $storage, $cacheDir)
     {
         $this->storage = $storage;
+        $this->cacheDir = $cacheDir;
     }
 
     /**
@@ -118,6 +125,6 @@ class ImageListener extends AbstractOnFlushListener
      */
     private function generateTmpPathname()
     {
-        return tempnam(sys_get_temp_dir(), 'darvin_image_');
+        return tempnam($this->cacheDir, 'darvin_image_');
     }
 }

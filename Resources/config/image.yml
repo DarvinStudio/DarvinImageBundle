@@ -34,6 +34,7 @@ services:
         class: %darvin_image.image.listener.class%
         arguments:
             - "@vich_uploader.storage"
+            - %kernel.cache_dir%
         tags:
             - { name: doctrine.event_listener, event: onFlush }
             - { name: kernel.event_listener,   event: darvin_utils.post_clone,   method: postClone }
