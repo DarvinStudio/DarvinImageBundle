@@ -46,13 +46,13 @@ class ResizeFilter implements FilterInterface
      */
     public function buildUrl($imagePathname, array $parameters)
     {
-        $options = array(
+        $options = [
             'size' => $this->getSize($parameters),
             'mode' => isset($parameters['outbound']) && $parameters['outbound'] ? 'outbound' : 'inset',
-        );
-        $filters = array(
+        ];
+        $filters = [
             'thumbnail' => $options,
-        );
+        ];
 
         if (isset($parameters['watermark'])) {
             $filters['watermark'] = $this->getWatermarkConfiguration($parameters['watermark']);
@@ -84,7 +84,7 @@ class ResizeFilter implements FilterInterface
             throw new FilterException('Width or height must be provided.');
         }
 
-        return array($width, $height);
+        return [$width, $height];
     }
 
     /**

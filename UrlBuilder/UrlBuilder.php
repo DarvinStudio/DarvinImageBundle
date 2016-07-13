@@ -60,7 +60,7 @@ class UrlBuilder implements UrlBuilderInterface
         $this->requestStack = $requestStack;
         $this->sizeResolverPool = $sizeResolverPool;
         $this->storage = $storage;
-        $this->filters = array();
+        $this->filters = [];
     }
 
     /**
@@ -88,7 +88,7 @@ class UrlBuilder implements UrlBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildUrlToFilter(AbstractImage $image, $filterName, array $parameters = array(), $includeSizes = true)
+    public function buildUrlToFilter(AbstractImage $image, $filterName, array $parameters = [], $includeSizes = true)
     {
         $this->checkIfFileExists($image);
 

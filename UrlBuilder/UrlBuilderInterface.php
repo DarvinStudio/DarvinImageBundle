@@ -33,7 +33,7 @@ interface UrlBuilderInterface
      *
      * @return string
      */
-    public function buildUrlToFilter(AbstractImage $image, $filterName, array $parameters = array());
+    public function buildUrlToFilter(AbstractImage $image, $filterName, array $parameters = []);
 
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Image

@@ -25,7 +25,7 @@ class ConfigurationPool
      */
     public function __construct()
     {
-        $this->configurations = array();
+        $this->configurations = [];
     }
 
     /**

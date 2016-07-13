@@ -24,10 +24,11 @@ class ImageType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', array(
+        $builder->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', [
             'label'    => false,
             'required' => false,
-        ));
+        ]
+        );
     }
 
     /**
@@ -36,16 +37,22 @@ class ImageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(array(
+            ->setDefaults(
+                [
                 'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
                 'required'      => false,
-            ))
-            ->remove(array(
+                ]
+            )
+            ->remove(
+                [
                 'data_class',
-            ))
-            ->setRequired(array(
+                ]
+            )
+            ->setRequired(
+                [
                 'data_class',
-            ));
+                ]
+            );
     }
 
     /**

@@ -88,7 +88,7 @@ abstract class AbstractImage
     /**
      * @param \Darvin\ImageBundle\Entity\Image\Size[] $sizes Sizes
      */
-    public function __construct(array $sizes = array())
+    public function __construct(array $sizes = [])
     {
         $this->sizes = new ArrayCollection($sizes);
     }

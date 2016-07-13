@@ -96,7 +96,7 @@ class ImageListener extends AbstractOnFlushListener
     {
         parent::onFlush($args);
 
-        $this->onUpdate(array($this, 'onImageUpdate'), AbstractImage::ABSTRACT_IMAGE_CLASS);
+        $this->onUpdate([$this, 'onImageUpdate'], AbstractImage::ABSTRACT_IMAGE_CLASS);
     }
 
     /**

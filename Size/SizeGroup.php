@@ -23,9 +23,9 @@ class SizeGroup
     /**
      * @param \Darvin\ImageBundle\Size\Size[] $sizes Sizes
      */
-    public function __construct(array $sizes = array())
+    public function __construct(array $sizes = [])
     {
-        $this->sizes = array();
+        $this->sizes = [];
 
         foreach ($sizes as $size) {
             $this->sizes[$size->getName()] = $size;

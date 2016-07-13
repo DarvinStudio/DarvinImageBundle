@@ -48,8 +48,8 @@ class SizeManager implements SizeManagerInterface
     public function __construct(ConfigurationPool $configurationPool)
     {
         $this->configurationPool = $configurationPool;
-        $this->globalSizes = array();
-        $this->sizeGroups = array();
+        $this->globalSizes = [];
+        $this->sizeGroups = [];
         $this->initialized = false;
     }
 

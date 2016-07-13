@@ -28,12 +28,14 @@ class SizeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('width', null, array(
+            ->add('width', null, [
                 'label' => 'size.width',
-            ))
-            ->add('height', null, array(
+            ]
+            )
+            ->add('height', null, [
                 'label' => 'size.height',
-            ));
+            ]
+            );
     }
 
     /**
@@ -41,10 +43,12 @@ class SizeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults(
+            [
             'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
             'data_class'    => Size::SIZE_CLASS,
-        ));
+            ]
+        );
     }
 
     /**

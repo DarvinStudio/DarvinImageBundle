@@ -41,9 +41,10 @@ class AddImageConfigurationsPass implements CompilerPassInterface
         $poolDefinition = $container->getDefinition(self::POOL_ID);
 
         foreach ($imageConfigurationIds as $id => $attr) {
-            $poolDefinition->addMethodCall('addConfiguration', array(
+            $poolDefinition->addMethodCall('addConfiguration', [
                 new Reference($id),
-            ));
+            ]
+            );
         }
     }
 }

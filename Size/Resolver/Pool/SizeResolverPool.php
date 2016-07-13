@@ -30,7 +30,7 @@ class SizeResolverPool implements SizeResolverPoolInterface
      */
     public function __construct()
     {
-        $this->resolvers = array();
+        $this->resolvers = [];
     }
 
     /**

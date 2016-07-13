@@ -22,5 +22,5 @@ interface ImageCreatorInterface
      *
      * @return string
      */
-    public function createImage($imagePathname, array $filters = array());
+    public function createImage($imagePathname, array $filters = []);
 }

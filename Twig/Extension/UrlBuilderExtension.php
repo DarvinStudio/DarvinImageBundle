@@ -37,11 +37,11 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('image_original', array($this, 'buildUrlToOriginal')),
-            new \Twig_SimpleFilter('image_crop', array($this, 'cropImage')),
-            new \Twig_SimpleFilter('image_resize', array($this, 'resizeImage')),
-        );
+        return [
+            new \Twig_SimpleFilter('image_original', [$this, 'buildUrlToOriginal']),
+            new \Twig_SimpleFilter('image_crop', [$this, 'cropImage']),
+            new \Twig_SimpleFilter('image_resize', [$this, 'resizeImage']),
+        ];
     }
 
     /**
@@ -49,9 +49,9 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('image_exists', array($this->urlBuilder, 'fileExists')),
-        );
+        return [
+            new \Twig_SimpleFunction('image_exists', [$this->urlBuilder, 'fileExists']),
+        ];
     }
 
     /**
@@ -107,10 +107,10 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     private function makeImageResize(AbstractImage $image, $sizeName, $outbound, $watermarkFilterName)
     {
-        $parameters = array(
+        $parameters = [
             'size_name' => $sizeName,
             'outbound'  => $outbound,
-        );
+        ];
 
         if (!empty($watermarkFilterName)) {
             $parameters['watermark'] = $watermarkFilterName;

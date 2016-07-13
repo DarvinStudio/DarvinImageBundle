@@ -77,7 +77,7 @@ class ImageCreator implements ImageCreatorInterface
     /**
      * {@inheritdoc}
      */
-    public function createImage($imagePathname, array $filters = array())
+    public function createImage($imagePathname, array $filters = [])
     {
         $path = $this->createPath($imagePathname, $filters);
 
@@ -85,9 +85,10 @@ class ImageCreator implements ImageCreatorInterface
             $binary = $this->dataManager->find($this->filterName, $imagePathname);
 
             $this->cacheManager->store(
-                $this->filterManager->applyFilter($binary, $this->filterName, array(
+                $this->filterManager->applyFilter($binary, $this->filterName, [
                     'filters' => $filters,
-                )),
+                ]
+                ),
                 $path,
                 $this->filterName
             );

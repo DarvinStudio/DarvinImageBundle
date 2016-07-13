@@ -41,9 +41,10 @@ class AddUrlBuilderFiltersPass implements CompilerPassInterface
         $urlBuilderDefinition = $container->getDefinition(self::URL_BUILDER_ID);
 
         foreach ($urlBuilderFilterIds as $id => $attr) {
-            $urlBuilderDefinition->addMethodCall('addFilter', array(
+            $urlBuilderDefinition->addMethodCall('addFilter', [
                 new Reference($id),
-            ));
+            ]
+            );
         }
     }
 }
