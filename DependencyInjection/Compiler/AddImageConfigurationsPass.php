@@ -43,8 +43,7 @@ class AddImageConfigurationsPass implements CompilerPassInterface
         foreach ($imageConfigurationIds as $id => $attr) {
             $poolDefinition->addMethodCall('addConfiguration', [
                 new Reference($id),
-            ]
-            );
+            ]);
         }
     }
 }

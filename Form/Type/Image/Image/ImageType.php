@@ -27,8 +27,7 @@ class ImageType extends AbstractType
         $builder->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', [
             'label'    => false,
             'required' => false,
-        ]
-        );
+        ]);
     }
 
     /**
@@ -37,22 +36,16 @@ class ImageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(
-                [
+            ->setDefaults([
                 'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
                 'required'      => false,
-                ]
-            )
-            ->remove(
-                [
+            ])
+            ->remove([
                 'data_class',
-                ]
-            )
-            ->setRequired(
-                [
+            ])
+            ->setRequired([
                 'data_class',
-                ]
-            );
+            ]);
     }
 
     /**

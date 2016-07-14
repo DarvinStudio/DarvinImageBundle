@@ -52,8 +52,7 @@ class SizesType extends AbstractType
             ->add('sizes', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', [
                 'label'      => 'image.sizes',
                 'entry_type' => SizeType::SIZE_TYPE_CLASS,
-            ]
-            )
+            ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($configurationPool) {
                 /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $image */
                 $image = $event->getData();
@@ -95,12 +94,10 @@ class SizesType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            [
+        $resolver->setDefaults([
             'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
             'data_class'    => AbstractImage::ABSTRACT_IMAGE_CLASS,
-            ]
-        );
+        ]);
     }
 
     /**

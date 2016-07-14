@@ -31,12 +31,10 @@ class SizeType extends AbstractType
             ->add('name', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
             ->add('width', null, [
                 'label' => 'size.width',
-            ]
-            )
+            ])
             ->add('height', null, [
                 'label' => 'size.height',
-            ]
-            );
+            ]);
     }
 
     /**
@@ -44,13 +42,11 @@ class SizeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            [
+        $resolver->setDefaults([
             'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
             'data_class'    => Size::SIZE_CLASS,
             'label_format'  => 'image.size.%name%',
-            ]
-        );
+        ]);
     }
 
     /**

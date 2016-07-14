@@ -87,8 +87,7 @@ class ImageCreator implements ImageCreatorInterface
             $this->cacheManager->store(
                 $this->filterManager->applyFilter($binary, $this->filterName, [
                     'filters' => $filters,
-                ]
-                ),
+                ]),
                 $path,
                 $this->filterName
             );

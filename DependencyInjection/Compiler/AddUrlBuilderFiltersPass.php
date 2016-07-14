@@ -43,8 +43,7 @@ class AddUrlBuilderFiltersPass implements CompilerPassInterface
         foreach ($urlBuilderFilterIds as $id => $attr) {
             $urlBuilderDefinition->addMethodCall('addFilter', [
                 new Reference($id),
-            ]
-            );
+            ]);
         }
     }
 }
