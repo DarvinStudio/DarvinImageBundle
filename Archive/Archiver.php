@@ -94,9 +94,11 @@ class Archiver
         if (true !== $zip->open($pathname, \ZipArchive::CREATE)) {
             throw new ArchiveException(sprintf('Unable to create image archive "%s".', $pathname));
         }
-
-        $finder = (new Finder())->in($this->uploadDir);
-
+        try {
+            $finder = (new Finder())->in($this->uploadDir);
+        } catch (\InvalidArgumentException $ex) {
+            throw new ArchiveException(sprintf('Image upload directory "%s" does not exist.', $this->uploadDir));
+        }
         foreach ($finder->directories() as $dir) {
             if (!$zip->addEmptyDir($dir->getRelativePathname())) {
                 throw new ArchiveException(
@@ -123,15 +125,17 @@ class Archiver
     {
         $fs = new Filesystem();
 
-        if ($fs->exists($this->cacheDir)) {
-            return;
+        if (!$fs->exists($this->cacheDir)) {
+            try {
+                $fs->mkdir($this->cacheDir);
+            } catch (IOException $ex) {
+                throw new ArchiveException(
+                    sprintf('Unable to create image archive cache directory "%s": "%s".', $this->cacheDir, $ex->getMessage())
+                );
+            }
         }
-        try {
-            $fs->mkdir($this->cacheDir);
-        } catch (IOException $ex) {
-            throw new ArchiveException(
-                sprintf('Unable to create image archive cache dir "%s": "%s".', $this->cacheDir, $ex->getMessage())
-            );
+        foreach ((new Finder())->in($this->cacheDir) as $file) {
+            $fs->remove($file->getPathname());
         }
     }
 
