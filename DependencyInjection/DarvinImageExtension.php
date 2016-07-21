@@ -35,10 +35,16 @@ class DarvinImageExtension extends Extension
         $configInjector->inject($config, $container, $this->getAlias());
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('configuration.yml');
-        $loader->load('image.yml');
-        $loader->load('namer.yml');
-        $loader->load('size.yml');
-        $loader->load('url_builder.yml');
+
+        foreach ([
+            'archive',
+            'configuration',
+            'image',
+            'namer',
+            'size',
+            'url_builder',
+        ] as $resource) {
+            $loader->load($resource.'.yml');
+        }
     }
 }

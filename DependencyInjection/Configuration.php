@@ -33,6 +33,12 @@ class Configuration implements ConfigurationInterface
         // more information on that topic.
         $rootNode
             ->children()
+                ->arrayNode('archive')->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('cache_dir')->defaultValue('%kernel.cache_dir%/images')->end()
+                        ->scalarNode('filename_suffix')->defaultValue('images')->end()
+                    ->end()
+                ->end()
                 ->scalarNode('imagine_filter')->cannotBeEmpty()->isRequired()->end()
                 ->scalarNode('upload_path')->cannotBeEmpty()->isRequired()->end()
             ->end();
