@@ -1,0 +1,10 @@
+darvin_image_archive_build:
+    path:     /build
+    defaults: { _controller: DarvinImageBundle:Archive:build }
+    methods:  [ get ]
+
+darvin_image_archive_download:
+    path:         /download/{filename}
+    defaults:     { _controller: DarvinImageBundle:Archive:download }
+    requirements: { filename: "\w+%darvin_image.archive.filename_suffix%_\d{8}_\d{4}.zip" }
+    methods:      [ get ]

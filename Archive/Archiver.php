@@ -61,15 +61,30 @@ class Archiver
     {
         $this->prepareCacheDir();
 
-        $pathname = $this->buildPathname();
+        $filename = $this->buildFilename();
+        $pathname = $this->buildPathname($filename);
 
-        return $this->buildZip($pathname);
+        $this->buildZip($pathname);
+
+        return $filename;
+    }
+
+    /**
+     * @param string $filename Filename
+     *
+     * @return string
+     */
+    public function buildPathname($filename)
+    {
+        return implode(DIRECTORY_SEPARATOR, [
+            $this->cacheDir,
+            $filename,
+        ]);
     }
 
     /**
      * @param string $pathname Pathname
      *
-     * @return string
      * @throws \Darvin\ImageBundle\Archive\ArchiveException
      */
     private function buildZip($pathname)
@@ -99,8 +114,6 @@ class Archiver
         if (!$zip->close()) {
             throw new ArchiveException(sprintf('Unable to close image archive "%s".', $pathname));
         }
-
-        return $pathname;
     }
 
     /**
@@ -125,14 +138,14 @@ class Archiver
     /**
      * @return string
      */
-    private function buildPathname()
+    private function buildFilename()
     {
         $parts = array_merge(preg_split('/[^0-9a-z]+/i', $this->getHost()), [
             $this->filenameSuffix,
             (new \DateTime())->format('dmY_Hi'),
         ]);
 
-        return sprintf('%s/%s.zip', $this->cacheDir, implode('_', $parts));
+        return sprintf('%s.zip', implode('_', $parts));
     }
 
     /**
