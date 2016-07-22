@@ -109,7 +109,7 @@ parameters:
 
 services:
     app.configuration.image:
-        class: %app.configuration.image.class%
+        class: "%app.configuration.image.class%"
         tags:
             - { name: darvin_config.configuration }
             - { name: darvin_image.configuration }
