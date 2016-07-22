@@ -9,32 +9,32 @@ parameters:
 
 services:
     darvin_image.image.creator:
-        class: %darvin_image.image.creator.class%
+        class: "%darvin_image.image.creator.class%"
         arguments:
             - "@liip_imagine.cache.manager"
             - "@liip_imagine.data.manager"
             - "@liip_imagine.filter.manager"
-            - %darvin_image.imagine_filter%
-            - %secret%
-            - %darvin_image.upload_path%
+            - "%darvin_image.imagine_filter%"
+            - "%secret%"
+            - "%darvin_image.upload_path%"
 
     darvin_image.image.form_type.image:
-        class: %darvin_image.image.form_type.image.class%
+        class: "%darvin_image.image.form_type.image.class%"
         tags:
             - { name: form.type }
 
     darvin_image.image.form_type.sizes:
-        class: %darvin_image.image.form_type.sizes.class%
+        class: "%darvin_image.image.form_type.sizes.class%"
         arguments:
             - "@darvin_image.configuration.pool"
         tags:
             - { name: form.type }
 
     darvin_image.image.listener:
-        class: %darvin_image.image.listener.class%
+        class: "%darvin_image.image.listener.class%"
         arguments:
             - "@vich_uploader.storage"
-            - %kernel.cache_dir%
+            - "%kernel.cache_dir%"
         tags:
             - { name: doctrine.event_listener, event: onFlush }
             - { name: kernel.event_listener,   event: darvin_utils.post_clone,   method: postClone }

@@ -7,7 +7,7 @@ parameters:
 
 services:
     darvin_image.url_builder.filter.resize:
-        class: %darvin_image.url_builder.filter.resize.class%
+        class: "%darvin_image.url_builder.filter.resize.class%"
         arguments:
             - "@liip_imagine.filter.manager"
             - "@darvin_image.image.creator"
@@ -15,14 +15,14 @@ services:
             - { name: darvin_image.url_builder_filter }
 
     darvin_image.url_builder.builder:
-        class: %darvin_image.url_builder.builder.class%
+        class: "%darvin_image.url_builder.builder.class%"
         arguments:
             - "@request_stack"
             - "@darvin_image.size.resolver.pool"
             - "@vich_uploader.storage"
 
     darvin_image.url_builder.twig_extension:
-        class:  %darvin_image.url_builder.twig_extension.class%
+        class:  "%darvin_image.url_builder.twig_extension.class%"
         public: false
         arguments:
             - "@darvin_image.url_builder.builder"

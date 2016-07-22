@@ -9,21 +9,21 @@ parameters:
 
 services:
     darvin_image.size.form_type:
-        class: %darvin_image.size.form_type.class%
+        class: "%darvin_image.size.form_type.class%"
         tags:
             - { name: form.type }
 
     darvin_image.size.manager:
-        class: %darvin_image.size.manager.class%
+        class: "%darvin_image.size.manager.class%"
         arguments:
             - "@darvin_image.configuration.pool"
 
     darvin_image.size.resolver.entity:
-        class: %darvin_image.size.resolver.entity.class%
+        class: "%darvin_image.size.resolver.entity.class%"
         arguments:
             - "@darvin_image.size.manager"
         tags:
             - { name: darvin_image.size_resolver }
 
     darvin_image.size.resolver.pool:
-        class: %darvin_image.size.resolver.pool.class%
+        class: "%darvin_image.size.resolver.pool.class%"

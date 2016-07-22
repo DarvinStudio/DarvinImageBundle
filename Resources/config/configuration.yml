@@ -3,4 +3,4 @@ parameters:
 
 services:
     darvin_image.configuration.pool:
-        class: %darvin_image.configuration.pool.class%
+        class: "%darvin_image.configuration.pool.class%"

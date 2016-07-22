@@ -5,9 +5,9 @@ parameters:
 
 services:
     darvin_image.namer.directory:
-        class: %darvin_image.namer.directory.class%
+        class: "%darvin_image.namer.directory.class%"
 
     darvin_image.namer.file:
-        class: %darvin_image.namer.file.class%
+        class: "%darvin_image.namer.file.class%"
         arguments:
             - "@darvin_utils.transliteratable.transliterator"
