@@ -1,4 +1,4 @@
-image_archive:
+archive:
     action:
         build:
             submit:  Архивировать изображения

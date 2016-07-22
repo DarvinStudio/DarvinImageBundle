@@ -53,7 +53,7 @@ class ArchiveController extends Controller
 
         $filename = $this->getArchiver()->archive();
 
-        $message = $this->getTranslator()->trans('image_archive.action.build.success', [], 'DarvinImageBundle');
+        $message = $this->getTranslator()->trans('archive.action.build.success', [], 'darvin_image');
         $url = $this->generateUrl('darvin_image_archive_download', [
             'filename' => $filename,
         ]);
