@@ -1,0 +1,5 @@
+image_archive:
+    action:
+        build:
+            submit:  Архивировать изображения
+            success: Изображения успешно архивированы

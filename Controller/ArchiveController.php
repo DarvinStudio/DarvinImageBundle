@@ -10,8 +10,10 @@
 
 namespace Darvin\ImageBundle\Controller;
 
+use Darvin\Utils\HttpFoundation\AjaxResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Archive controller
@@ -19,17 +21,50 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class ArchiveController extends Controller
 {
     /**
+     * @param \Symfony\Component\HttpFoundation\Request $request Request
+     *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function buildAction()
+    public function buildAction(Request $request)
     {
+        $form = $this->getArchiveFormFactory()->createBuildForm()->handleRequest($request);
+
+        if (!$form->isValid()) {
+            $messages = [];
+
+            /** @var \Symfony\Component\Form\FormError $error */
+            foreach ($form->getErrors(true) as $error) {
+                $messages[] = $error->getMessage();
+            }
+
+            $url = $request->headers->get('referer');
+
+            if ($request->isXmlHttpRequest()) {
+                return new AjaxResponse('', false, implode(' ', $messages), [], $url);
+            }
+            foreach ($messages as $message) {
+                $this->getFlashNotifier()->error($message);
+            }
+
+            return $this->redirect($url);
+        }
+
         set_time_limit(0);
 
         $filename = $this->getArchiver()->archive();
 
-        return $this->redirectToRoute('darvin_image_archive_download', [
+        $message = $this->getTranslator()->trans('image_archive.action.build.success', [], 'DarvinImageBundle');
+        $url = $this->generateUrl('darvin_image_archive_download', [
             'filename' => $filename,
         ]);
+
+        if ($request->isXmlHttpRequest()) {
+            return new AjaxResponse('', true, $message, [], $url);
+        }
+
+        $this->getFlashNotifier()->success($message);
+
+        return $this->redirect($url);
     }
 
     /**
@@ -50,10 +85,34 @@ class ArchiveController extends Controller
     }
 
     /**
+     * @return \Darvin\ImageBundle\Form\Factory\ArchiveFormFactory
+     */
+    private function getArchiveFormFactory()
+    {
+        return $this->get('darvin_image.archive.form_factory');
+    }
+
+    /**
      * @return \Darvin\ImageBundle\Archive\ArchiverInterface
      */
     private function getArchiver()
     {
         return $this->get('darvin_image.archiver');
+    }
+
+    /**
+     * @return \Darvin\Utils\Flash\FlashNotifierInterface
+     */
+    private function getFlashNotifier()
+    {
+        return $this->get('darvin_utils.flash.notifier');
+    }
+
+    /**
+     * @return \Symfony\Component\Translation\TranslatorInterface
+     */
+    private function getTranslator()
+    {
+        return $this->get('translator');
     }
 }

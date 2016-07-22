@@ -1,0 +1,6 @@
+{% trans_default_domain 'DarvinImageBundle' %}
+
+{{ form_start(form, {'attr': {'class': 'ajax'}}) }}
+{{ form_widget(form) }}
+<button type="submit">{% trans %}image_archive.action.build.submit{% endtrans %}</button>
+{{ form_end(form) }}
