@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * Archiver
  */
-class Archiver
+class Archiver implements ArchiverInterface
 {
     /**
      * @var \Symfony\Component\HttpFoundation\RequestStack
@@ -55,7 +55,7 @@ class Archiver
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function archive()
     {
@@ -70,9 +70,7 @@ class Archiver
     }
 
     /**
-     * @param string $filename Filename
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function buildPathname($filename)
     {
