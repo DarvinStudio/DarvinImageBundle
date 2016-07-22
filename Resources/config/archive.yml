@@ -1,9 +1,13 @@
 parameters:
-    darvin_image.archiver.class: Darvin\ImageBundle\Archive\Archiver
+    darvin_image.archiver.zip.class: Darvin\ImageBundle\Archive\ZipArchiver
 
 services:
     darvin_image.archiver:
-        class: "%darvin_image.archiver.class%"
+        alias: darvin_image.archiver.zip
+
+    darvin_image.archiver.zip:
+        class:  "%darvin_image.archiver.zip.class%"
+        public: false
         arguments:
             - "@request_stack"
             - "%darvin_image.archive.cache_dir%"

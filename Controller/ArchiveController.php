@@ -33,7 +33,7 @@ class ArchiveController extends Controller
     }
 
     /**
-     * @param string $filename Filename
+     * @param string $filename Archive filename
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
@@ -50,7 +50,7 @@ class ArchiveController extends Controller
     }
 
     /**
-     * @return \Darvin\ImageBundle\Archive\Archiver
+     * @return \Darvin\ImageBundle\Archive\ArchiverInterface
      */
     private function getArchiver()
     {

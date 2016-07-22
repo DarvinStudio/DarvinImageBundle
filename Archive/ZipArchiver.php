@@ -16,9 +16,9 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * Archiver
+ * ZIP archiver
  */
-class Archiver implements ArchiverInterface
+class ZipArchiver implements ArchiverInterface
 {
     /**
      * @var \Symfony\Component\HttpFoundation\RequestStack
