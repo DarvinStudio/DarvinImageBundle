@@ -13,6 +13,7 @@ namespace Darvin\ImageBundle\Twig\Extension;
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\UrlBuilder\Filter\ResizeFilter;
 use Darvin\ImageBundle\UrlBuilder\UrlBuilderInterface;
+use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 
 /**
  * URL builder Twig extension
@@ -62,7 +63,11 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     public function buildUrlToOriginal(AbstractImage $image, $absolute = false)
     {
-        return $this->urlBuilder->buildUrlToOriginal($image, $absolute);
+        try {
+            return $this->urlBuilder->buildUrlToOriginal($image, $absolute);
+        } catch (NotLoadableException $ex) {
+            return null;
+        }
     }
 
     /**
@@ -74,7 +79,11 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     public function cropImage(AbstractImage $image, $sizeName, $watermarkFilterName = null)
     {
-        return $this->makeImageResize($image, $sizeName, true, $watermarkFilterName);
+        try {
+            return $this->makeImageResize($image, $sizeName, true, $watermarkFilterName);
+        } catch (NotLoadableException $ex) {
+            return null;
+        }
     }
 
     /**
@@ -86,7 +95,11 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     public function resizeImage(AbstractImage $image, $sizeName, $watermarkFilterName = null)
     {
-        return $this->makeImageResize($image, $sizeName, false, $watermarkFilterName);
+        try {
+            return $this->makeImageResize($image, $sizeName, false, $watermarkFilterName);
+        } catch (NotLoadableException $ex) {
+            return null;
+        }
     }
 
     /**
