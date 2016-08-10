@@ -79,11 +79,7 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     public function cropImage(AbstractImage $image, $sizeName, $watermarkFilterName = null)
     {
-        try {
-            return $this->makeImageResize($image, $sizeName, true, $watermarkFilterName);
-        } catch (NotLoadableException $ex) {
-            return null;
-        }
+        return $this->makeImageResize($image, $sizeName, true, $watermarkFilterName);
     }
 
     /**
@@ -95,11 +91,7 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     public function resizeImage(AbstractImage $image, $sizeName, $watermarkFilterName = null)
     {
-        try {
-            return $this->makeImageResize($image, $sizeName, false, $watermarkFilterName);
-        } catch (NotLoadableException $ex) {
-            return null;
-        }
+        return $this->makeImageResize($image, $sizeName, false, $watermarkFilterName);
     }
 
     /**
@@ -129,6 +121,10 @@ class UrlBuilderExtension extends \Twig_Extension
             $parameters['watermark'] = $watermarkFilterName;
         }
 
-        return $this->urlBuilder->buildUrlToFilter($image, ResizeFilter::NAME, $parameters);
+        try {
+            return $this->urlBuilder->buildUrlToFilter($image, ResizeFilter::NAME, $parameters);
+        } catch (NotLoadableException $ex) {
+            return null;
+        }
     }
 }
