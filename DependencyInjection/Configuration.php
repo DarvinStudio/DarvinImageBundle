@@ -39,8 +39,8 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('filename_suffix')->defaultValue('images')->end()
                     ->end()
                 ->end()
-                ->scalarNode('imagine_filter')->cannotBeEmpty()->isRequired()->end()
-                ->scalarNode('upload_path')->cannotBeEmpty()->isRequired()->end()
+                ->scalarNode('imagine_filter')->defaultValue('darvin_thumb')->end()
+                ->scalarNode('upload_path')->isRequired()->cannotBeEmpty()->end()
             ->end();
 
         return $treeBuilder;
