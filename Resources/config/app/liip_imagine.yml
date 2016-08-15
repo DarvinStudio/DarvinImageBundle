@@ -1,6 +1,6 @@
 liip_imagine:
     filter_sets:
-        %image_imagine_filter%: ~
+        darvin_thumb: ~
     resolvers:
         default:
             web_path:
