@@ -1,8 +1,6 @@
 parameters:
     darvin_image.image.creator.class: Darvin\ImageBundle\ImageCreator\ImageCreator
 
-    darvin_image.image.form_type.image.class: Darvin\ImageBundle\Form\Type\Image\ImageType
-
     darvin_image.image.form_type.sizes.class: Darvin\ImageBundle\Form\Type\Image\ImageSizesType
 
     darvin_image.image.listener.class: Darvin\ImageBundle\EventListener\ImageListener
@@ -17,11 +15,6 @@ services:
             - "%darvin_image.imagine_filter%"
             - "%secret%"
             - "%darvin_image.upload_path%"
-
-    darvin_image.image.form_type.image:
-        class: "%darvin_image.image.form_type.image.class%"
-        tags:
-            - { name: form.type }
 
     darvin_image.image.form_type.sizes:
         class: "%darvin_image.image.form_type.sizes.class%"
