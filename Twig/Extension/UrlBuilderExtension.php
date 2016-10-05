@@ -61,8 +61,11 @@ class UrlBuilderExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function buildUrlToOriginal(AbstractImage $image, $absolute = false)
+    public function buildUrlToOriginal(AbstractImage $image = null, $absolute = false)
     {
+        if (empty($image)) {
+            return null;
+        }
         try {
             return $this->urlBuilder->buildUrlToOriginal($image, $absolute);
         } catch (NotLoadableException $ex) {
@@ -77,7 +80,7 @@ class UrlBuilderExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function cropImage(AbstractImage $image, $sizeName, $watermarkFilterName = null)
+    public function cropImage(AbstractImage $image = null, $sizeName, $watermarkFilterName = null)
     {
         return $this->makeImageResize($image, $sizeName, true, $watermarkFilterName);
     }
@@ -89,7 +92,7 @@ class UrlBuilderExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function resizeImage(AbstractImage $image, $sizeName, $watermarkFilterName = null)
+    public function resizeImage(AbstractImage $image = null, $sizeName, $watermarkFilterName = null)
     {
         return $this->makeImageResize($image, $sizeName, false, $watermarkFilterName);
     }
@@ -110,8 +113,12 @@ class UrlBuilderExtension extends \Twig_Extension
      *
      * @return string
      */
-    private function makeImageResize(AbstractImage $image, $sizeName, $outbound, $watermarkFilterName)
+    private function makeImageResize(AbstractImage $image = null, $sizeName, $outbound, $watermarkFilterName)
     {
+        if (empty($image)) {
+            return null;
+        }
+
         $parameters = [
             'size_name' => $sizeName,
             'outbound'  => $outbound,
