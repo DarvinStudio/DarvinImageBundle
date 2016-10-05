@@ -56,7 +56,10 @@ class ImageConfiguration extends AbstractConfiguration implements ImageConfigura
                 array(
                     'form' => array(
                         'options' => array(
-                            'entry_type' => SizeType::SIZE_TYPE_CLASS,
+                            'entry_type'    => SizeType::SIZE_TYPE_CLASS,
+                            'entry_options' => [
+                                'size_group' => $this->getImageSizeGroupName(),
+                            ],
                         ),
                     ),
                 )

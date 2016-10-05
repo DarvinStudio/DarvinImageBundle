@@ -13,6 +13,7 @@ namespace Darvin\ImageBundle\Form\Type;
 use Darvin\ImageBundle\Size\Size;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -42,11 +43,16 @@ class SizeType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
-            'data_class'    => Size::SIZE_CLASS,
-            'label_format'  => 'image.size.%name%',
-        ]);
+        $resolver
+            ->setDefaults([
+                'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
+                'data_class'    => Size::SIZE_CLASS,
+            ])
+            ->setRequired('size_group')
+            ->setAllowedTypes('size_group', 'string')
+            ->setNormalizer('label_format', function (Options $options) {
+                return sprintf('image_size.%s.%%name%%', $options['size_group']);
+            });
     }
 
     /**
