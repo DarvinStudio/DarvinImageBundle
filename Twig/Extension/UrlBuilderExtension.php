@@ -106,7 +106,7 @@ class UrlBuilderExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Image         Image
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image               Image
      * @param string                                         $sizeName            Size name
      * @param bool                                           $outbound            Is outbound
      * @param string                                         $watermarkFilterName Watermark Imagine filter name
