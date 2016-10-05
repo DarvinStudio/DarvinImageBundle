@@ -8,26 +8,32 @@
  * file that was distributed with this source code.
  */
 
-namespace Darvin\ImageBundle\Form\Type\Image\Image;
+namespace Darvin\ImageBundle\Form\Type\Image;
 
+use Darvin\ImageBundle\Entity\Image\Size;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Image form type
+ * Image size form type
  */
-class ImageType extends AbstractType
+class ImageSizeType extends AbstractType
 {
+    const IMAGE_SIZE_TYPE_CLASS = __CLASS__;
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', [
-            'label'    => false,
-            'required' => false,
-        ]);
+        $builder
+            ->add('width', null, [
+                'label' => 'size.width',
+            ])
+            ->add('height', null, [
+                'label' => 'size.height',
+            ]);
     }
 
     /**
@@ -35,17 +41,10 @@ class ImageType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver
-            ->setDefaults([
-                'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
-                'required'      => false,
-            ])
-            ->remove([
-                'data_class',
-            ])
-            ->setRequired([
-                'data_class',
-            ]);
+        $resolver->setDefaults([
+            'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
+            'data_class'    => Size::SIZE_CLASS,
+        ]);
     }
 
     /**
@@ -53,6 +52,6 @@ class ImageType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'darvin_image_image';
+        return 'darvin_image_image_size';
     }
 }

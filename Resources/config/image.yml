@@ -1,9 +1,9 @@
 parameters:
     darvin_image.image.creator.class: Darvin\ImageBundle\ImageCreator\ImageCreator
 
-    darvin_image.image.form_type.image.class: Darvin\ImageBundle\Form\Type\Image\Image\ImageType
+    darvin_image.image.form_type.image.class: Darvin\ImageBundle\Form\Type\Image\ImageType
 
-    darvin_image.image.form_type.sizes.class: Darvin\ImageBundle\Form\Type\Image\Image\SizesType
+    darvin_image.image.form_type.sizes.class: Darvin\ImageBundle\Form\Type\Image\ImageSizesType
 
     darvin_image.image.listener.class: Darvin\ImageBundle\EventListener\ImageListener
 

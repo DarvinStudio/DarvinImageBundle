@@ -8,12 +8,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Darvin\ImageBundle\Form\Type\Image\Image;
+namespace Darvin\ImageBundle\Form\Type\Image;
 
 use Darvin\ImageBundle\Configuration\ConfigurationPool;
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\Entity\Image\Size;
-use Darvin\ImageBundle\Form\Type\Image\SizeType;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,7 +25,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Image sizes form type
  */
-class SizesType extends AbstractType
+class ImageSizesType extends AbstractType
 {
     /**
      * @var \Darvin\ImageBundle\Configuration\ConfigurationPool
@@ -51,7 +50,7 @@ class SizesType extends AbstractType
         $builder
             ->add('sizes', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', [
                 'label'      => 'image.sizes',
-                'entry_type' => SizeType::SIZE_TYPE_CLASS,
+                'entry_type' => ImageSizeType::IMAGE_SIZE_TYPE_CLASS,
             ])
             ->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use ($configurationPool) {
                 /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $image */
