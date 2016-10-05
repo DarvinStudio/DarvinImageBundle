@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Size
  */
-class Size
+class Size implements \Serializable
 {
     const SIZE_CLASS = __CLASS__;
 
@@ -52,6 +52,30 @@ class Size
         $this->name = $name;
         $this->width = $width;
         $this->height = $height;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function serialize()
+    {
+        return serialize([
+            $this->name,
+            $this->width,
+            $this->height,
+        ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized)
+    {
+        list(
+            $this->name,
+            $this->width,
+            $this->height
+        ) = unserialize($serialized);
     }
 
     /**
