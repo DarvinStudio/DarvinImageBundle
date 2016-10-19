@@ -86,11 +86,11 @@ abstract class AbstractImage
     private $file;
 
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\Size[] $sizes Sizes
+     * Constructor
      */
-    public function __construct(array $sizes = [])
+    public function __construct()
     {
-        $this->sizes = new ArrayCollection($sizes);
+        $this->sizes = new ArrayCollection();
     }
 
     /**
