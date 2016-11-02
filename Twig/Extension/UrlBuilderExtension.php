@@ -98,14 +98,6 @@ class UrlBuilderExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'darvin_image_url_builder_extension';
-    }
-
-    /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image               Image
      * @param string                                         $sizeName            Size name
      * @param bool                                           $outbound            Is outbound

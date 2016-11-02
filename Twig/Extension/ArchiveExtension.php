@@ -55,12 +55,4 @@ class ArchiveExtension extends \Twig_Extension
             'form' => $this->archiveFormFactory->createBuildFormView(),
         ]);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'darvin_image_archive_extension';
-    }
 }
