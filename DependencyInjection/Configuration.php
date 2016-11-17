@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('filename_suffix')->defaultValue('images')->end()
                     ->end()
                 ->end()
-                ->scalarNode('imagine_filter')->defaultValue('darvin_thumb')->end()
+                ->scalarNode('imagine_filter')->defaultValue('thumbs')->end()
                 ->scalarNode('upload_path')->isRequired()->cannotBeEmpty()->end()
             ->end();
 
