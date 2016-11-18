@@ -23,6 +23,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\Table(name="image")
+ *
  * @Vich\Uploadable
  */
 abstract class AbstractImage
@@ -44,6 +45,7 @@ abstract class AbstractImage
      * @var \Darvin\ImageBundle\Entity\Image\Size[]|\Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Darvin\ImageBundle\Entity\Image\Size", mappedBy="image", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
+     *
      * @Assert\Valid
      */
     private $sizes;
@@ -52,6 +54,7 @@ abstract class AbstractImage
      * @var string
      *
      * @ORM\Column(type="string")
+     *
      * @Assert\NotBlank(groups={"AdminUpdateProperty"})
      */
     private $name;
@@ -81,6 +84,7 @@ abstract class AbstractImage
      * @var \Symfony\Component\HttpFoundation\File\File
      *
      * @Vich\UploadableField(mapping="darvin_image", fileNameProperty="filename")
+     *
      * @Assert\Image
      */
     private $file;

@@ -52,6 +52,7 @@ class Size
      * @var int
      *
      * @ORM\Column(type="integer")
+     *
      * @Assert\GreaterThan(0)
      * @Assert\NotBlank
      */
@@ -61,6 +62,7 @@ class Size
      * @var int
      *
      * @ORM\Column(type="integer")
+     *
      * @Assert\GreaterThan(0)
      * @Assert\NotBlank
      */
