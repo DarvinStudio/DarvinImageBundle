@@ -27,6 +27,9 @@ class ImageType extends AbstractType
         $builder->add('file', 'Symfony\Component\Form\Extension\Core\Type\FileType', [
             'label'    => false,
             'required' => false,
+            'attr'     => [
+                'accept' => 'image/*',
+            ],
         ]);
     }
 
