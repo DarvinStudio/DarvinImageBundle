@@ -1,6 +1,7 @@
 liip_imagine:
     filter_sets:
-        thumbs: ~
+        thumbs:
+            quality: 80
     resolvers:
         default:
             web_path:
