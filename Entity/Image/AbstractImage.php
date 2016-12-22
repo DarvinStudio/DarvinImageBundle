@@ -74,6 +74,20 @@ abstract class AbstractImage
     private $filename;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $width;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $height;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime")
@@ -249,6 +263,46 @@ abstract class AbstractImage
     }
 
     /**
+     * @param int $width width
+     *
+     * @return AbstractImage
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @param int $height height
+     *
+     * @return AbstractImage
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
      * @param \DateTime $updatedAt updatedAt
      *
      * @return AbstractImage
@@ -278,6 +332,12 @@ abstract class AbstractImage
         $this->file = $file;
 
         if (!empty($file)) {
+            $size = @getimagesize($file->getPathname());
+
+            if (is_array($size)) {
+                list($this->width, $this->height) = $size;
+            }
+
             $this->refreshUpdatedAt();
         }
 

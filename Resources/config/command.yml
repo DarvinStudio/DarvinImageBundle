@@ -1,0 +1,15 @@
+parameters:
+    darvin_image.command.update_dimensions.class:       Darvin\ImageBundle\Command\UpdateImageDimensionsCommand
+    darvin_image.command.update_dimensions.name:        "darvin:image:update-dimensions"
+    darvin_image.command.update_dimensions.flush_count: 50
+
+services:
+    darvin_image.command.update_dimensions:
+        class: "%darvin_image.command.update_dimensions.class%"
+        arguments:
+            - "%darvin_image.command.update_dimensions.name%"
+            - "@doctrine.orm.entity_manager"
+            - "@vich_uploader.storage"
+            - "%darvin_image.command.update_dimensions.flush_count%"
+        tags:
+            - { name: console.command }

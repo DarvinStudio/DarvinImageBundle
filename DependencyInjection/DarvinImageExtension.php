@@ -38,6 +38,7 @@ class DarvinImageExtension extends Extension
 
         foreach ([
             'archive',
+            'command',
             'configuration',
             'image',
             'namer',
