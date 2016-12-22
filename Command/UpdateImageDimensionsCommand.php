@@ -106,7 +106,7 @@ class UpdateImageDimensionsCommand extends Command
                     ->setWidth($width)
                     ->setHeight($height);
 
-                $messageParts[] = implode('x', [$width, $height]);
+                $messageParts[] = $image->getDimensions();
                 $io->writeln(implode(' ', $messageParts));
             } else {
                 $io->error(implode(' ', $messageParts));

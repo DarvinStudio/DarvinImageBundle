@@ -141,6 +141,14 @@ abstract class AbstractImage
     }
 
     /**
+     * @return string
+     */
+    public function getDimensions()
+    {
+        return $this->width.'x'.$this->height;
+    }
+
+    /**
      * @return int
      */
     public function getId()
