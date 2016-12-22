@@ -74,7 +74,7 @@ class UpdateImageDimensionsCommand extends Command
     {
         $this->io = $io = new SymfonyStyle($input, $output);
 
-        $qb = $this->em->getRepository(AbstractImage::ABSTRACT_IMAGE_CLASS)->createQueryBuilder('o')->where('1 != 1');
+        $qb = $this->em->getRepository(AbstractImage::ABSTRACT_IMAGE_CLASS)->createQueryBuilder('o');
 
         $countQb = clone $qb;
         $count = (int) $countQb->select('COUNT(o)')->getQuery()->getSingleScalarResult();
