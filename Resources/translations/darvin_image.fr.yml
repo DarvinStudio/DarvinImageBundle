@@ -1,0 +1,5 @@
+archive:
+    action:
+        build:
+            submit: 'Des images d''archives'
+            success: 'Images archivés'
