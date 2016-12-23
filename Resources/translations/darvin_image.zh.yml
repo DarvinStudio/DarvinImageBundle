@@ -1,0 +1,5 @@
+archive:
+    action:
+        build:
+            submit: 存档的图像
+            success: 成功存档的图像
