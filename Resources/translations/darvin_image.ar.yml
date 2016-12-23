@@ -1,0 +1,5 @@
+archive:
+    action:
+        build:
+            submit: 'أرشيف الصور'
+            success: 'الصور بنجاح ^ '
