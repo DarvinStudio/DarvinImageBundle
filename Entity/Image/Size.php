@@ -22,8 +22,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Size
 {
-    const SIZE_CLASS = __CLASS__;
-
     /**
      * @var int
      *

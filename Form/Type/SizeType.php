@@ -21,8 +21,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SizeType extends AbstractType
 {
-    const SIZE_TYPE_CLASS = __CLASS__;
-
     /**
      * {@inheritdoc}
      */
@@ -46,7 +44,7 @@ class SizeType extends AbstractType
         $resolver
             ->setDefaults([
                 'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
-                'data_class'    => Size::SIZE_CLASS,
+                'data_class'    => Size::class,
             ])
             ->setRequired('size_group')
             ->setAllowedTypes('size_group', 'string')

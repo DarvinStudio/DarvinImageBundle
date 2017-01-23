@@ -20,8 +20,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ImageSizeType extends AbstractType
 {
-    const IMAGE_SIZE_TYPE_CLASS = __CLASS__;
-
     /**
      * {@inheritdoc}
      */
@@ -43,7 +41,7 @@ class ImageSizeType extends AbstractType
     {
         $resolver->setDefaults([
             'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
-            'data_class'    => Size::SIZE_CLASS,
+            'data_class'    => Size::class,
         ]);
     }
 

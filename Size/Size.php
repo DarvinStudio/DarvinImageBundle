@@ -17,8 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Size implements \Serializable
 {
-    const SIZE_CLASS = __CLASS__;
-
     /**
      * @var string
      *

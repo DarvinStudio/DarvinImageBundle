@@ -28,8 +28,6 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 abstract class AbstractImage
 {
-    const ABSTRACT_IMAGE_CLASS = __CLASS__;
-
     const PROPERTY_FILE = 'file';
 
     /**
