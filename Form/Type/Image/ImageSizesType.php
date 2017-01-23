@@ -15,6 +15,7 @@ use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\Entity\Image\Size;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -48,7 +49,7 @@ class ImageSizesType extends AbstractType
         $configurationPool = $this->configurationPool;
 
         $builder
-            ->add('sizes', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', [
+            ->add('sizes', CollectionType::class, [
                 'label'      => 'image.sizes',
                 'entry_type' => ImageSizeType::class,
             ])

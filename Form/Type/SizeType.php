@@ -12,6 +12,7 @@ namespace Darvin\ImageBundle\Form\Type;
 
 use Darvin\ImageBundle\Size\Size;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -27,7 +28,7 @@ class SizeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'Symfony\Component\Form\Extension\Core\Type\HiddenType')
+            ->add('name', HiddenType::class)
             ->add('width', null, [
                 'label' => 'size.width',
             ])
