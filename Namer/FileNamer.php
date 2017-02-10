@@ -23,7 +23,7 @@ class FileNamer implements NamerInterface
     /**
      * @var \Darvin\Utils\Transliteratable\TransliteratorInterface
      */
-    private $transliterator;
+    protected $transliterator;
 
     /**
      * @param \Darvin\Utils\Transliteratable\TransliteratorInterface $transliterator Transliterator
@@ -47,7 +47,22 @@ class FileNamer implements NamerInterface
 
         $name = str_replace('.', '_', $name);
 
-        $name = $suffix = $this->transliterator->transliterate($name, true, ['_'], '_').'.'.$file->guessExtension();
+        $name = $this->transliterator->transliterate($name, true, ['_'], '_').'.'.$file->guessExtension();
+
+        $name = $this->makeNameUnique($name, $uploadDir);
+
+        return $name;
+    }
+
+    /**
+     * @param string $name      File name
+     * @param string $uploadDir Upload directory
+     *
+     * @return string
+     */
+    protected function makeNameUnique($name, $uploadDir)
+    {
+        $suffix = $name;
 
         $prefix = 0;
 
