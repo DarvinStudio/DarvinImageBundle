@@ -3,3 +3,10 @@ darvin_image_image_delete:
     defaults:     { _controller: DarvinImageBundle:Image:delete }
     requirements: { id: \d+ }
     methods:      [ post ]
+    condition:    request.isXmlHttpRequest()
+
+darvin_image_image_sort:
+    path:      /sort
+    defaults:  { _controller: DarvinImageBundle:Image:sort }
+    methods:   [ post ]
+    condition: request.isXmlHttpRequest()

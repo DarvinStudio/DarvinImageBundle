@@ -13,6 +13,7 @@ namespace Darvin\ImageBundle\Entity\Image;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -84,6 +85,15 @@ abstract class AbstractImage
      * @ORM\Column(type="integer")
      */
     private $height;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer")
+     *
+     * @Gedmo\SortablePosition
+     */
+    private $position;
 
     /**
      * @var \DateTime
@@ -306,6 +316,26 @@ abstract class AbstractImage
     public function getHeight()
     {
         return $this->height;
+    }
+
+    /**
+     * @param int $position position
+     *
+     * @return AbstractImage
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPosition()
+    {
+        return $this->position;
     }
 
     /**
