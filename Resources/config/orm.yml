@@ -1,0 +1,6 @@
+parameters:
+    darvin_image.orm.image_joiner.class: Darvin\ImageBundle\ORM\ImageJoiner
+
+services:
+    darvin_image.orm.image_joiner:
+        class: "%darvin_image.orm.image_joiner.class%"

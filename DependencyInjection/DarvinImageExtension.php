@@ -42,6 +42,7 @@ class DarvinImageExtension extends Extension
             'configuration',
             'image',
             'namer',
+            'orm',
             'size',
             'url_builder',
         ] as $resource) {
