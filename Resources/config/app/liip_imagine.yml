@@ -1,8 +1,9 @@
 liip_imagine:
+    cache: darvin_image
     filter_sets:
         thumbs:
             quality: 80
     resolvers:
-        default:
+        darvin_image:
             web_path:
                 cache_prefix: cache
