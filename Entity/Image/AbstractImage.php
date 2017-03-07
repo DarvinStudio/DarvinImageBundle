@@ -50,6 +50,13 @@ abstract class AbstractImage
     private $sizes;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(type="boolean", columnDefinition="TINYINT(1) NOT NULL DEFAULT 1")
+     */
+    private $enabled;
+
+    /**
      * @var string
      *
      * @ORM\Column(type="string")
@@ -117,6 +124,7 @@ abstract class AbstractImage
     public function __construct()
     {
         $this->sizes = new ArrayCollection();
+        $this->enabled = true;
     }
 
     /**
@@ -216,6 +224,26 @@ abstract class AbstractImage
         }
 
         return $this;
+    }
+
+    /**
+     * @param boolean $enabled enabled
+     *
+     * @return AbstractImage
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
     }
 
     /**
