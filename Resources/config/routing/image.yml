@@ -5,6 +5,20 @@ darvin_image_image_delete:
     methods:      [ post ]
     condition:    request.isXmlHttpRequest()
 
+darvin_image_image_disable:
+    path:         /{id}/disable
+    defaults:     { _controller: DarvinImageBundle:Image:disable }
+    requirements: { id: \d+ }
+    methods:      [ post ]
+    condition:    request.isXmlHttpRequest()
+
+darvin_image_image_enable:
+    path:         /{id}/enable
+    defaults:     { _controller: DarvinImageBundle:Image:enable }
+    requirements: { id: \d+ }
+    methods:      [ post ]
+    condition:    request.isXmlHttpRequest()
+
 darvin_image_image_sort:
     path:      /sort
     defaults:  { _controller: DarvinImageBundle:Image:sort }

@@ -36,6 +36,48 @@ class ImageController extends Controller
     }
 
     /**
+     * @param int $id Image ID
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function disableAction($id)
+    {
+        $image = $this->getImage($id);
+
+        if (!$image->isEnabled()) {
+            throw $this->createNotFoundException(sprintf('Image with ID "%d" already disabled.', $id));
+        }
+
+        $image->setEnabled(false);
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return new Response();
+    }
+
+    /**
+     * @param int $id Image ID
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    public function enableAction($id)
+    {
+        $image = $this->getImage($id);
+
+        if ($image->isEnabled()) {
+            throw $this->createNotFoundException(sprintf('Image with ID "%d" already enabled.', $id));
+        }
+
+        $image->setEnabled(true);
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return new Response();
+    }
+
+    /**
      * @param \Symfony\Component\HttpFoundation\Request $request Request
      *
      * @return \Symfony\Component\HttpFoundation\Response
