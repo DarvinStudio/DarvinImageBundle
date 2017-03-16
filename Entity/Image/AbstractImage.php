@@ -52,7 +52,7 @@ abstract class AbstractImage
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", columnDefinition="TINYINT(1) NOT NULL DEFAULT 1")
+     * @ORM\Column(type="boolean", options={"default"=1})
      */
     private $enabled;
 
