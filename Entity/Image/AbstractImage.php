@@ -10,6 +10,7 @@
 
 namespace Darvin\ImageBundle\Entity\Image;
 
+use Darvin\ImageBundle\Validation\Constraints as DarvinImageAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -114,7 +115,7 @@ abstract class AbstractImage
      *
      * @Vich\UploadableField(mapping="darvin_image", fileNameProperty="filename")
      *
-     * @Assert\Image
+     * @DarvinImageAssert\DarvinImage
      */
     private $file;
 

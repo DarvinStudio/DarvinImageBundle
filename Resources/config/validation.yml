@@ -1,0 +1,10 @@
+parameters:
+    darvin_image.validation.darvin_image_validator.class: Darvin\ImageBundle\Validation\Constraints\DarvinImageValidator
+
+services:
+    darvin_image.validation.darvin_image_validator:
+        class: "%darvin_image.validation.darvin_image_validator.class%"
+        arguments:
+            - "%darvin_image.constraints%"
+        tags:
+            - { name: validator.constraint_validator }

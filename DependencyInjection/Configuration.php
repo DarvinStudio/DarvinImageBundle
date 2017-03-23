@@ -39,6 +39,12 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('filename_suffix')->defaultValue('images')->end()
                     ->end()
                 ->end()
+                ->arrayNode('constraints')->addDefaultsIfNotSet()
+                    ->children()
+                        ->integerNode('max_width')->defaultValue(10000)->end()
+                        ->integerNode('max_height')->defaultValue(10000)->end()
+                    ->end()
+                ->end()
                 ->scalarNode('imagine_filter')->defaultValue('thumbs')->end()
                 ->scalarNode('upload_path')->isRequired()->cannotBeEmpty()->end()
             ->end();
