@@ -14,6 +14,7 @@ use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\UrlBuilder\Filter\ResizeFilter;
 use Darvin\ImageBundle\UrlBuilder\UrlBuilderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
+use Psr\Log\LoggerInterface;
 
 /**
  * URL builder Twig extension
@@ -21,15 +22,22 @@ use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 class UrlBuilderExtension extends \Twig_Extension
 {
     /**
+     * @var \Psr\Log\LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @var \Darvin\ImageBundle\UrlBuilder\UrlBuilderInterface
      */
     private $urlBuilder;
 
     /**
+     * @param \Psr\Log\LoggerInterface                           $logger     Logger
      * @param \Darvin\ImageBundle\UrlBuilder\UrlBuilderInterface $urlBuilder URL builder
      */
-    public function __construct(UrlBuilderInterface $urlBuilder)
+    public function __construct(LoggerInterface $logger, UrlBuilderInterface $urlBuilder)
     {
+        $this->logger = $logger;
         $this->urlBuilder = $urlBuilder;
     }
 
@@ -69,6 +77,8 @@ class UrlBuilderExtension extends \Twig_Extension
         try {
             return $this->urlBuilder->buildUrlToOriginal($image, $absolute);
         } catch (NotLoadableException $ex) {
+            $this->logError($image, $ex);
+
             return null;
         }
     }
@@ -123,7 +133,18 @@ class UrlBuilderExtension extends \Twig_Extension
         try {
             return $this->urlBuilder->buildUrlToFilter($image, ResizeFilter::NAME, $parameters);
         } catch (NotLoadableException $ex) {
+            $this->logError($image, $ex);
+
             return null;
         }
+    }
+
+    /**
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Image
+     * @param \Exception                                     $ex    Exception
+     */
+    private function logError(AbstractImage $image, \Exception $ex)
+    {
+        $this->logger->error(sprintf('Unable to build URL for image with ID "%d": "%s".', $image->getId(), $ex->getMessage()));
     }
 }

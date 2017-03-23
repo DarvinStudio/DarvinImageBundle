@@ -25,6 +25,7 @@ services:
         class:  "%darvin_image.url_builder.twig_extension.class%"
         public: false
         arguments:
+            - "@logger"
             - "@darvin_image.url_builder.builder"
         tags:
             - { name: twig.extension }
