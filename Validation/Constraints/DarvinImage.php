@@ -10,14 +10,14 @@
 
 namespace Darvin\ImageBundle\Validation\Constraints;
 
-use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Component\Validator\Constraint;
 
 /**
  * Darvin image validation constraint
  *
  * @Annotation
  */
-class DarvinImage extends Image
+class DarvinImage extends Constraint
 {
 
 }
