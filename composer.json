@@ -13,7 +13,7 @@
     ],
     "require": {
         "liip/imagine-bundle":               "^1.7",
-        "vich/uploader-bundle":              "^1.4",
+        "vich/uploader-bundle":              "1.4.*",
         "darvinstudio/darvin-config-bundle": "*",
         "darvinstudio/darvin-utils-bundle":  "*"
     },
