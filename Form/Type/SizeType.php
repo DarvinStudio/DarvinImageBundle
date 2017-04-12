@@ -46,12 +46,12 @@ class SizeType extends AbstractType
             ->setDefaults([
                 'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
                 'data_class'    => Size::class,
+                'label_format'  => function (Options $options) {
+                    return sprintf('image_size.%s.%%name%%', $options['size_group']);
+                },
             ])
             ->setRequired('size_group')
-            ->setAllowedTypes('size_group', 'string')
-            ->setNormalizer('label_format', function (Options $options) {
-                return sprintf('image_size.%s.%%name%%', $options['size_group']);
-            });
+            ->setAllowedTypes('size_group', 'string');
     }
 
     /**
