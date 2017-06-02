@@ -14,9 +14,10 @@ use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\Utils\Event\CloneEvent;
 use Darvin\Utils\EventListener\AbstractOnFlushListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -25,9 +26,19 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 class ImageListener extends AbstractOnFlushListener
 {
     /**
+     * @var \Liip\ImagineBundle\Imagine\Cache\CacheManager
+     */
+    private $imagineCacheManager;
+
+    /**
+     * @var \Liip\ImagineBundle\Imagine\Filter\FilterManager
+     */
+    private $imagineFilterManager;
+
+    /**
      * @var \Vich\UploaderBundle\Storage\StorageInterface
      */
-    private $storage;
+    private $uploaderStorage;
 
     /**
      * @var string
@@ -35,12 +46,20 @@ class ImageListener extends AbstractOnFlushListener
     private $cacheDir;
 
     /**
-     * @param \Vich\UploaderBundle\Storage\StorageInterface $storage  Storage
-     * @param string                                        $cacheDir Cache directory
+     * @param \Liip\ImagineBundle\Imagine\Cache\CacheManager   $imagineCacheManager  Imagine cache manager
+     * @param \Liip\ImagineBundle\Imagine\Filter\FilterManager $imagineFilterManager Imagine filter manager
+     * @param \Vich\UploaderBundle\Storage\StorageInterface    $uploaderStorage      Uploader storage
+     * @param string                                           $cacheDir             Cache directory
      */
-    public function __construct(StorageInterface $storage, $cacheDir)
-    {
-        $this->storage = $storage;
+    public function __construct(
+        CacheManager $imagineCacheManager,
+        FilterManager $imagineFilterManager,
+        StorageInterface $uploaderStorage,
+        $cacheDir
+    ) {
+        $this->imagineCacheManager = $imagineCacheManager;
+        $this->imagineFilterManager = $imagineFilterManager;
+        $this->uploaderStorage = $uploaderStorage;
         $this->cacheDir = $cacheDir;
     }
 
@@ -58,7 +77,7 @@ class ImageListener extends AbstractOnFlushListener
         /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $clone */
         $clone = $event->getClone();
 
-        $pathname = $this->storage->resolvePath($original, AbstractImage::PROPERTY_FILE);
+        $pathname = $this->uploaderStorage->resolvePath($original, AbstractImage::PROPERTY_FILE);
         $tmpPathname = $this->generateTmpPathname();
 
         $fs = new Filesystem();
@@ -72,31 +91,15 @@ class ImageListener extends AbstractOnFlushListener
     }
 
     /**
-     * @param \Vich\UploaderBundle\Event\Event $event Event
-     */
-    public function postUpload(Event $event)
-    {
-        $image = $event->getObject();
-
-        if (!$image instanceof AbstractImage) {
-            return;
-        }
-
-        $image->setExtension(pathinfo($image->getFilename(), PATHINFO_EXTENSION));
-
-        if (null === $image->getName()) {
-            $image->setName(preg_replace(sprintf('/\.%s$/', $image->getExtension()), '', $image->getFilename()));
-        }
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function onFlush(OnFlushEventArgs $args)
     {
         parent::onFlush($args);
 
-        $this->onUpdate([$this, 'onImageUpdate'], AbstractImage::class);
+        $this
+            ->onUpdate([$this, 'onImageUpdate'], AbstractImage::class)
+            ->onDelete([$this, 'onImageDelete'], AbstractImage::class);
     }
 
     /**
@@ -110,7 +113,7 @@ class ImageListener extends AbstractOnFlushListener
             return;
         }
 
-        $pathname = $this->storage->resolvePath($image, AbstractImage::PROPERTY_FILE);
+        $pathname = $this->uploaderStorage->resolvePath($image, AbstractImage::PROPERTY_FILE);
         $tmpPathname = $this->generateTmpPathname();
 
         $fs = new Filesystem();
@@ -118,6 +121,17 @@ class ImageListener extends AbstractOnFlushListener
 
         $filename = $image->getName().'.'.$image->getExtension();
         $image->setFile(new UploadedFile($tmpPathname, $filename, null, null, null, true));
+    }
+
+    /**
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Deleted image
+     */
+    protected function onImageDelete(AbstractImage $image)
+    {
+        $this->imagineCacheManager->remove(
+            $this->uploaderStorage->resolveUri($image, AbstractImage::PROPERTY_FILE),
+            array_keys($this->imagineFilterManager->getFilterConfiguration()->all())
+        );
     }
 
     /**

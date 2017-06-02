@@ -5,6 +5,8 @@ parameters:
 
     darvin_image.image.listener.class: Darvin\ImageBundle\EventListener\ImageListener
 
+    darvin_image.image.post_upload_listener.class: Darvin\ImageBundle\EventListener\ImagePostUploadListener
+
 services:
     darvin_image.image.creator:
         class: "%darvin_image.image.creator.class%"
@@ -26,9 +28,21 @@ services:
     darvin_image.image.listener:
         class: "%darvin_image.image.listener.class%"
         arguments:
+            - "@liip_imagine.cache.manager"
+            - "@liip_imagine.filter.manager"
             - "@vich_uploader.storage"
             - "%kernel.cache_dir%"
         tags:
             - { name: doctrine.event_listener, event: onFlush }
             - { name: kernel.event_listener,   event: darvin_utils.post_clone,   method: postClone }
+
+    darvin_image.image.post_upload_listener:
+        class: "%darvin_image.image.post_upload_listener.class%"
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@liip_imagine.cache.manager"
+            - "@liip_imagine.data.manager"
+            - "@liip_imagine.filter.manager"
+            - "@vich_uploader.storage"
+        tags:
             - { name: kernel.event_listener,   event: vich_uploader.post_upload, method: postUpload }
