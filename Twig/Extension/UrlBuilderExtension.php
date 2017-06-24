@@ -11,6 +11,7 @@
 namespace Darvin\ImageBundle\Twig\Extension;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
+use Darvin\ImageBundle\UrlBuilder\Filter\DirectImagineFilter;
 use Darvin\ImageBundle\UrlBuilder\Filter\ResizeFilter;
 use Darvin\ImageBundle\UrlBuilder\UrlBuilderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
@@ -50,6 +51,7 @@ class UrlBuilderExtension extends \Twig_Extension
             new \Twig_SimpleFilter('image_original', [$this, 'buildUrlToOriginal']),
             new \Twig_SimpleFilter('image_crop', [$this, 'cropImage']),
             new \Twig_SimpleFilter('image_resize', [$this, 'resizeImage']),
+            new \Twig_SimpleFilter('image_imagine', [$this, 'buildImagine'])
         ];
     }
 
@@ -61,6 +63,27 @@ class UrlBuilderExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFunction('image_exists', [$this->urlBuilder, 'fileExists']),
         ];
+    }
+
+    /**
+     * @param AbstractImage|null $image
+     * @param string $filterName
+     * @return null|string
+     */
+    public function buildImagine(AbstractImage $image = null, $filterName = null)
+    {
+        if (empty($image)) {
+            return null;
+        }
+        try {
+            return $this->urlBuilder->buildUrlToFilter($image, DirectImagineFilter::NAME, [
+                DirectImagineFilter::FILTER_NAME_PARAM => $filterName
+            ], false);
+        } catch (NotLoadableException $ex) {
+            $this->logError($image, $ex);
+
+            return null;
+        }
     }
 
     /**

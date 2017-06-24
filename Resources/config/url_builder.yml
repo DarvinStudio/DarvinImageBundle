@@ -2,6 +2,7 @@ parameters:
     darvin_image.url_builder.builder.class: Darvin\ImageBundle\UrlBuilder\UrlBuilder
 
     darvin_image.url_builder.filter.resize.class: Darvin\ImageBundle\UrlBuilder\Filter\ResizeFilter
+    darvin_image.url_builder.filter.direct_imagine.class: Darvin\ImageBundle\UrlBuilder\Filter\DirectImagineFilter
 
     darvin_image.url_builder.twig_extension.class: Darvin\ImageBundle\Twig\Extension\UrlBuilderExtension
 
@@ -13,6 +14,14 @@ services:
             - "@darvin_image.image.creator"
         tags:
             - { name: darvin_image.url_builder_filter }
+
+    darvin_image.url_builder.filter.direct_imagine:
+            class: "%darvin_image.url_builder.filter.direct_imagine.class%"
+            arguments:
+                - "@liip_imagine.cache.manager"
+            tags:
+                - { name: darvin_image.url_builder_filter }
+
 
     darvin_image.url_builder.builder:
         class: "%darvin_image.url_builder.builder.class%"
