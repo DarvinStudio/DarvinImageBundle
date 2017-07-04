@@ -88,16 +88,16 @@ class UrlBuilder implements UrlBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildUrlToFilter(AbstractImage $image, $filterName, array $parameters = [], $includeSizes = true)
+    public function buildUrlToFilter(AbstractImage $image, $filterName, array $parameters = [], $includeSize = true)
     {
         $this->checkIfFileExists($image);
 
         $filter = $this->getFilter($filterName);
 
-        if ($includeSizes && !isset($parameters['width']) && !isset($parameters['height'])) {
+        if ($includeSize && !isset($parameters['width']) && !isset($parameters['height'])) {
             if (!isset($parameters['size_name'])) {
                 throw new UrlBuilderException(
-                    'Parameter "size_name" must be provided in order to include sizes to filter.'
+                    'Parameter "size_name" must be provided in order to include size to filter.'
                 );
             }
 
