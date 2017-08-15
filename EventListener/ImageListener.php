@@ -16,6 +16,7 @@ use Darvin\Utils\EventListener\AbstractOnFlushListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -81,7 +82,14 @@ class ImageListener extends AbstractOnFlushListener
         $tmpPathname = $this->generateTmpPathname();
 
         $fs = new Filesystem();
-        $fs->copy($pathname, $tmpPathname, true);
+
+        try {
+            $fs->copy($pathname, $tmpPathname, true);
+        } catch (FileNotFoundException $ex) {
+            $event->setClone(null);
+
+            return;
+        }
 
         $file = new UploadedFile($tmpPathname, $original->getFilename(), null, null, null, true);
 
