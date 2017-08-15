@@ -11,6 +11,7 @@
 namespace Darvin\ImageBundle\Entity\Image;
 
 use Darvin\ImageBundle\Validation\Constraints as DarvinImageAssert;
+use Darvin\Utils\Mapping\Annotation\Clonable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,6 +26,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\Table(name="image")
+ *
+ * @Clonable\Clonable(copyingPolicy="ALL")
  *
  * @Vich\Uploadable
  */
