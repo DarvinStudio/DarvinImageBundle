@@ -43,32 +43,32 @@ class FileNamer implements NamerInterface
         /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $file */
         $file = $mapping->getFile($object);
 
+        $extension = $file->guessExtension();
+
         $name = preg_replace(sprintf('/\.%s$/', $file->getClientOriginalExtension()), '', $file->getClientOriginalName());
+        $name = str_replace('.', '-', $name);
+        $name = $this->transliterator->transliterate($name);
+        $name = $this->makeNameUnique($name, $uploadDir, $extension);
 
-        $name = str_replace('.', '_', $name);
-
-        $name = $this->transliterator->transliterate($name, true, ['_'], '_').'.'.$file->guessExtension();
-
-        $name = $this->makeNameUnique($name, $uploadDir);
-
-        return $name;
+        return $name.'.'.$extension;
     }
 
     /**
      * @param string $name      File name
      * @param string $uploadDir Upload directory
+     * @param string $extension File extension
      *
      * @return string
      */
-    protected function makeNameUnique($name, $uploadDir)
+    protected function makeNameUnique($name, $uploadDir, $extension)
     {
-        $suffix = $name;
+        $prefix = $name;
 
-        $prefix = 0;
+        $suffix = 0;
 
-        while (is_file($uploadDir.DIRECTORY_SEPARATOR.$name)) {
-            $prefix++;
-            $name = $prefix.'_'.$suffix;
+        while (is_file(sprintf('%s%s%s.%s', $uploadDir, DIRECTORY_SEPARATOR, $name, $extension))) {
+            $suffix++;
+            $name = $prefix.'-'.$suffix;
         }
 
         return $name;
