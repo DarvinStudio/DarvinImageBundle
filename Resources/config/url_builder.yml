@@ -16,11 +16,11 @@ services:
             - { name: darvin_image.url_builder_filter }
 
     darvin_image.url_builder.filter.direct_imagine:
-            class: "%darvin_image.url_builder.filter.direct_imagine.class%"
-            arguments:
-                - "@liip_imagine.cache.manager"
-            tags:
-                - { name: darvin_image.url_builder_filter }
+        class: "%darvin_image.url_builder.filter.direct_imagine.class%"
+        arguments:
+            - "@liip_imagine.cache.manager"
+        tags:
+            - { name: darvin_image.url_builder_filter }
 
 
     darvin_image.url_builder.builder:
