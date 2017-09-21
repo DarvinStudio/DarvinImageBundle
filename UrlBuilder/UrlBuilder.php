@@ -75,9 +75,13 @@ class UrlBuilder implements UrlBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildUrlToOriginal(AbstractImage $image, $addHost = false)
+    public function buildUrlToOriginal(AbstractImage $image = null, $addHost = false)
     {
         $this->checkIfFileExists($image);
+
+        if (empty($image)) {
+            return $this->placeholderPathname;
+        }
 
         $url = $this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image));
 
@@ -99,6 +103,8 @@ class UrlBuilder implements UrlBuilderInterface
      */
     public function buildUrlToFilter(AbstractImage $image = null, $filterName, array $parameters = [], $includeSize = true)
     {
+        $this->checkIfFileExists($image);
+
         $filter = $this->getFilter($filterName);
 
         if ($includeSize && !isset($parameters['width']) && !isset($parameters['height'])) {
@@ -111,14 +117,8 @@ class UrlBuilder implements UrlBuilderInterface
             $sizeResolver = $this->sizeResolverPool->getResolverForObject($image);
             list($parameters['width'], $parameters['height']) = $sizeResolver->findSize($image, $parameters['size_name']);
         }
-        if ($this->fileExists($image)) {
-            return $filter->buildUrl($this->buildUrlToOriginal($image), $parameters);
-        }
-        if (!empty($this->placeholderPathname)) {
-            return $filter->buildUrl($this->placeholderPathname, $parameters);
-        }
 
-        throw new ImageNotFoundException($this->getImagePathname($image));
+        return $filter->buildUrl($this->buildUrlToOriginal($image), $parameters);
     }
 
     /**
@@ -127,7 +127,7 @@ class UrlBuilder implements UrlBuilderInterface
     public function fileExists(AbstractImage $image = null)
     {
         if (empty($image)) {
-            return false;
+            return !empty($this->placeholderPathname);
         }
 
         return (bool) $this->getImagePathname($image);
@@ -173,11 +173,11 @@ class UrlBuilder implements UrlBuilderInterface
     }
 
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Image
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image Image
      *
      * @throws \Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException
      */
-    private function checkIfFileExists(AbstractImage $image)
+    private function checkIfFileExists(AbstractImage $image = null)
     {
         if (!$this->fileExists($image)) {
             throw new ImageNotFoundException($this->getImagePathname($image));

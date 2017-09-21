@@ -19,12 +19,12 @@ use Darvin\ImageBundle\Entity\Image\AbstractImage;
 interface UrlBuilderInterface
 {
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image   Image
-     * @param bool                                           $addHost Whether to add host to URL
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image   Image
+     * @param bool                                                $addHost Whether to add host to URL
      *
      * @return string
      */
-    public function buildUrlToOriginal(AbstractImage $image, $addHost = false);
+    public function buildUrlToOriginal(AbstractImage $image = null, $addHost = false);
 
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image       Image
@@ -37,7 +37,7 @@ interface UrlBuilderInterface
     public function buildUrlToFilter(AbstractImage $image = null, $filterName, array $parameters = [], $includeSize = true);
 
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Image
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image Image
      *
      * @return bool
      */
