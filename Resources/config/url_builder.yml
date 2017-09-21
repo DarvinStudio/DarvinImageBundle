@@ -22,7 +22,6 @@ services:
         tags:
             - { name: darvin_image.url_builder_filter }
 
-
     darvin_image.url_builder.builder:
         class: "%darvin_image.url_builder.builder.class%"
         arguments:
