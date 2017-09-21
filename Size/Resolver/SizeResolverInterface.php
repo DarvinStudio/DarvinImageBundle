@@ -17,15 +17,15 @@ namespace Darvin\ImageBundle\Size\Resolver;
 interface SizeResolverInterface
 {
     /**
-     * @param object $object Image object
-     * @param string $name   Size name
+     * @param object|null $object Image object
+     * @param string      $name   Size name
      *
      * @return array
      */
     public function findSize($object, $name);
 
     /**
-     * @param object $object Image object
+     * @param object|null $object Image object
      *
      * @return bool
      */

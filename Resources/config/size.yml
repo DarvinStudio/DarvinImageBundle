@@ -3,6 +3,8 @@ parameters:
 
     darvin_image.size.resolver.entity.class: Darvin\ImageBundle\Size\Resolver\EntitySizeResolver
 
+    darvin_image.size.resolver.placeholder.class: Darvin\ImageBundle\Size\Resolver\PlaceholderSizeResolver
+
     darvin_image.size.resolver.pool.class: Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPool
 
 services:
@@ -13,6 +15,13 @@ services:
 
     darvin_image.size.resolver.entity:
         class: "%darvin_image.size.resolver.entity.class%"
+        arguments:
+            - "@darvin_image.size.manager"
+        tags:
+            - { name: darvin_image.size_resolver }
+
+    darvin_image.size.resolver.placeholder:
+        class: "%darvin_image.size.resolver.placeholder.class%"
         arguments:
             - "@darvin_image.size.manager"
         tags:

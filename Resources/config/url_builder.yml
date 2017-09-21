@@ -29,6 +29,7 @@ services:
             - "@request_stack"
             - "@darvin_image.size.resolver.pool"
             - "@vich_uploader.storage"
+            - "%darvin_image.placeholder_pathname%"
 
     darvin_image.url_builder.twig_extension:
         class:  "%darvin_image.url_builder.twig_extension.class%"

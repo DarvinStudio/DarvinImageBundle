@@ -17,10 +17,11 @@ namespace Darvin\ImageBundle\Size\Manager;
 interface SizeManagerInterface
 {
     /**
-     * @param string $groupName Size group name
-     * @param string $sizeName  Size name
+     * @param string $groupName   Size group name
+     * @param string $sizeName    Size name
+     * @param bool   $ignoreGroup Ignore group, search everywhere
      *
      * @return \Darvin\ImageBundle\Size\Size
      */
-    public function getSize($groupName, $sizeName);
+    public function getSize($groupName, $sizeName, $ignoreGroup = false);
 }

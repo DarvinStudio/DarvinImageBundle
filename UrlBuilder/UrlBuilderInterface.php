@@ -27,14 +27,14 @@ interface UrlBuilderInterface
     public function buildUrlToOriginal(AbstractImage $image, $addHost = false);
 
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image       Image
-     * @param string                                         $filterName  Filter name
-     * @param array                                          $parameters  Parameters
-     * @param bool                                           $includeSize Whether to include image size to filter
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image       Image
+     * @param string                                              $filterName  Filter name
+     * @param array                                               $parameters  Parameters
+     * @param bool                                                $includeSize Whether to include image size to filter
      *
      * @return string
      */
-    public function buildUrlToFilter(AbstractImage $image, $filterName, array $parameters = [], $includeSize = true);
+    public function buildUrlToFilter(AbstractImage $image = null, $filterName, array $parameters = [], $includeSize = true);
 
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Image

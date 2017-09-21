@@ -140,16 +140,12 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     private function makeImageResize(AbstractImage $image = null, $sizeName, $outbound, $watermarkFilterName)
     {
-        if (empty($image)) {
-            return null;
-        }
-
         $parameters = [
             'size_name' => $sizeName,
             'outbound'  => $outbound,
         ];
 
-        if (!empty($watermarkFilterName)) {
+        if (!empty($image) && !empty($watermarkFilterName)) {
             $parameters['watermark'] = $watermarkFilterName;
         }
 
@@ -166,8 +162,14 @@ class UrlBuilderExtension extends \Twig_Extension
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Image
      * @param \Exception                                     $ex    Exception
      */
-    private function logError(AbstractImage $image, \Exception $ex)
+    private function logError(AbstractImage $image = null, \Exception $ex)
     {
+        if (empty($image)) {
+            $this->logger->error(sprintf('Unable to build URL for placeholder image: "%s".', $ex->getMessage()));
+
+            return;
+        }
+
         $this->logger->error(sprintf('Unable to build URL for image with ID "%d": "%s".', $image->getId(), $ex->getMessage()));
     }
 }
