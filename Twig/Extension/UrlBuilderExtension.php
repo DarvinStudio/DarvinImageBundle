@@ -51,7 +51,8 @@ class UrlBuilderExtension extends \Twig_Extension
             new \Twig_SimpleFilter('image_original', [$this, 'buildUrlToOriginal']),
             new \Twig_SimpleFilter('image_crop', [$this, 'cropImage']),
             new \Twig_SimpleFilter('image_resize', [$this, 'resizeImage']),
-            new \Twig_SimpleFilter('image_imagine', [$this, 'buildImagine'])
+            new \Twig_SimpleFilter('image_imagine', [$this, 'buildImagine']),
+            new \Twig_SimpleFilter('image_filter', [$this, 'buildImagine']),
         ];
     }
 
