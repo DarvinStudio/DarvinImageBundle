@@ -39,6 +39,7 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
             'command',
             'configuration',
             'image',
+            'imagine',
             'namer',
             'orm',
             'size',
@@ -57,12 +58,41 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
         $fileLocator = new FileLocator(__DIR__.'/../Resources/config/app');
 
         foreach ([
-            'liip_imagine',
             'vich_uploader',
         ] as $extension) {
             if ($container->hasExtension($extension)) {
                 $container->prependExtensionConfig($extension, Yaml::parse(file_get_contents($fileLocator->locate($extension.'.yml')))[$extension]);
             }
         }
+
+        $config = $this->processConfiguration(
+            new Configuration(),
+            $container->getParameterBag()->resolveValue($container->getExtensionConfig($this->getAlias()))
+        );
+
+        $imagineConfig = [
+            'cache'     => 'darvin_image_deprecated',
+            'resolvers' => [
+                'darvin_image_deprecated' => [
+                    'web_path' => [
+                        'web_root'     => $config['imagine']['cache_resolver']['web_root'],
+                        'cache_prefix' => $config['imagine']['cache_resolver']['cache_prefix'],
+                    ],
+                ],
+            ],
+            'filter_sets' => [
+                'thumbs' => [
+                    'quality' => 87,
+                ],
+            ],
+        ];
+
+        foreach ($config['imagine']['filter_sets'] as $name => $filterSet) {
+            $imagineConfig['filter_sets'][$name] = array_merge_recursive($config['imagine']['filter_defaults'], [
+                'cache' => 'darvin_image',
+            ], $filterSet);
+        }
+
+        $container->prependExtensionConfig('liip_imagine', $imagineConfig);
     }
 }
