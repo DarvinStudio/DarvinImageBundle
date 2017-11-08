@@ -22,6 +22,6 @@ class Resolver extends WebPathResolver
      */
     protected function getFileUrl($path, $filter)
     {
-        return implode(DIRECTORY_SEPARATOR, [$this->cachePrefix, $filter, preg_replace('/.*\//', '', $path)]);
+        return implode(DIRECTORY_SEPARATOR, [$this->cachePrefix, str_replace('_', '/', $filter), preg_replace('/.*\//', '', $path)]);
     }
 }
