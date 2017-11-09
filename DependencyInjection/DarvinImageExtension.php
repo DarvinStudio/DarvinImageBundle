@@ -87,12 +87,6 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
             ],
         ];
 
-        foreach ($config['imagine']['filter_sets'] as $name => $filterSet) {
-            $imagineConfig['filter_sets'][$name] = array_merge_recursive($config['imagine']['filter_defaults'], [
-                'cache' => 'darvin_image',
-            ], $filterSet);
-        }
-
         $container->prependExtensionConfig('liip_imagine', $imagineConfig);
     }
 }
