@@ -81,6 +81,14 @@ class MigrateToImagineFiltersCommand extends ContainerAwareCommand
             list($templateFilters, $modes, $imageSizeNames) = $matches;
 
             if (empty($templateFilters)) {
+                preg_match_all('/\|\s*image_(crop|resize)\(.*?\)/', $template, $matches);
+
+                if (!empty($matches[0])) {
+                    foreach ($matches[0] as $templateFilter) {
+                        $io->warning(sprintf('Suspicious expression "%s" found in template "%s".', $templateFilter, $file->getRelativePathname()));
+                    }
+                }
+
                 continue;
             }
 
