@@ -10,6 +10,8 @@
 
 namespace Darvin\ImageBundle\Command;
 
+use Darvin\ConfigBundle\Entity\ParameterEntity;
+use Darvin\ConfigBundle\Parameter\ParameterModel;
 use Darvin\ImageBundle\Size\Size;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -37,7 +39,7 @@ class MigrateToImagineFiltersCommand extends ContainerAwareCommand
         'item_photo'                          => 'portfolio_photo',
         'latest_publications'                 => 'publication_latest',
         'menu_item_hover_image'               => 'menu_hover',
-        'menu_item_image'                     => 'menu_common',
+        'menu_item_image'                     => 'menu_main',
         'page_image_page_show'                => 'page_show',
         'page_image_page_show_children'       => 'page_child',
         'review_on_home'                      => 'review_homepage',
@@ -140,13 +142,31 @@ class MigrateToImagineFiltersCommand extends ContainerAwareCommand
                 }
                 foreach ($value as $item) {
                     if ($item instanceof Size) {
-                        $sizes[$item->getName()] = [(int)$item->getWidth(), (int)$item->getHeight()];
+                        $sizes[$item->getName()] = $item;
                     }
                 }
             }
         }
+        foreach ($this->getParameterRepository()->getAllParameters() as $parameter) {
+            if (ParameterModel::TYPE_ARRAY !== $parameter->getType()) {
+                continue;
+            }
 
-        return $sizes;
+            $value = @unserialize($parameter->getValue());
+
+            if (!is_array($value)) {
+                continue;
+            }
+            foreach ($value as $item) {
+                if ($item instanceof Size) {
+                    $sizes[$item->getName()] = $item;
+                }
+            }
+        }
+
+        return array_map(function (Size $size) {
+            return array_map('intval', [$size->getWidth(), $size->getHeight()]);
+        }, $sizes);
     }
 
     /**
@@ -155,5 +175,21 @@ class MigrateToImagineFiltersCommand extends ContainerAwareCommand
     private function getConfigurationPool()
     {
         return $this->getContainer()->get('darvin_config.configuration.pool');
+    }
+
+    /**
+     * @return \Darvin\ConfigBundle\Repository\ParameterRepositoryInterface
+     */
+    private function getParameterRepository()
+    {
+        return $this->getEntityManager()->getRepository(ParameterEntity::class);
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    private function getEntityManager()
+    {
+        return $this->getContainer()->get('doctrine.orm.entity_manager');
     }
 }
