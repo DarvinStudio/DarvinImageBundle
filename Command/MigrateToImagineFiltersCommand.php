@@ -81,7 +81,7 @@ class MigrateToImagineFiltersCommand extends ContainerAwareCommand
                 $filterSets[$newImageSizeName] = [
                     'filters' => [
                         'thumbnail' => [
-                            'size' => $imageSizes[$imageSizeName],
+                            'size' => isset($imageSizes[$imageSizeName]) ? $imageSizes[$imageSizeName] : [128, 128],
                             'mode' => 'crop' === $modes[$key] ? 'outbound' : 'inset',
                         ],
                     ],
