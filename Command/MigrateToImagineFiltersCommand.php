@@ -95,10 +95,13 @@ class MigrateToImagineFiltersCommand extends ContainerAwareCommand
 
             $io->comment(sprintf('Updated template "%s".', $file->getRelativePathname()));
         }
-        if (empty($filterSets)) {
-            $io->error('No image filters found.');
 
-            return;
+        $existingFilterSets = $this->getContainer()->getParameter('darvin_image.imagine.filter_sets');
+
+        foreach ($filterSets as $name => $filterSet) {
+            if (isset($existingFilterSets[$name]) && $filterSet == $existingFilterSets[$name]) {
+                unset($filterSets[$name]);
+            }
         }
 
         ksort($filterSets);
