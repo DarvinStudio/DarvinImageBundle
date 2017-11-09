@@ -28,8 +28,19 @@ class MigrateToImagineFiltersCommand extends ContainerAwareCommand
      * @var array
      */
     private static $imageSizeNameReplacements = [
+        'banner_image_show'                   => 'banner_list',
         'catalog_image_catalog_show'          => 'catalog_show',
         'catalog_image_catalog_show_children' => 'catalog_child',
+        'gallery_image_gallery_show'          => 'gallery_show',
+        'gallery_title_image_gallery_list'    => 'gallery_list',
+        'item_image'                          => 'portfolio_item',
+        'item_photo'                          => 'portfolio_photo',
+        'latest_publications'                 => 'publication_latest',
+        'menu_item_hover_image'               => 'menu_hover',
+        'menu_item_image'                     => 'menu_common',
+        'page_image_page_show'                => 'page_show',
+        'page_image_page_show_children'       => 'page_child',
+        'review_on_home'                      => 'review_homepage',
     ];
 
     /**
