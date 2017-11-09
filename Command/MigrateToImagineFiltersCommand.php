@@ -88,6 +88,11 @@ class MigrateToImagineFiltersCommand extends ContainerAwareCommand
                         $io->warning(sprintf('Suspicious expression "%s" found in template "%s".', $templateFilter, $file->getRelativePathname()));
                     }
                 }
+                foreach (array_keys($imageSizes) as $imageSizeName) {
+                    if (false !== strpos($template, sprintf('\'%s\'', $imageSizeName))) {
+                        $io->warning(sprintf('String "%s" that looks like image size name found in template "%s".', $imageSizeName, $file->getRelativePathname()));
+                    }
+                }
 
                 continue;
             }
