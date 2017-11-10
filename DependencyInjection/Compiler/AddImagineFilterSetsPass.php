@@ -35,7 +35,7 @@ class AddImagineFilterSetsPass implements CompilerPassInterface
 
         $container->setParameter(
             'liip_imagine.filter_sets',
-            array_merge($container->getParameter('liip_imagine.filter_sets'), $filterSets)
+            array_merge($filterSets, $container->getParameter('liip_imagine.filter_sets'))
         );
     }
 }
