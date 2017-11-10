@@ -5,6 +5,8 @@ parameters:
 
     darvin_image.image.listener.class: Darvin\ImageBundle\EventListener\ImageListener
 
+    darvin_image.image.update_properties_event_subscriber.class: Darvin\ImageBundle\EventListener\UpdateImagePropertiesSubscriber
+
 services:
     darvin_image.image.creator:
         class: "%darvin_image.image.creator.class%"
@@ -33,3 +35,8 @@ services:
         tags:
             - { name: doctrine.event_listener, event: onFlush }
             - { name: kernel.event_listener,   event: darvin_utils.post_clone, method: postClone }
+
+    darvin_image.image.update_properties_event_subscriber:
+        class: "%darvin_image.image.update_properties_event_subscriber.class%"
+        tags:
+            - { name: kernel.event_subscriber }

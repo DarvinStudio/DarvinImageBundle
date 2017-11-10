@@ -100,12 +100,6 @@ class WarmupImagineCacheSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $image->setExtension(pathinfo($image->getFilename(), PATHINFO_EXTENSION));
-
-        if (null === $image->getName()) {
-            $image->setName(preg_replace(sprintf('/\.%s$/', $image->getExtension()), '', $image->getFilename()));
-        }
-
         $filters = array_keys($this->imagineFilterManager->getFilterConfiguration()->all());
         $filters = array_combine($filters, $filters);
 
