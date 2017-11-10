@@ -1,7 +1,7 @@
 <?php
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2017, Darvin Studio
+ * @copyright Copyright (c) 2015, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -11,18 +11,17 @@
 namespace Darvin\ImageBundle\EventListener;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
-use Darvin\Utils\Event\CloneEvent;
-use Darvin\Utils\Event\Events;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Events;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
- * Copy cloned image file event subscriber
+ * Rename image event subscriber
  */
-class CopyClonedImageFileSubscriber implements EventSubscriberInterface
+class RenameImageSubscriber implements EventSubscriber
 {
     /**
      * @var \Symfony\Component\Filesystem\Filesystem
@@ -54,43 +53,39 @@ class CopyClonedImageFileSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public function getSubscribedEvents()
     {
         return [
-            Events::POST_CLONE => 'copyFile',
+            Events::onFlush,
         ];
     }
 
     /**
-     * @param \Darvin\Utils\Event\CloneEvent $event Event
+     * @param \Doctrine\ORM\Event\OnFlushEventArgs $args Event arguments
      */
-    public function copyFile(CloneEvent $event)
+    public function onFlush(OnFlushEventArgs $args)
     {
-        $original = $event->getOriginal();
+        $uow = $args->getEntityManager()->getUnitOfWork();
 
-        if (!$original instanceof AbstractImage) {
-            return;
+        foreach ($uow->getScheduledEntityUpdates() as $entity) {
+            if (!$entity instanceof AbstractImage) {
+                continue;
+            }
+
+            $changeSet = $uow->getEntityChangeSet($entity);
+
+            if (!isset($changeSet['name'])) {
+                continue;
+            }
+
+            $pathname = $this->uploaderStorage->resolvePath($entity, AbstractImage::PROPERTY_FILE);
+            $tmpPathname = $this->generateTmpPathname();
+
+            $this->filesystem->rename($pathname, $tmpPathname, true);
+
+            $filename = $entity->getName().'.'.$entity->getExtension();
+            $entity->setFile(new UploadedFile($tmpPathname, $filename, null, null, null, true));
         }
-
-        /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $clone */
-        $clone = $event->getClone();
-
-        $pathname = $this->uploaderStorage->resolvePath($original, AbstractImage::PROPERTY_FILE);
-        $tmpPathname = $this->generateTmpPathname();
-
-        try {
-            $this->filesystem->copy($pathname, $tmpPathname, true);
-        } catch (FileNotFoundException $ex) {
-            $event->setClone(null);
-
-            return;
-        }
-
-        $file = new UploadedFile($tmpPathname, $original->getFilename(), null, null, null, true);
-
-        $clone
-            ->setFile($file)
-            ->setName($original->getName());
     }
 
     /**

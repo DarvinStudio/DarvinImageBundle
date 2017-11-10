@@ -5,7 +5,7 @@ parameters:
 
     darvin_image.image.form_type.sizes.class: Darvin\ImageBundle\Form\Type\Image\ImageSizesType
 
-    darvin_image.image.listener.class: Darvin\ImageBundle\EventListener\ImageListener
+    darvin_image.image.rename_event_subscriber.class: Darvin\ImageBundle\EventListener\RenameImageSubscriber
 
     darvin_image.image.update_properties_event_subscriber.class: Darvin\ImageBundle\EventListener\UpdateImagePropertiesSubscriber
 
@@ -36,13 +36,15 @@ services:
         tags:
             - { name: form.type }
 
-    darvin_image.image.listener:
-        class: "%darvin_image.image.listener.class%"
+    darvin_image.image.rename_event_subscriber:
+        class:  "%darvin_image.image.rename_event_subscriber.class%"
+        public: false
         arguments:
+            - "@filesystem"
             - "@vich_uploader.storage"
             - "%kernel.cache_dir%"
         tags:
-            - { name: doctrine.event_listener, event: onFlush }
+            - { name: doctrine.event_subscriber }
 
     darvin_image.image.update_properties_event_subscriber:
         class: "%darvin_image.image.update_properties_event_subscriber.class%"
