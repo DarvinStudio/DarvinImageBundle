@@ -15,13 +15,15 @@ use Doctrine\ORM\EntityManager;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Data\DataManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Vich\UploaderBundle\Event\Event;
+use Vich\UploaderBundle\Event\Events;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
- * Image post upload event listener
+ * Warmup Imagine cache event subscriber
  */
-class ImagePostUploadListener
+class WarmupImagineCacheSubscriber implements EventSubscriberInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -49,34 +51,52 @@ class ImagePostUploadListener
     private $uploaderStorage;
 
     /**
+     * @var array
+     */
+    private $imagineFilterSets;
+
+    /**
      * @param \Doctrine\ORM\EntityManager                      $em                   Entity manager
      * @param \Liip\ImagineBundle\Imagine\Cache\CacheManager   $imagineCacheManager  Imagine cache manager
      * @param \Liip\ImagineBundle\Imagine\Data\DataManager     $imagineDataManager   Imagine data manager
      * @param \Liip\ImagineBundle\Imagine\Filter\FilterManager $imagineFilterManager Imagine filter manager
      * @param \Vich\UploaderBundle\Storage\StorageInterface    $uploaderStorage      Uploader storage
+     * @param array                                            $imagineFilterSets    Imagine filter sets
      */
     public function __construct(
         EntityManager $em,
         CacheManager $imagineCacheManager,
         DataManager $imagineDataManager,
         FilterManager $imagineFilterManager,
-        StorageInterface $uploaderStorage
+        StorageInterface $uploaderStorage,
+        array $imagineFilterSets
     ) {
         $this->em = $em;
         $this->imagineCacheManager = $imagineCacheManager;
         $this->imagineDataManager = $imagineDataManager;
         $this->imagineFilterManager = $imagineFilterManager;
         $this->uploaderStorage = $uploaderStorage;
+        $this->imagineFilterSets = $imagineFilterSets;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            Events::POST_UPLOAD => 'warmupCache',
+        ];
     }
 
     /**
      * @param \Vich\UploaderBundle\Event\Event $event Event
      */
-    public function postUpload(Event $event)
+    public function warmupCache(Event $event)
     {
         $image = $event->getObject();
 
-        if (!$image instanceof AbstractImage) {
+        if (!$image instanceof AbstractImage || null === $image->getFile()) {
             return;
         }
 
@@ -85,30 +105,47 @@ class ImagePostUploadListener
         if (null === $image->getName()) {
             $image->setName(preg_replace(sprintf('/\.%s$/', $image->getExtension()), '', $image->getFilename()));
         }
-        // Update cached images
-        if (null !== $image->getId() && null !== $image->getFile()) {
-            $filters = array_keys($this->imagineFilterManager->getFilterConfiguration()->all());
 
-            // Remove old cached images if filename changed
-            $changeSet = $this->em->getUnitOfWork()->getEntityChangeSet($image);
+        $filters = array_keys($this->imagineFilterManager->getFilterConfiguration()->all());
+        $filters = array_combine($filters, $filters);
 
-            if (isset($changeSet['filename']) && !empty($changeSet['filename'][0])) {
-                $mapping = $event->getMapping();
-                $uploadDir = $mapping->getUploadDir($image);
-                $uploadDir = !empty($uploadDir) ? str_replace('\\', '/', $uploadDir).'/' : '';
-                $this->imagineCacheManager->remove($mapping->getUriPrefix().'/'.$uploadDir.$changeSet['filename'][0], $filters);
+        foreach ($this->imagineFilterSets as $name => $filterSet) {
+            unset($filters[$name]);
+
+            if (!isset($filterSet['entities'])) {
+                continue;
             }
-
-            // Create new cached images
-            $path = $this->uploaderStorage->resolveUri($image, AbstractImage::PROPERTY_FILE);
-
-            foreach ($filters as $filter) {
-                $this->imagineCacheManager->store(
-                    $this->imagineFilterManager->applyFilter($this->imagineDataManager->find($filter, $path), $filter),
-                    $path,
-                    $filter
-                );
+            foreach ((array) $filterSet['entities'] as $entity) {
+                if ($image instanceof $entity) {
+                    $filters[] = $name;
+                }
             }
+        }
+        if (empty($filters)) {
+            return;
+        }
+
+        $filters = array_values($filters);
+
+        // Remove old cached images if filename changed
+        $changeSet = $this->em->getUnitOfWork()->getEntityChangeSet($image);
+
+        if (isset($changeSet['filename']) && !empty($changeSet['filename'][0])) {
+            $mapping = $event->getMapping();
+            $uploadDir = $mapping->getUploadDir($image);
+            $uploadDir = !empty($uploadDir) ? str_replace('\\', '/', $uploadDir).'/' : '';
+            $this->imagineCacheManager->remove($mapping->getUriPrefix().'/'.$uploadDir.$changeSet['filename'][0], $filters);
+        }
+
+        // Create new cached images
+        $path = $this->uploaderStorage->resolveUri($image, AbstractImage::PROPERTY_FILE);
+
+        foreach ($filters as $filter) {
+            $this->imagineCacheManager->store(
+                $this->imagineFilterManager->applyFilter($this->imagineDataManager->find($filter, $path), $filter),
+                $path,
+                $filter
+            );
         }
     }
 }
