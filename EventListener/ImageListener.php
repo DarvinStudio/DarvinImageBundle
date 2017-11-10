@@ -11,10 +11,8 @@
 namespace Darvin\ImageBundle\EventListener;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
-use Darvin\Utils\Event\CloneEvent;
 use Darvin\Utils\EventListener\AbstractOnFlushListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Vich\UploaderBundle\Storage\StorageInterface;
@@ -42,40 +40,6 @@ class ImageListener extends AbstractOnFlushListener
     {
         $this->uploaderStorage = $uploaderStorage;
         $this->cacheDir = $cacheDir;
-    }
-
-    /**
-     * @param \Darvin\Utils\Event\CloneEvent $event Event
-     */
-    public function postClone(CloneEvent $event)
-    {
-        $original = $event->getOriginal();
-
-        if (!$original instanceof AbstractImage) {
-            return;
-        }
-
-        /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $clone */
-        $clone = $event->getClone();
-
-        $pathname = $this->uploaderStorage->resolvePath($original, AbstractImage::PROPERTY_FILE);
-        $tmpPathname = $this->generateTmpPathname();
-
-        $fs = new Filesystem();
-
-        try {
-            $fs->copy($pathname, $tmpPathname, true);
-        } catch (FileNotFoundException $ex) {
-            $event->setClone(null);
-
-            return;
-        }
-
-        $file = new UploadedFile($tmpPathname, $original->getFilename(), null, null, null, true);
-
-        $clone
-            ->setFile($file)
-            ->setName($original->getName());
     }
 
     /**
