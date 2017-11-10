@@ -73,7 +73,7 @@ class MigrateToImagineFiltersCommand extends ContainerAwareCommand
         $imageSizes = $this->getImageSizes();
 
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
-        foreach ((new Finder())->in($templateDir)->files()->name('*.html.twig') as $file) {
+        foreach ((new Finder())->in($templateDir)->files()->name('*.twig') as $file) {
             $template = file_get_contents($file->getPathname());
             preg_match_all('/\|\s*image_(crop|resize)\(\'(.+?)\'\)/', $template, $matches);
             list($templateFilters, $modes, $imageSizeNames) = $matches;
