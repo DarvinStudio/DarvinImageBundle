@@ -28,8 +28,6 @@ services:
     darvin_image.image.listener:
         class: "%darvin_image.image.listener.class%"
         arguments:
-            - "@liip_imagine.cache.manager"
-            - "@liip_imagine.filter.manager"
             - "@vich_uploader.storage"
             - "%kernel.cache_dir%"
         tags:
