@@ -73,9 +73,6 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     public function buildImagine(AbstractImage $image = null, $filterName = null)
     {
-        if (empty($image)) {
-            return null;
-        }
         try {
             return $this->urlBuilder->buildUrlToFilter($image, DirectImagineFilter::NAME, [
                 DirectImagineFilter::FILTER_NAME_PARAM => $filterName
