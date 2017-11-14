@@ -10,6 +10,7 @@
 
 namespace Darvin\ImageBundle\DependencyInjection;
 
+use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -49,7 +50,37 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->end()
                         ->arrayNode('filter_sets')->useAttributeAsKey('name')
-                            ->prototype('array')->useAttributeAsKey('name')->prototype('variable')->end()->end()
+                            ->prototype('array')->useAttributeAsKey('name')->prototype('variable')->end()
+                                ->beforeNormalization()
+                                    ->always(function ($filterSet) {
+                                        if (is_array($filterSet) && isset($filterSet['entities']) && !is_array($filterSet['entities'])) {
+                                            $filterSet['entities'] = [$filterSet['entities']];
+                                        }
+
+                                        return $filterSet;
+                                    })
+                                ->end()
+                                ->validate()
+                                    ->ifTrue(function (array $filterSet) {
+                                        if (!isset($filterSet['entities'])) {
+                                            return false;
+                                        }
+                                        foreach ($filterSet['entities'] as $class) {
+                                            if (!class_exists($class)) {
+                                                throw new \RuntimeException(sprintf('Entity class "%s" does not exist.', $class));
+                                            }
+                                            if (AbstractImage::class !== $class && !in_array(AbstractImage::class, class_parents($class))) {
+                                                throw new \RuntimeException(
+                                                    sprintf('Entity class "%s" must be instance of "%s" or it\'s descendant.', $class, AbstractImage::class)
+                                                );
+                                            }
+                                        }
+
+                                        return false;
+                                    })
+                                    ->thenInvalid('')
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
