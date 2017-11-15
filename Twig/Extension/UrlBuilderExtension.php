@@ -69,11 +69,15 @@ class UrlBuilderExtension extends \Twig_Extension
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image      Image
      * @param string|null                                         $filterName Imagine filter name
+     * @param string|null                                         $fallback   Fallback
      *
      * @return null|string
      */
-    public function buildImagine(AbstractImage $image = null, $filterName = null)
+    public function buildImagine(AbstractImage $image = null, $filterName = null, $fallback = null)
     {
+        if (empty($image) && !empty($fallback)) {
+            return $fallback;
+        }
         try {
             return $this->urlBuilder->buildUrlToFilter($image, DirectImagineFilter::NAME, [
                 DirectImagineFilter::FILTER_NAME_PARAM => $filterName,
