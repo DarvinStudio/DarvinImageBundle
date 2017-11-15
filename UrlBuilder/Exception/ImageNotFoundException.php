@@ -21,6 +21,10 @@ class ImageNotFoundException extends UrlBuilderException
      */
     public function __construct($imagePathname)
     {
-        parent::__construct(sprintf('Image "%s" not found.', $imagePathname));
+        $message = !empty($imagePathname)
+            ? sprintf('Image "%s" not found.', $imagePathname)
+            : 'Image pathname is empty and placeholder is not configured.';
+
+        parent::__construct($message);
     }
 }

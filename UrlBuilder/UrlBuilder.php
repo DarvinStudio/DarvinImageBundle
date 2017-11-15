@@ -45,7 +45,12 @@ class UrlBuilder implements UrlBuilderInterface
     /**
      * @var string|null
      */
-    private $placeholderPathname;
+    private $placeholder;
+
+    /**
+     * @var bool
+     */
+    private $placeholderIsVector;
 
     /**
      * @var \Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface[]
@@ -53,22 +58,23 @@ class UrlBuilder implements UrlBuilderInterface
     private $filters;
 
     /**
-     * @param \Symfony\Component\HttpFoundation\RequestStack                   $requestStack        Request stack
-     * @param \Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPoolInterface $sizeResolverPool    Size resolver pool
-     * @param \Vich\UploaderBundle\Storage\StorageInterface                    $storage             Storage
-     * @param string|null                                                      $placeholderPathname Placeholder image pathname relative to the web directory
+     * @param \Symfony\Component\HttpFoundation\RequestStack                   $requestStack     Request stack
+     * @param \Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPoolInterface $sizeResolverPool Size resolver pool
+     * @param \Vich\UploaderBundle\Storage\StorageInterface                    $storage          Storage
+     * @param string|null                                                      $placeholder      Placeholder image pathname relative to the web directory
      */
     public function __construct(
         RequestStack $requestStack,
         SizeResolverPoolInterface $sizeResolverPool,
         StorageInterface $storage,
-        $placeholderPathname
+        $placeholder
     ) {
         $this->requestStack = $requestStack;
         $this->sizeResolverPool = $sizeResolverPool;
         $this->storage = $storage;
-        $this->placeholderPathname = $placeholderPathname;
+        $this->placeholder = $placeholder;
 
+        $this->placeholderIsVector = !empty($placeholder) && preg_match('/\.svg$/', $placeholder);
         $this->filters = [];
     }
 
@@ -77,11 +83,11 @@ class UrlBuilder implements UrlBuilderInterface
      */
     public function buildUrlToOriginal(AbstractImage $image = null, $addHost = false)
     {
-        $this->checkIfFileExists($image);
-
         if (empty($image)) {
-            return $this->placeholderPathname;
+            return null;
         }
+
+        $this->checkIfFileExists($image);
 
         $url = $this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image));
 
@@ -117,8 +123,22 @@ class UrlBuilder implements UrlBuilderInterface
             $sizeResolver = $this->sizeResolverPool->getResolverForObject($image);
             list($parameters['width'], $parameters['height']) = $sizeResolver->findSize($image, $parameters['size_name']);
         }
+        if (!empty($image)) {
+            return $filter->buildUrl($this->buildUrlToOriginal($image), $parameters);
+        }
+        if (!$this->placeholderIsVector) {
+            return $filter->buildUrl($this->placeholder, $parameters);
+        }
 
-        return $filter->buildUrl($this->buildUrlToOriginal($image), $parameters);
+        $prefix = '/';
+
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (!empty($request)) {
+            $prefix = $request->getSchemeAndHttpHost().$prefix;
+        }
+
+        return $prefix.$this->placeholder;
     }
 
     /**
@@ -127,7 +147,7 @@ class UrlBuilder implements UrlBuilderInterface
     public function fileExists(AbstractImage $image = null)
     {
         if (empty($image)) {
-            return !empty($this->placeholderPathname);
+            return !empty($this->placeholder);
         }
 
         return (bool) $this->getImagePathname($image);
@@ -180,7 +200,7 @@ class UrlBuilder implements UrlBuilderInterface
     private function checkIfFileExists(AbstractImage $image = null)
     {
         if (!$this->fileExists($image)) {
-            throw new ImageNotFoundException($this->getImagePathname($image));
+            throw new ImageNotFoundException(!empty($image) ? $this->getImagePathname($image) : null);
         }
     }
 
@@ -189,10 +209,8 @@ class UrlBuilder implements UrlBuilderInterface
      *
      * @return string
      */
-    private function getImagePathname(AbstractImage $image = null)
+    private function getImagePathname(AbstractImage $image)
     {
-        return !empty($image)
-            ? $this->storage->resolvePath($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image))
-            : null;
+        return $this->storage->resolvePath($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image));
     }
 }
