@@ -67,15 +67,16 @@ class UrlBuilderExtension extends \Twig_Extension
     }
 
     /**
-     * @param AbstractImage|null $image
-     * @param string $filterName
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image      Image
+     * @param string|null                                         $filterName Imagine filter name
+     *
      * @return null|string
      */
     public function buildImagine(AbstractImage $image = null, $filterName = null)
     {
         try {
             return $this->urlBuilder->buildUrlToFilter($image, DirectImagineFilter::NAME, [
-                DirectImagineFilter::FILTER_NAME_PARAM => $filterName
+                DirectImagineFilter::FILTER_NAME_PARAM => $filterName,
             ], false);
         } catch (NotLoadableException $ex) {
             $this->logError($image, $ex);
@@ -92,9 +93,6 @@ class UrlBuilderExtension extends \Twig_Extension
      */
     public function buildUrlToOriginal(AbstractImage $image = null, $absolute = false)
     {
-        if (empty($image)) {
-            return null;
-        }
         try {
             return $this->urlBuilder->buildUrlToOriginal($image, $absolute);
         } catch (NotLoadableException $ex) {
