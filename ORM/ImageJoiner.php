@@ -42,18 +42,14 @@ class ImageJoiner implements ImageJoinerInterface
                 return $expr->getJoin();
             }, isset($parts['join'][$rootAlias]) ? $parts['join'][$rootAlias] : []);
 
-            $imageJoinAlias = StringsUtil::toUnderscore($mapping['fieldName']);
-            $sizesJoinAlias = $imageJoinAlias.'_sizes';
+            $join = sprintf('%s.%s', $rootAlias, $mapping['fieldName']);
 
-            foreach ([
-                sprintf('%s.%s', $rootAlias, $mapping['fieldName']) => $imageJoinAlias,
-                sprintf('%s.sizes', $imageJoinAlias)                => $sizesJoinAlias,
-            ] as $join => $alias) {
-                if (!in_array($join, $existingJoins)) {
-                    $qb
-                        ->addSelect($alias)
-                        ->leftJoin($join, $alias);
-                }
+            if (!in_array($join, $existingJoins)) {
+                $alias = StringsUtil::toUnderscore($mapping['fieldName']);
+
+                $qb
+                    ->addSelect($alias)
+                    ->leftJoin($join, $alias);
             }
         }
     }

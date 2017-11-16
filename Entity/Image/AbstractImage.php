@@ -12,8 +12,6 @@ namespace Darvin\ImageBundle\Entity\Image;
 
 use Darvin\ImageBundle\Validation\Constraints as DarvinImageAssert;
 use Darvin\Utils\Mapping\Annotation\Clonable;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
@@ -43,15 +41,6 @@ abstract class AbstractImage
      * @ORM\Id
      */
     private $id;
-
-    /**
-     * @var \Darvin\ImageBundle\Entity\Image\Size[]|\Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="Darvin\ImageBundle\Entity\Image\Size", mappedBy="image", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EXTRA_LAZY")
-     *
-     * @Assert\Valid
-     */
-    private $sizes;
 
     /**
      * @var bool
@@ -127,7 +116,6 @@ abstract class AbstractImage
      */
     public function __construct()
     {
-        $this->sizes = new ArrayCollection();
         $this->enabled = true;
     }
 
@@ -145,22 +133,6 @@ abstract class AbstractImage
     abstract public function getSizeGroupName();
 
     /**
-     * @param string $name Size name
-     *
-     * @return \Darvin\ImageBundle\Entity\Image\Size
-     */
-    public function findSize($name)
-    {
-        foreach ($this->sizes as $size) {
-            if ($size->getName() === $name) {
-                return $size;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * @return string
      */
     public function getDimensions()
@@ -174,60 +146,6 @@ abstract class AbstractImage
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param \Darvin\ImageBundle\Entity\Image\Size[]|\Doctrine\Common\Collections\Collection $sizes sizes
-     *
-     * @return AbstractImage
-     */
-    public function setSizes(Collection $sizes)
-    {
-        foreach ($sizes as $size) {
-            $size->setImage($this);
-        }
-
-        $this->sizes = $sizes;
-
-        return $this;
-    }
-
-    /**
-     * @return \Darvin\ImageBundle\Entity\Image\Size[]|\Doctrine\Common\Collections\Collection
-     */
-    public function getSizes()
-    {
-        return $this->sizes;
-    }
-
-    /**
-     * @param \Darvin\ImageBundle\Entity\Image\Size $size Size
-     *
-     * @return AbstractImage
-     */
-    public function addSize(Size $size)
-    {
-        if (!$this->sizes->contains($size)) {
-            $size->setImage($this);
-            $this->sizes->add($size);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param \Darvin\ImageBundle\Entity\Image\Size $size Size
-     *
-     * @return AbstractImage
-     */
-    public function removeSize(Size $size)
-    {
-        if ($this->sizes->contains($size)) {
-            $size->setImage(null);
-            $this->sizes->removeElement($size);
-        }
-
-        return $this;
     }
 
     /**

@@ -40,7 +40,7 @@ class EntitySizeResolver implements SizeResolverInterface
      */
     public function findSize($object, $name)
     {
-        $size = $object->findSize($name) ?: $this->sizeManager->getSize($object->getSizeGroupName(), $name);
+        $size = $this->sizeManager->getSize($object->getSizeGroupName(), $name);
 
         return [$size->getWidth(), $size->getHeight()];
     }

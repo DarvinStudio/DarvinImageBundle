@@ -3,8 +3,6 @@ parameters:
 
     darvin_image.image.creator.class: Darvin\ImageBundle\ImageCreator\ImageCreator
 
-    darvin_image.image.form_type.sizes.class: Darvin\ImageBundle\Form\Type\Image\ImageSizesType
-
     darvin_image.image.rename_event_subscriber.class: Darvin\ImageBundle\EventListener\RenameImageSubscriber
 
     darvin_image.image.update_properties_event_subscriber.class: Darvin\ImageBundle\EventListener\UpdateImagePropertiesSubscriber
@@ -28,13 +26,6 @@ services:
             - "%darvin_image.imagine_filter%"
             - "%secret%"
             - "%darvin_image.upload_path%"
-
-    darvin_image.image.form_type.sizes:
-        class: "%darvin_image.image.form_type.sizes.class%"
-        arguments:
-            - "@darvin_image.configuration.pool"
-        tags:
-            - { name: form.type }
 
     darvin_image.image.rename_event_subscriber:
         class:  "%darvin_image.image.rename_event_subscriber.class%"
