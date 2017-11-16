@@ -22,6 +22,8 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class DarvinImageBundle extends Bundle
 {
+    const MAJOR_VERSION = 5;
+
     /**
      * {@inheritdoc}
      */
