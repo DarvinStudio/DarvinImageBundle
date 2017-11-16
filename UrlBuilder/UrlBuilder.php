@@ -12,7 +12,6 @@
 namespace Darvin\ImageBundle\UrlBuilder;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
-use Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPoolInterface;
 use Darvin\ImageBundle\UrlBuilder\Exception\FilterAlreadyExistsException;
 use Darvin\ImageBundle\UrlBuilder\Exception\FilterNotFoundException;
 use Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException;
@@ -31,11 +30,6 @@ class UrlBuilder implements UrlBuilderInterface
      * @var \Symfony\Component\HttpFoundation\RequestStack
      */
     private $requestStack;
-
-    /**
-     * @var \Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPoolInterface
-     */
-    private $sizeResolverPool;
 
     /**
      * @var \Vich\UploaderBundle\Storage\StorageInterface
@@ -58,19 +52,13 @@ class UrlBuilder implements UrlBuilderInterface
     private $filters;
 
     /**
-     * @param \Symfony\Component\HttpFoundation\RequestStack                   $requestStack     Request stack
-     * @param \Darvin\ImageBundle\Size\Resolver\Pool\SizeResolverPoolInterface $sizeResolverPool Size resolver pool
-     * @param \Vich\UploaderBundle\Storage\StorageInterface                    $storage          Storage
-     * @param string|null                                                      $placeholder      Placeholder image pathname relative to the web directory
+     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack Request stack
+     * @param \Vich\UploaderBundle\Storage\StorageInterface  $storage      Storage
+     * @param string|null                                    $placeholder  Placeholder image pathname relative to the web directory
      */
-    public function __construct(
-        RequestStack $requestStack,
-        SizeResolverPoolInterface $sizeResolverPool,
-        StorageInterface $storage,
-        $placeholder
-    ) {
+    public function __construct(RequestStack $requestStack, StorageInterface $storage, $placeholder)
+    {
         $this->requestStack = $requestStack;
-        $this->sizeResolverPool = $sizeResolverPool;
         $this->storage = $storage;
         $this->placeholder = $placeholder;
 
@@ -107,22 +95,12 @@ class UrlBuilder implements UrlBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildUrlToFilter(AbstractImage $image = null, $filterName, array $parameters = [], $includeSize = true)
+    public function buildUrlToFilter(AbstractImage $image = null, $filterName, array $parameters = [])
     {
         $this->checkIfFileExists($image);
 
         $filter = $this->getFilter($filterName);
 
-        if ($includeSize && !isset($parameters['width']) && !isset($parameters['height'])) {
-            if (!isset($parameters['size_name'])) {
-                throw new UrlBuilderException(
-                    'Parameter "size_name" must be provided in order to include size to filter.'
-                );
-            }
-
-            $sizeResolver = $this->sizeResolverPool->getResolverForObject($image);
-            list($parameters['width'], $parameters['height']) = $sizeResolver->findSize($image, $parameters['size_name']);
-        }
         if (!empty($image)) {
             return $filter->buildUrl($this->buildUrlToOriginal($image), $parameters);
         }

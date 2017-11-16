@@ -26,7 +26,6 @@ services:
         class: "%darvin_image.url_builder.builder.class%"
         arguments:
             - "@request_stack"
-            - "@darvin_image.size.resolver.pool"
             - "@vich_uploader.storage"
             - "%darvin_image.placeholder%"
 

@@ -42,7 +42,6 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
             'imagine',
             'namer',
             'orm',
-            'size',
             'url_builder',
             'validation',
         ] as $resource) {
