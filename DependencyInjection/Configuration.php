@@ -101,7 +101,6 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
-                ->scalarNode('imagine_filter')->defaultValue('thumbs')->end()
                 ->scalarNode('placeholder')
                     ->defaultNull()
                     ->info('Placeholder image pathname relative to the web directory.')
