@@ -12,7 +12,6 @@ namespace Darvin\ImageBundle\Twig\Extension;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\UrlBuilder\Filter\DirectImagineFilter;
-use Darvin\ImageBundle\UrlBuilder\Filter\ResizeFilter;
 use Darvin\ImageBundle\UrlBuilder\UrlBuilderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Psr\Log\LoggerInterface;
@@ -48,11 +47,8 @@ class UrlBuilderExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('image_original', [$this, 'buildUrlToOriginal']),
-            new \Twig_SimpleFilter('image_crop', [$this, 'cropImage']),
-            new \Twig_SimpleFilter('image_resize', [$this, 'resizeImage']),
-            new \Twig_SimpleFilter('image_imagine', [$this, 'buildImagine']),
             new \Twig_SimpleFilter('image_filter', [$this, 'buildImagine']),
+            new \Twig_SimpleFilter('image_original', [$this, 'buildUrlToOriginal']),
         ];
     }
 
@@ -68,12 +64,12 @@ class UrlBuilderExtension extends \Twig_Extension
 
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image      Image
-     * @param string|null                                         $filterName Imagine filter name
+     * @param string                                              $filterName Imagine filter name
      * @param string|null                                         $fallback   Fallback
      *
-     * @return null|string
+     * @return string|null
      */
-    public function buildImagine(AbstractImage $image = null, $filterName = null, $fallback = null)
+    public function buildImagine(AbstractImage $image = null, $filterName, $fallback = null)
     {
         if (empty($image) && !empty($fallback)) {
             return $fallback;
@@ -90,10 +86,10 @@ class UrlBuilderExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image    Image
-     * @param bool                                           $absolute Whether to build absolute URL
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image    Image
+     * @param bool                                                $absolute Whether to build absolute URL
      *
-     * @return string
+     * @return string|null
      */
     public function buildUrlToOriginal(AbstractImage $image = null, $absolute = false)
     {
@@ -107,60 +103,8 @@ class UrlBuilderExtension extends \Twig_Extension
     }
 
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image               Image
-     * @param string                                         $sizeName            Size name
-     * @param string                                         $watermarkFilterName Watermark Imagine filter name
-     *
-     * @return string
-     */
-    public function cropImage(AbstractImage $image = null, $sizeName, $watermarkFilterName = null)
-    {
-        return $this->makeImageResize($image, $sizeName, true, $watermarkFilterName);
-    }
-
-    /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image               Image
-     * @param string                                         $sizeName            Size name
-     * @param string                                         $watermarkFilterName Watermark Imagine filter name
-     *
-     * @return string
-     */
-    public function resizeImage(AbstractImage $image = null, $sizeName, $watermarkFilterName = null)
-    {
-        return $this->makeImageResize($image, $sizeName, false, $watermarkFilterName);
-    }
-
-    /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image               Image
-     * @param string                                         $sizeName            Size name
-     * @param bool                                           $outbound            Is outbound
-     * @param string                                         $watermarkFilterName Watermark Imagine filter name
-     *
-     * @return string
-     */
-    private function makeImageResize(AbstractImage $image = null, $sizeName, $outbound, $watermarkFilterName)
-    {
-        $parameters = [
-            'size_name' => $sizeName,
-            'outbound'  => $outbound,
-        ];
-
-        if (!empty($image) && !empty($watermarkFilterName)) {
-            $parameters['watermark'] = $watermarkFilterName;
-        }
-
-        try {
-            return $this->urlBuilder->buildUrlToFilter($image, ResizeFilter::NAME, $parameters);
-        } catch (NotLoadableException $ex) {
-            $this->logError($image, $ex);
-
-            return null;
-        }
-    }
-
-    /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Image
-     * @param \Exception                                     $ex    Exception
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image Image
+     * @param \Exception                                          $ex    Exception
      */
     private function logError(AbstractImage $image = null, \Exception $ex)
     {
