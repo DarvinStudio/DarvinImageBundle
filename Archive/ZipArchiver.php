@@ -97,6 +97,7 @@ class ZipArchiver implements ArchiverInterface
         } catch (\InvalidArgumentException $ex) {
             throw new ArchiveException(sprintf('Image upload directory "%s" does not exist.', $this->uploadDir));
         }
+        /** @var \Symfony\Component\Finder\SplFileInfo $dir */
         foreach ($finder->directories() as $dir) {
             if (!$zip->addEmptyDir($dir->getRelativePathname())) {
                 throw new ArchiveException(
@@ -104,6 +105,7 @@ class ZipArchiver implements ArchiverInterface
                 );
             }
         }
+        /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach ($finder->files() as $file) {
             if (!$zip->addFile($file->getPathname(), $file->getRelativePathname())) {
                 throw new ArchiveException(
@@ -132,6 +134,7 @@ class ZipArchiver implements ArchiverInterface
                 );
             }
         }
+        /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach ((new Finder())->in($this->cacheDir) as $file) {
             $fs->remove($file->getPathname());
         }

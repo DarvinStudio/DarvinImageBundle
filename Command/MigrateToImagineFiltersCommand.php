@@ -169,12 +169,4 @@ class MigrateToImagineFiltersCommand extends ContainerAwareCommand
     {
         return $this->getContainer()->get('darvin_config.configuration.pool');
     }
-
-    /**
-     * @return \Doctrine\ORM\EntityManager
-     */
-    private function getEntityManager()
-    {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
-    }
 }

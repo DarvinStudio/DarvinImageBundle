@@ -10,12 +10,15 @@
 
 namespace Darvin\ImageBundle\UrlBuilder\Filter;
 
-
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 
+/**
+ * Direct Imagine URL builder filter
+ */
 class DirectImagineFilter implements FilterInterface
 {
     const FILTER_NAME_PARAM = 'filter_name';
+
     const NAME = 'direct_imagine';
 
     /**

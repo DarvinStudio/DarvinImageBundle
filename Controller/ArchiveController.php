@@ -23,7 +23,7 @@ class ArchiveController extends Controller
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request Request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function buildAction(Request $request)
     {

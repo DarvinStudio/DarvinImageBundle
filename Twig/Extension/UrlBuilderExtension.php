@@ -77,7 +77,7 @@ class UrlBuilderExtension extends \Twig_Extension
         try {
             return $this->urlBuilder->buildUrlToFilter($image, DirectImagineFilter::NAME, [
                 DirectImagineFilter::FILTER_NAME_PARAM => $filterName,
-            ], false);
+            ]);
         } catch (NotLoadableException $ex) {
             $this->logError($image, $ex);
 
