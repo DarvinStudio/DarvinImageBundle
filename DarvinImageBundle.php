@@ -10,7 +10,6 @@
 
 namespace Darvin\ImageBundle;
 
-use Darvin\ImageBundle\DependencyInjection\Compiler\AddImageConfigurationsPass;
 use Darvin\ImageBundle\DependencyInjection\Compiler\AddImagineFilterSetsPass;
 use Darvin\ImageBundle\DependencyInjection\Compiler\AddUrlBuilderFiltersPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -31,7 +30,6 @@ class DarvinImageBundle extends Bundle
         parent::build($container);
 
         $container
-            ->addCompilerPass(new AddImageConfigurationsPass())
             ->addCompilerPass(new AddImagineFilterSetsPass())
             ->addCompilerPass(new AddUrlBuilderFiltersPass());
     }

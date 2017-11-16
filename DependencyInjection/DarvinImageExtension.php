@@ -37,7 +37,6 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
         foreach ([
             'archive',
             'command',
-            'configuration',
             'image',
             'imagine',
             'namer',

@@ -1,6 +1,0 @@
-parameters:
-    darvin_image.configuration.pool.class: Darvin\ImageBundle\Configuration\ConfigurationPool
-
-services:
-    darvin_image.configuration.pool:
-        class: "%darvin_image.configuration.pool.class%"
