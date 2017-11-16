@@ -1,8 +1,6 @@
 parameters:
     darvin_image.image.copy_cloned_file_event_subscriber.class: Darvin\ImageBundle\EventListener\CopyClonedImageFileSubscriber
 
-    darvin_image.image.creator.class: Darvin\ImageBundle\ImageCreator\ImageCreator
-
     darvin_image.image.rename_event_subscriber.class: Darvin\ImageBundle\EventListener\RenameImageSubscriber
 
     darvin_image.image.update_properties_event_subscriber.class: Darvin\ImageBundle\EventListener\UpdateImagePropertiesSubscriber
@@ -16,16 +14,6 @@ services:
             - "%kernel.cache_dir%"
         tags:
             - { name: kernel.event_subscriber }
-
-    darvin_image.image.creator:
-        class: "%darvin_image.image.creator.class%"
-        arguments:
-            - "@liip_imagine.cache.manager"
-            - "@liip_imagine.data.manager"
-            - "@liip_imagine.filter.manager"
-            - "%darvin_image.imagine_filter%"
-            - "%secret%"
-            - "%darvin_image.upload_path%"
 
     darvin_image.image.rename_event_subscriber:
         class:  "%darvin_image.image.rename_event_subscriber.class%"
