@@ -17,6 +17,7 @@ interface ArchiverInterface
 {
     /**
      * @return string Archive filename
+     * @throws \Darvin\ImageBundle\Archive\ArchiveException
      */
     public function archive();
 

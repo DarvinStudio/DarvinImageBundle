@@ -10,6 +10,8 @@
 
 namespace Darvin\ImageBundle\Form\Type;
 
+@trigger_error('The "'.__NAMESPACE__.'\SizeType" is deprecated. You should stop using it, as it will soon be removed.', E_USER_DEPRECATED);
+
 use Darvin\ImageBundle\Size\Size;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -19,6 +21,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Size form type
+ *
+ * @deprecated
  */
 class SizeType extends AbstractType
 {

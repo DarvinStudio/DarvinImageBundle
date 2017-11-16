@@ -10,10 +10,14 @@
 
 namespace Darvin\ImageBundle\Size;
 
+@trigger_error('The "'.__NAMESPACE__.'\Size" is deprecated. You should stop using it, as it will soon be removed.', E_USER_DEPRECATED);
+
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Size
+ *
+ * @deprecated
  */
 class Size implements \Serializable
 {
