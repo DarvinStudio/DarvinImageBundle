@@ -25,6 +25,6 @@ class DirectoryNamer implements DirectoryNamerInterface
      */
     public function directoryName($object, PropertyMapping $mapping)
     {
-        return $object instanceof AbstractImage ? $object->getSizeGroupName() : null;
+        return $object instanceof AbstractImage ? $object->getUploadDir() : null;
     }
 }

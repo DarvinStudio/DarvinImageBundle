@@ -130,6 +130,14 @@ abstract class AbstractImage
     /**
      * @return string
      */
+    public function getUploadDir()
+    {
+        return $this->getSizeGroupName();
+    }
+
+    /**
+     * @return string
+     */
     abstract public function getSizeGroupName();
 
     /**
