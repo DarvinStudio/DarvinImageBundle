@@ -13,6 +13,7 @@ namespace Darvin\ImageBundle\Command;
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmer;
 use Doctrine\ORM\EntityManager;
+use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -56,6 +57,14 @@ class WarmupImagineCacheCommand extends Command
     /**
      * {@inheritdoc}
      */
+    protected function configure()
+    {
+        $this->setDescription('Generates Imagine cache for all images.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
@@ -72,7 +81,11 @@ class WarmupImagineCacheCommand extends Command
             /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $image */
             $image = reset($row);
 
-            $this->imagineCacheWarmer->warmupImageCache($image);
+            try {
+                $this->imagineCacheWarmer->warmupImageCache($image);
+            } catch (NotLoadableException $ex) {
+                $io->warning($ex->getMessage());
+            }
 
             $io->progressAdvance();
             $io->write(' '.$image->getFilename());
