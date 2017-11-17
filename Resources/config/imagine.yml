@@ -44,11 +44,6 @@ services:
     darvin_image.imagine.warmup_cache_event_subscriber:
         class: "%darvin_image.imagine.warmup_cache_event_subscriber.class%"
         arguments:
-            - "@doctrine.orm.entity_manager"
-            - "@liip_imagine.cache.manager"
-            - "@liip_imagine.data.manager"
-            - "@liip_imagine.filter.manager"
-            - "@vich_uploader.storage"
-            - "%darvin_image.imagine.filter_sets%"
+            - "@darvin_image.imagine.cache_warmer"
         tags:
             - { name: kernel.event_subscriber }
