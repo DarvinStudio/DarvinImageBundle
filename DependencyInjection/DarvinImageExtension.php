@@ -78,11 +78,6 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
                     ],
                 ],
             ],
-            'filter_sets' => [
-                'thumbs' => [
-                    'quality' => 87,
-                ],
-            ],
         ];
 
         $container->prependExtensionConfig('liip_imagine', $imagineConfig);
