@@ -23,6 +23,8 @@ interface UrlBuilderInterface
      * @param bool                                                $addHost Whether to add host to URL
      *
      * @return string
+     * @throws \Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException
+     * @throws \Darvin\ImageBundle\UrlBuilder\Exception\UrlBuilderException
      */
     public function buildUrlToOriginal(AbstractImage $image = null, $addHost = false);
 
@@ -32,6 +34,7 @@ interface UrlBuilderInterface
      * @param array                                               $parameters Parameters
      *
      * @return string
+     * @throws \Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException
      */
     public function buildUrlToFilter(AbstractImage $image = null, $filterName, array $parameters = []);
 
