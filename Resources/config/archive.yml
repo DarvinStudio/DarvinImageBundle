@@ -27,6 +27,7 @@ services:
         class:  "%darvin_image.archiver.zip.class%"
         public: false
         arguments:
+            - "@filesystem"
             - "@request_stack"
             - "%darvin_image.archive.cache_dir%"
             - "%darvin_image.archive.filename_suffix%"

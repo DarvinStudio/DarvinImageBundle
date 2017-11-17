@@ -21,6 +21,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class ZipArchiver implements ArchiverInterface
 {
     /**
+     * @var \Symfony\Component\Filesystem\Filesystem
+     */
+    private $filesystem;
+
+    /**
      * @var \Symfony\Component\HttpFoundation\RequestStack
      */
     private $requestStack;
@@ -41,13 +46,15 @@ class ZipArchiver implements ArchiverInterface
     private $uploadDir;
 
     /**
+     * @param \Symfony\Component\Filesystem\Filesystem       $filesystem     Filesystem
      * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack   Request stack
      * @param string                                         $cacheDir       Cache directory
      * @param string                                         $filenameSuffix Filename suffix
      * @param string                                         $uploadDir      Upload directory
      */
-    public function __construct(RequestStack $requestStack, $cacheDir, $filenameSuffix, $uploadDir)
+    public function __construct(Filesystem $filesystem, RequestStack $requestStack, $cacheDir, $filenameSuffix, $uploadDir)
     {
+        $this->filesystem = $filesystem;
         $this->requestStack = $requestStack;
         $this->cacheDir = $cacheDir;
         $this->filenameSuffix = $filenameSuffix;
@@ -123,11 +130,9 @@ class ZipArchiver implements ArchiverInterface
      */
     private function prepareCacheDir()
     {
-        $fs = new Filesystem();
-
-        if (!$fs->exists($this->cacheDir)) {
+        if (!$this->filesystem->exists($this->cacheDir)) {
             try {
-                $fs->mkdir($this->cacheDir);
+                $this->filesystem->mkdir($this->cacheDir);
             } catch (IOException $ex) {
                 throw new ArchiveException(
                     sprintf('Unable to create image archive cache directory "%s": "%s".', $this->cacheDir, $ex->getMessage())
@@ -136,7 +141,7 @@ class ZipArchiver implements ArchiverInterface
         }
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach ((new Finder())->in($this->cacheDir) as $file) {
-            $fs->remove($file->getPathname());
+            $this->filesystem->remove($file->getPathname());
         }
     }
 
