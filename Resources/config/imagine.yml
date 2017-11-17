@@ -5,6 +5,10 @@ parameters:
 
     darvin_image.imagine.cleanup_cache_event_subscriber.class: Darvin\ImageBundle\EventListener\CleanupImagineCacheSubscriber
 
+    darvin_image.imagine.warmup_cache_command.class:      Darvin\ImageBundle\Command\WarmupImagineCacheCommand
+    darvin_image.imagine.warmup_cache_command.chunk_size: 50
+    darvin_image.imagine.warmup_cache_command.name:       darvin:image:cache:warmup
+
     darvin_image.imagine.warmup_cache_event_subscriber.class: Darvin\ImageBundle\EventListener\WarmupImagineCacheSubscriber
 
 services:
@@ -40,6 +44,16 @@ services:
             - "@vich_uploader.storage"
         tags:
             - { name: doctrine.event_subscriber }
+
+    darvin_image.imagine.warmup_cache_command:
+        class: "%darvin_image.imagine.warmup_cache_command.class%"
+        arguments:
+            - "%darvin_image.imagine.warmup_cache_command.name%"
+            - "@doctrine.orm.entity_manager"
+            - "@darvin_image.imagine.cache_warmer"
+            - "%darvin_image.imagine.warmup_cache_command.chunk_size%"
+        tags:
+            - { name: console.command }
 
     darvin_image.imagine.warmup_cache_event_subscriber:
         class: "%darvin_image.imagine.warmup_cache_event_subscriber.class%"
