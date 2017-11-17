@@ -20,8 +20,41 @@ class Resolver extends WebPathResolver
     /**
      * {@inheritdoc}
      */
+    public function remove(array $paths, array $filters)
+    {
+        if (!empty($paths)) {
+            parent::remove($paths, $filters);
+
+            return;
+        }
+        if (empty($filters)) {
+            return;
+        }
+
+        $cacheDirs = [];
+
+        foreach ($filters as $filter) {
+            $cacheDirs[] = $this->cacheRoot.DIRECTORY_SEPARATOR.$this->getFilterCacheDir($filter);
+        }
+
+        $this->filesystem->remove($cacheDirs);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getFileUrl($path, $filter)
     {
-        return implode(DIRECTORY_SEPARATOR, [$this->cachePrefix, str_replace('_', '/', $filter), preg_replace('/.*\//', '', $path)]);
+        return implode(DIRECTORY_SEPARATOR, [$this->cachePrefix, $this->getFilterCacheDir($filter), preg_replace('/.*\//', '', $path)]);
+    }
+
+    /**
+     * @param string $filter Filter name
+     *
+     * @return string
+     */
+    private function getFilterCacheDir($filter)
+    {
+        return str_replace('_', '/', $filter);
     }
 }
