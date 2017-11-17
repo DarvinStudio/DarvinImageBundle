@@ -72,7 +72,15 @@ class WarmupImagineCacheCommand extends Command
         $qb = $this->em->getRepository(AbstractImage::class)->createQueryBuilder('o');
 
         $countQb = clone $qb;
-        $io->progressStart($countQb->select($countQb->expr()->count('o'))->getQuery()->getSingleScalarResult());
+        $count = (int)$countQb->select($countQb->expr()->count('o'))->getQuery()->getSingleScalarResult();
+
+        if (0 === $count) {
+            $io->comment('No images found, exiting.');
+
+            return;
+        }
+
+        $io->progressStart($count);
 
         $iterator = $qb->getQuery()->iterate();
 
