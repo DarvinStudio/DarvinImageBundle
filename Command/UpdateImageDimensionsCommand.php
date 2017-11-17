@@ -89,7 +89,8 @@ class UpdateImageDimensionsCommand extends Command
 
         $iterator = $qb->getQuery()->iterate();
 
-        while ($row = $iterator->next()) {
+        while ($iterator->next()) {
+            $row = $iterator->current();
             /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $image */
             $image = reset($row);
 
