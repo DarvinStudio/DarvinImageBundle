@@ -22,37 +22,36 @@ class DirectImagineFilter implements FilterInterface
     const NAME = 'direct_imagine';
 
     /**
-     * @var CacheManager
+     * @var \Liip\ImagineBundle\Imagine\Cache\CacheManager
      */
-    private $liipCacheManager;
+    private $imagineCacheManager;
 
     /**
-     * DirectImagineFilter constructor.
-     * @param CacheManager $liipCacheManager
+     * @param \Liip\ImagineBundle\Imagine\Cache\CacheManager $imagineCacheManager Imagine cache manager
      */
-    public function __construct(CacheManager $liipCacheManager)
+    public function __construct(CacheManager $imagineCacheManager)
     {
-        $this->liipCacheManager = $liipCacheManager;
+        $this->imagineCacheManager = $imagineCacheManager;
     }
 
     /**
      * @param string $imagePathname Image pathname
-     * @param array $parameters Parameters
+     * @param array  $parameters    Parameters
+     *
      * @return string
-     * @throws FilterException
+     * @throws \Darvin\ImageBundle\UrlBuilder\Filter\FilterException
      */
     public function buildUrl($imagePathname, array $parameters)
     {
         if (!isset($parameters[self::FILTER_NAME_PARAM])) {
-            throw new FilterException(
-                sprintf("%s must be provided to %s options", self::FILTER_NAME_PARAM, self::class)
-            );
+            throw new FilterException(sprintf("%s must be provided to %s options", self::FILTER_NAME_PARAM, self::class));
         }
-        return $this->liipCacheManager->getBrowserPath($imagePathname, $parameters[self::FILTER_NAME_PARAM]);
+
+        return $this->imagineCacheManager->getBrowserPath($imagePathname, $parameters[self::FILTER_NAME_PARAM]);
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getName()
     {

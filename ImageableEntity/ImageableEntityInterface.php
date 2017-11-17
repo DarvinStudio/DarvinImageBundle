@@ -9,20 +9,15 @@
  */
 
 namespace Darvin\ImageBundle\ImageableEntity;
-use Darvin\ImageBundle\Entity\Image\AbstractImage;
-
 
 /**
- * Interface ImageableEntityInterface
- * @package Darvin\ImageBundle\ImageableEntity
- * 
  * This interface provides getImage method
  * It returns main image entity for present the object 
  */
 interface ImageableEntityInterface
 {
     /**
-     * @return AbstractImage|null an image that presents object 
+     * @return \Darvin\ImageBundle\Entity\Image\AbstractImage|null An image that presents object
      */
     public function getImage();
 }
