@@ -128,7 +128,7 @@ class UrlBuilder implements UrlBuilderInterface
             return !empty($this->placeholder);
         }
 
-        return (bool) $this->getImagePathname($image);
+        return (bool)$this->getImagePathname($image);
     }
 
     /**

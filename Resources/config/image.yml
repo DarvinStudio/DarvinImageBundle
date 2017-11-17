@@ -3,9 +3,9 @@ parameters:
 
     darvin_image.image.rename_event_subscriber.class: Darvin\ImageBundle\EventListener\RenameImageSubscriber
 
-    darvin_image.image.update_dimensions_command.class:       Darvin\ImageBundle\Command\UpdateImageDimensionsCommand
-    darvin_image.image.update_dimensions_command.name:        "darvin:image:update-dimensions"
-    darvin_image.image.update_dimensions_command.flush_count: 50
+    darvin_image.image.update_dimensions_command.class:      Darvin\ImageBundle\Command\UpdateImageDimensionsCommand
+    darvin_image.image.update_dimensions_command.name:       darvin:image:update-dimensions
+    darvin_image.image.update_dimensions_command.chunk_size: 50
 
     darvin_image.image.update_properties_event_subscriber.class: Darvin\ImageBundle\EventListener\UpdateImagePropertiesSubscriber
 
@@ -35,7 +35,7 @@ services:
             - "%darvin_image.image.update_dimensions_command.name%"
             - "@doctrine.orm.entity_manager"
             - "@vich_uploader.storage"
-            - "%darvin_image.image.update_dimensions_command.flush_count%"
+            - "%darvin_image.image.update_dimensions_command.chunk_size%"
         tags:
             - { name: console.command }
 

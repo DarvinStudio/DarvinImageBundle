@@ -99,7 +99,7 @@ class ImagineCacheWarmer
             if (!isset($filterSet['entities'])) {
                 continue;
             }
-            foreach ((array) $filterSet['entities'] as $entity) {
+            foreach ((array)$filterSet['entities'] as $entity) {
                 if ($image instanceof $entity) {
                     $filters[] = $name;
                 }

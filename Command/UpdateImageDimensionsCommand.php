@@ -37,7 +37,7 @@ class UpdateImageDimensionsCommand extends Command
     /**
      * @var int
      */
-    private $flushCount;
+    private $chunkSize;
 
     /**
      * @var \Symfony\Component\Console\Style\SymfonyStyle
@@ -48,15 +48,15 @@ class UpdateImageDimensionsCommand extends Command
      * @param string                                        $name            Command name
      * @param \Doctrine\ORM\EntityManager                   $em              Entity manager
      * @param \Vich\UploaderBundle\Storage\StorageInterface $uploaderStorage Uploader storage
-     * @param int                                           $flushCount      Flush count
+     * @param int                                           $chunkSize       Chunk size
      */
-    public function __construct($name, EntityManager $em, StorageInterface $uploaderStorage, $flushCount)
+    public function __construct($name, EntityManager $em, StorageInterface $uploaderStorage, $chunkSize)
     {
         parent::__construct($name);
 
         $this->em = $em;
         $this->uploaderStorage = $uploaderStorage;
-        $this->flushCount = $flushCount;
+        $this->chunkSize = $chunkSize;
     }
 
     /**
@@ -77,7 +77,7 @@ class UpdateImageDimensionsCommand extends Command
         $qb = $this->em->getRepository(AbstractImage::class)->createQueryBuilder('o');
 
         $countQb = clone $qb;
-        $count = (int) $countQb->select('COUNT(o)')->getQuery()->getSingleScalarResult();
+        $count = (int)$countQb->select('COUNT(o)')->getQuery()->getSingleScalarResult();
 
         if (0 === $count) {
             $io->note('Nothing to update, exiting.');
@@ -125,7 +125,7 @@ class UpdateImageDimensionsCommand extends Command
      */
     private function flushIfNeeded(IterableResult $iterator)
     {
-        if ($iterator->key() > 0 && 0 === $iterator->key() % $this->flushCount) {
+        if ($iterator->key() > 0 && 0 === $iterator->key() % $this->chunkSize) {
             $this->flush();
         }
     }

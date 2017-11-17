@@ -6,8 +6,8 @@ parameters:
     darvin_image.imagine.cleanup_cache_event_subscriber.class: Darvin\ImageBundle\EventListener\CleanupImagineCacheSubscriber
 
     darvin_image.imagine.warmup_cache_command.class:      Darvin\ImageBundle\Command\WarmupImagineCacheCommand
-    darvin_image.imagine.warmup_cache_command.chunk_size: 50
     darvin_image.imagine.warmup_cache_command.name:       darvin:image:cache:warmup
+    darvin_image.imagine.warmup_cache_command.chunk_size: 50
 
     darvin_image.imagine.warmup_cache_event_subscriber.class: Darvin\ImageBundle\EventListener\WarmupImagineCacheSubscriber
 
