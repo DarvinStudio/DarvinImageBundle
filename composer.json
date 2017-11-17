@@ -12,6 +12,8 @@
         }
     ],
     "require": {
+        "ext-zip": "*",
+
         "liip/imagine-bundle":               "^1.9",
         "vich/uploader-bundle":              "1.4.*",
         "darvinstudio/darvin-config-bundle": "*",
