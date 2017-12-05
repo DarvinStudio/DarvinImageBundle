@@ -90,8 +90,7 @@ class ImagineCacheWarmer
      */
     public function warmupImageCache(AbstractImage $image)
     {
-        $filters = array_keys($this->imagineFilterManager->getFilterConfiguration()->all());
-        $filters = array_combine($filters, $filters);
+        $filters = array_combine(array_keys($this->imagineFilterSets), array_keys($this->imagineFilterSets));
 
         foreach ($this->imagineFilterSets as $name => $filterSet) {
             unset($filters[$name]);
