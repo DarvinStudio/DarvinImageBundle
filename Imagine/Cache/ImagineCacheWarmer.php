@@ -90,7 +90,7 @@ class ImagineCacheWarmer
      */
     public function warmupImageCache(AbstractImage $image)
     {
-        $creatingFilters = [];
+        $filters = [];
 
         foreach ($this->imagineFilterSets as $filter => $options) {
             if (!isset($options['entities'])) {
@@ -98,7 +98,7 @@ class ImagineCacheWarmer
             }
             foreach ((array)$options['entities'] as $entity) {
                 if ($image instanceof $entity) {
-                    $creatingFilters[] = $filter;
+                    $filters[] = $filter;
                 }
             }
         }
@@ -112,26 +112,19 @@ class ImagineCacheWarmer
             $uploadDir = !empty($uploadDir) ? str_replace('\\', '/', $uploadDir).'/' : '';
             $pathname = $mapping->getUriPrefix().'/'.$uploadDir.$changeSet['filename'][0];
 
-            $removalFilters = $creatingFilters;
-
             foreach (array_keys($this->imagineFilterManager->getFilterConfiguration()->all()) as $filter) {
-                if (!isset($this->imagineFilterSets[$filter])) {
-                    $removalFilters[] = $filter;
-                }
-                if ($this->imagineCacheManager->isStored($pathname, $filter)) {
-                    $creatingFilters[] = $filter;
+                if (!isset($this->imagineFilterSets[$filter]) && $this->imagineCacheManager->isStored($pathname, $filter)) {
+                    $filters[] = $filter;
                 }
             }
 
-            $creatingFilters = array_unique($creatingFilters);
-
-            $this->imagineCacheManager->remove($pathname, $removalFilters);
+            $this->imagineCacheManager->remove($pathname, $filters);
         }
 
         // Create new cached images
         $path = $this->uploaderStorage->resolveUri($image, AbstractImage::PROPERTY_FILE);
 
-        foreach ($creatingFilters as $filter) {
+        foreach ($filters as $filter) {
             $this->imagineCacheManager->store(
                 $this->imagineFilterManager->applyFilter($this->imagineDataManager->find($filter, $path), $filter),
                 $path,
