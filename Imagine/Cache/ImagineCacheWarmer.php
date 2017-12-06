@@ -90,25 +90,18 @@ class ImagineCacheWarmer
      */
     public function warmupImageCache(AbstractImage $image)
     {
-        $filters = array_combine(array_keys($this->imagineFilterSets), array_keys($this->imagineFilterSets));
+        $creatingFilters = [];
 
-        foreach ($this->imagineFilterSets as $name => $filterSet) {
-            unset($filters[$name]);
-
-            if (!isset($filterSet['entities'])) {
+        foreach ($this->imagineFilterSets as $filter => $options) {
+            if (!isset($options['entities'])) {
                 continue;
             }
-            foreach ((array)$filterSet['entities'] as $entity) {
+            foreach ((array)$options['entities'] as $entity) {
                 if ($image instanceof $entity) {
-                    $filters[] = $name;
+                    $creatingFilters[] = $filter;
                 }
             }
         }
-        if (empty($filters)) {
-            return;
-        }
-
-        $filters = array_values($filters);
 
         // Remove old cached images if filename changed
         $changeSet = $this->em->getUnitOfWork()->getEntityChangeSet($image);
@@ -117,13 +110,28 @@ class ImagineCacheWarmer
             $mapping = $this->uploaderMappingFactory->fromField($image, AbstractImage::PROPERTY_FILE, AbstractImage::class);
             $uploadDir = $mapping->getUploadDir($image);
             $uploadDir = !empty($uploadDir) ? str_replace('\\', '/', $uploadDir).'/' : '';
-            $this->imagineCacheManager->remove($mapping->getUriPrefix().'/'.$uploadDir.$changeSet['filename'][0], $filters);
+            $pathname = $mapping->getUriPrefix().'/'.$uploadDir.$changeSet['filename'][0];
+
+            $removalFilters = $creatingFilters;
+
+            foreach (array_keys($this->imagineFilterManager->getFilterConfiguration()->all()) as $filter) {
+                if (!isset($this->imagineFilterSets[$filter])) {
+                    $removalFilters[] = $filter;
+                }
+                if ($this->imagineCacheManager->isStored($pathname, $filter)) {
+                    $creatingFilters[] = $filter;
+                }
+            }
+
+            $creatingFilters = array_unique($creatingFilters);
+
+            $this->imagineCacheManager->remove($pathname, $removalFilters);
         }
 
         // Create new cached images
         $path = $this->uploaderStorage->resolveUri($image, AbstractImage::PROPERTY_FILE);
 
-        foreach ($filters as $filter) {
+        foreach ($creatingFilters as $filter) {
             $this->imagineCacheManager->store(
                 $this->imagineFilterManager->applyFilter($this->imagineDataManager->find($filter, $path), $filter),
                 $path,
