@@ -1,0 +1,13 @@
+parameters:
+    darvin_image.archiver.zip.class: Darvin\ImageBundle\Archive\ZipArchiver
+
+services:
+    darvin_image.archiver.zip:
+        class:  "%darvin_image.archiver.zip.class%"
+        public: false
+        arguments:
+            - "@filesystem"
+            - "@request_stack"
+            - "%darvin_image.archive.cache_dir%"
+            - "%darvin_image.archive.filename_suffix%"
+            - "%kernel.root_dir%/../web/%darvin_image.upload_path%"

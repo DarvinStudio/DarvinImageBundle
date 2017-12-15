@@ -1,0 +1,9 @@
+parameters:
+    darvin_image.archive.form_factory.class: Darvin\ImageBundle\Form\Factory\ArchiveFormFactory
+
+services:
+    darvin_image.archive.form_factory:
+        class: "%darvin_image.archive.form_factory.class%"
+        arguments:
+            - "@form.factory"
+            - "@router"

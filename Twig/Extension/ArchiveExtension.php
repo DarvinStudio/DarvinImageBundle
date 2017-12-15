@@ -25,7 +25,7 @@ class ArchiveExtension extends \Twig_Extension
     /**
      * @param \Darvin\ImageBundle\Form\Factory\ArchiveFormFactory $archiveFormFactory Archive form factory
      */
-    public function __construct(ArchiveFormFactory $archiveFormFactory)
+    public function __construct(ArchiveFormFactory $archiveFormFactory = null)
     {
         $this->archiveFormFactory = $archiveFormFactory;
     }
@@ -51,6 +51,10 @@ class ArchiveExtension extends \Twig_Extension
      */
     public function renderBuildForm(\Twig_Environment $environment, $template = 'DarvinImageBundle:Archive/widget:build_form.html.twig')
     {
+        if (empty($this->archiveFormFactory)) {
+            return '';
+        }
+
         return $environment->render($template, [
             'form' => $this->archiveFormFactory->createBuildFormView(),
         ]);

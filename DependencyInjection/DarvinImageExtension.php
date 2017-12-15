@@ -35,7 +35,7 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
         foreach ([
-            'archive',
+            'archive/twig_extension',
             'image',
             'imagine',
             'namer',
@@ -44,6 +44,13 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
             'validation',
         ] as $resource) {
             $loader->load($resource.'.yml');
+        }
+        if (extension_loaded('zip')) {
+            $loader->load('archive/archiver/zip.yml');
+
+            $container->setAlias('darvin_image.archiver', 'darvin_image.archiver.zip');
+
+            $loader->load('archive/form_factory.yml');
         }
     }
 
