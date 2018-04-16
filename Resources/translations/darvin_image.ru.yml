@@ -3,3 +3,8 @@ archive:
         build:
             submit:  Архивировать изображения
             success: Изображения успешно архивированы
+
+image:
+    form:
+        description:
+            size: "Рекомендуемый размер: %width%px x %height%px"

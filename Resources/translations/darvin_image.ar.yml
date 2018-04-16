@@ -3,3 +3,7 @@ archive:
         build:
             submit: 'أرشيف الصور'
             success: 'الصور بنجاح ^ '
+image:
+    form:
+        description:
+            size: 'الحجم الموصى به: %width%س%height%'

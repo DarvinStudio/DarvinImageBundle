@@ -1,6 +1,8 @@
 parameters:
     darvin_image.image.copy_cloned_file_event_subscriber.class: Darvin\ImageBundle\EventListener\CopyClonedImageFileSubscriber
 
+    darvin_image.image.form_type.class: Darvin\ImageBundle\Form\Type\Image\ImageType
+
     darvin_image.image.rename_event_subscriber.class: Darvin\ImageBundle\EventListener\RenameImageSubscriber
 
     darvin_image.image.update_dimensions_command.class:      Darvin\ImageBundle\Command\UpdateImageDimensionsCommand
@@ -18,6 +20,14 @@ services:
             - "%kernel.cache_dir%"
         tags:
             - { name: kernel.event_subscriber }
+
+    darvin_image.image.form_type:
+        class: "%darvin_image.image.form_type.class%"
+        arguments:
+            - "@liip_imagine.filter.configuration"
+            - "@translator"
+        tags:
+            - { name: form.type }
 
     darvin_image.image.rename_event_subscriber:
         class:  "%darvin_image.image.rename_event_subscriber.class%"

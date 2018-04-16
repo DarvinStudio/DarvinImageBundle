@@ -3,3 +3,7 @@ archive:
         build:
             submit: 'Des images d''archives'
             success: 'Images archivés'
+image:
+    form:
+        description:
+            size: 'Taille recommandée: %width%px x %height%px'
