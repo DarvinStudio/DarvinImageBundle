@@ -24,8 +24,7 @@ services:
     darvin_image.image.form_type:
         class: "%darvin_image.image.form_type.class%"
         arguments:
-            - "@liip_imagine.filter.configuration"
-            - "@translator"
+            - "@darvin_image.size.describer"
         tags:
             - { name: form.type }
 

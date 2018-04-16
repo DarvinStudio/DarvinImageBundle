@@ -4,7 +4,5 @@ archive:
             submit:  Архивировать изображения
             success: Изображения успешно архивированы
 
-image:
-    form:
-        description:
-            size: "Рекомендуемый размер: %width%px x %height%px"
+size:
+    description: "Рекомендуемый размер: %width%px x %height%px"

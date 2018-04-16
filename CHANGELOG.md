@@ -29,3 +29,5 @@ form:
                     width:      640
                     height:     480
 ```
+
+6.1.2: Extract image size describer service.

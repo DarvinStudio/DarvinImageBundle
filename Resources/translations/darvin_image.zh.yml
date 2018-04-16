@@ -3,7 +3,5 @@ archive:
         build:
             submit: 存档的图像
             success: 成功存档的图像
-image:
-    form:
-        description:
-            size: '建议的大小: %width%px x %height%px'
+size:
+    description: '建议的大小: %width%px x %height%px'
