@@ -5,4 +5,4 @@ archive:
             success: Images successfully archived
 
 size:
-    description: "Recommended size: %width%px x %height%px"
+    description: "Recommended minimal size: %width%px x %height%px"

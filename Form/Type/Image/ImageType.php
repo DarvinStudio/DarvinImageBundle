@@ -14,6 +14,8 @@ use Darvin\ImageBundle\Size\SizeDescriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -47,6 +49,26 @@ class ImageType extends AbstractType
                 'accept' => 'image/*',
             ],
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $description = $view->children['file']->vars['description'];
+
+        if (empty($description)) {
+            return;
+        }
+
+        $view->children['file']->vars['description'] = null;
+
+        if (!empty($view->vars['description'])) {
+            $view->vars['description'] .= '<br>';
+        }
+
+        $view->vars['description'] .= $description;
     }
 
     /**

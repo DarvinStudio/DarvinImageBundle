@@ -4,4 +4,4 @@ archive:
             submit: 'أرشيف الصور'
             success: 'الصور بنجاح ^ '
 size:
-    description: 'الحجم الموصى به: %width%س%height%'
+    description: 'أوصى الحد الأدنى من حجم: %width%س%height%'

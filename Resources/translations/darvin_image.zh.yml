@@ -4,4 +4,4 @@ archive:
             submit: 存档的图像
             success: 成功存档的图像
 size:
-    description: '建议的大小: %width%px x %height%px'
+    description: '建议的最小的尺寸: %width%px x %height%px'

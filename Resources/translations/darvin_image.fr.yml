@@ -4,4 +4,4 @@ archive:
             submit: 'Des images d''archives'
             success: 'Images archivés'
 size:
-    description: 'Taille recommandée: %width%px x %height%px'
+    description: 'Taille minimale recommandée: %width%px x %height%px'

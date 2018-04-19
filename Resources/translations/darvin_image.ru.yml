@@ -5,4 +5,4 @@ archive:
             success: Изображения успешно архивированы
 
 size:
-    description: "Рекомендуемый размер: %width%px x %height%px"
+    description: "Рекомендуемый минимальный размер: %width%px x %height%px"
