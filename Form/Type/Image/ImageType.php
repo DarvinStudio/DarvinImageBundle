@@ -49,6 +49,11 @@ class ImageType extends AbstractType
             ])
             ->setRequired([
                 'data_class',
+            ])
+            ->setDefined([
+                'filters',
+                'width',
+                'height',
             ]);
     }
 
