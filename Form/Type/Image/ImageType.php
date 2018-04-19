@@ -64,11 +64,12 @@ class ImageType extends AbstractType
                 'width'         => 0,
                 'height'        => 0,
                 'description'   => function (Options $options) use ($sizeDescriber) {
-                    return $sizeDescriber->describeSize($options['filters'], $options['width'], $options['height']);
+                    return $sizeDescriber->describeSize($options['filters'], $options['width'], $options['height'], $options['data_class']);
                 },
             ])
             ->setAllowedTypes('filters', [
                 'array',
+                'null',
                 'string',
             ])
             ->setAllowedTypes('width', 'integer')

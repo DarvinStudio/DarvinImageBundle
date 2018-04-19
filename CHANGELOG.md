@@ -31,3 +31,5 @@ form:
 ```
 
 6.1.2: Extract image size describer service.
+
+6.1.3: Image size describer: auto-detect Imagine filter set names if null passed as filters.

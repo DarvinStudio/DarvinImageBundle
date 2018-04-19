@@ -29,24 +29,35 @@ class SizeDescriber
     private $translator;
 
     /**
+     * @var array
+     */
+    private $entityConfig;
+
+    /**
      * @param \Liip\ImagineBundle\Imagine\Filter\FilterConfiguration $filterConfig Imagine filter configuration
      * @param \Symfony\Component\Translation\TranslatorInterface     $translator   Translator
+     * @param array                                                  $entityConfig Entity filter set configuration
      */
-    public function __construct(FilterConfiguration $filterConfig, TranslatorInterface $translator)
+    public function __construct(FilterConfiguration $filterConfig, TranslatorInterface $translator, array $entityConfig)
     {
         $this->filterConfig = $filterConfig;
         $this->translator = $translator;
+        $this->entityConfig = $entityConfig;
     }
 
     /**
-     * @param string|string[] $filterSetNames Imagine filter set names
-     * @param int             $width          Width
-     * @param int             $height         Height
+     * @param string|string[]|null $filterSetNames Imagine filter set names
+     * @param int                  $width          Width
+     * @param int                  $height         Height
+     * @param string               $entityClass    Image entity class
      *
      * @return string|null
      */
-    public function describeSize($filterSetNames = [], $width = 0, $height = 0)
+    public function describeSize($filterSetNames = null, $width = 0, $height = 0, $entityClass = null)
     {
+        if (null === $filterSetNames) {
+            $filterSetNames = !empty($entityClass) ? $this->getEntityFilterSets($entityClass) : [];
+        }
         if (!is_array($filterSetNames)) {
             $filterSetNames = (array)$filterSetNames;
         }
@@ -67,6 +78,24 @@ class SizeDescriber
         }
 
         return null;
+    }
+
+    /**
+     * @param string $class Image entity class
+     *
+     * @return string[]
+     */
+    private function getEntityFilterSets($class)
+    {
+        $filterSetNames = [];
+
+        foreach ($this->entityConfig as $filterSetName => $params) {
+            if (in_array($class, $params['entities'])) {
+                $filterSetNames[] = $filterSetName;
+            }
+        }
+
+        return $filterSetNames;
     }
 
     /**

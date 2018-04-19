@@ -8,3 +8,4 @@ services:
         arguments:
             - "@liip_imagine.filter.configuration"
             - "@translator"
+            - "%darvin_image.imagine.filter_sets%"
