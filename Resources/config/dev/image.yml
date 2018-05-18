@@ -1,9 +1,25 @@
 parameters:
+    darvin_image.image.list_orphans_command.class:      Darvin\ImageBundle\Command\ListOrphanImagesCommand
+    darvin_image.image.list_orphans_command.name:       darvin:image:orphans
+    darvin_image.image.list_orphans_command.chunk_size: 50
+
     darvin_image.image.update_dimensions_command.class:      Darvin\ImageBundle\Command\UpdateImageDimensionsCommand
     darvin_image.image.update_dimensions_command.name:       darvin:image:update-dimensions
     darvin_image.image.update_dimensions_command.chunk_size: 50
 
 services:
+    darvin_image.image.list_orphans_command:
+        class: "%darvin_image.image.list_orphans_command.class%"
+        arguments:
+            - "%darvin_image.image.list_orphans_command.name%"
+            - "@doctrine.orm.entity_manager"
+            - "@vich_uploader.storage"
+            - "%darvin_image.image.list_orphans_command.chunk_size%"
+            - "%darvin_image.upload_path%"
+            - "%kernel.project_dir%/web"
+        tags:
+            - { name: console.command }
+
     darvin_image.image.update_dimensions_command:
         class: "%darvin_image.image.update_dimensions_command.class%"
         arguments:

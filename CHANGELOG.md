@@ -37,3 +37,5 @@ form:
 6.1.4: Image form type: merge descriptions.
 
 6.1.5: Init update image dimensions command only in "dev" environment.
+
+6.1.6: Add list orphan images command.
