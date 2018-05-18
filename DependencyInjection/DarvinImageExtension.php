@@ -46,6 +46,13 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
         ] as $resource) {
             $loader->load($resource.'.yml');
         }
+        if ('dev' === $container->getParameter('kernel.environment')) {
+            foreach ([
+                'image',
+            ] as $resource) {
+                $loader->load(sprintf('dev/%s.yml', $resource));
+            }
+        }
         if (extension_loaded('zip')) {
             $loader->load('archive/archiver/zip.yml');
 

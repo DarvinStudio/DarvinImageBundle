@@ -35,3 +35,5 @@ form:
 6.1.3: Image size describer: auto-detect Imagine filter set names if null passed as filters.
 
 6.1.4: Image form type: merge descriptions.
+
+6.1.5: Init update image dimensions command only in "dev" environment.
