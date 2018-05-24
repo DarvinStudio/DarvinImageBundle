@@ -88,11 +88,15 @@ class UrlBuilderExtension extends \Twig_Extension
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image    Image
      * @param bool                                                $absolute Whether to build absolute URL
+     * @param string|null                                         $fallback Fallback
      *
      * @return string|null
      */
-    public function buildUrlToOriginal(AbstractImage $image = null, $absolute = false)
+    public function buildUrlToOriginal(AbstractImage $image = null, $absolute = false, $fallback = null)
     {
+        if (empty($image) && !empty($fallback)) {
+            return $fallback;
+        }
         try {
             return $this->urlBuilder->buildUrlToOriginal($image, $absolute);
         } catch (NotLoadableException $ex) {

@@ -71,13 +71,11 @@ class UrlBuilder implements UrlBuilderInterface
      */
     public function buildUrlToOriginal(AbstractImage $image = null, $addHost = false)
     {
-        if (empty($image)) {
-            return null;
-        }
-
         $this->checkIfFileExists($image);
 
-        $url = $this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image));
+        $url = !empty($image)
+            ? $this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image))
+            : '/'.$this->placeholder;
 
         if (!$addHost) {
             return $url;
