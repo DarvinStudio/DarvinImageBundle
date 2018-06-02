@@ -90,7 +90,7 @@ class SizeDescriber
         $filterSetNames = [];
 
         foreach ($this->entityConfig as $filterSetName => $params) {
-            if (in_array($class, $params['entities'])) {
+            if (isset($params['entities']) && in_array($class, $params['entities'])) {
                 $filterSetNames[] = $filterSetName;
             }
         }
