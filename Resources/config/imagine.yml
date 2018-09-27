@@ -12,6 +12,9 @@ parameters:
     darvin_image.imagine.warmup_cache_event_subscriber.class: Darvin\ImageBundle\EventListener\WarmupImagineCacheSubscriber
 
 services:
+    _defaults:
+        public: true
+
     darvin_image.imagine.cache_resolver:
         class:  "%darvin_image.imagine.cache_resolver.class%"
         public: false

@@ -2,6 +2,9 @@ parameters:
     darvin_image.validation.darvin_image_validator.class: Darvin\ImageBundle\Validation\Constraints\DarvinImageValidator
 
 services:
+    _defaults:
+        public: true
+
     darvin_image.validation.darvin_image_validator:
         class: "%darvin_image.validation.darvin_image_validator.class%"
         arguments:

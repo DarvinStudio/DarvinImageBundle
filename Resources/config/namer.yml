@@ -4,6 +4,9 @@ parameters:
     darvin_image.namer.file.class: Darvin\ImageBundle\Namer\FileNamer
 
 services:
+    _defaults:
+        public: true
+
     darvin_image.namer.directory:
         class: "%darvin_image.namer.directory.class%"
 

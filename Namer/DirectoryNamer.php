@@ -23,8 +23,12 @@ class DirectoryNamer implements DirectoryNamerInterface
     /**
      * {@inheritdoc}
      */
-    public function directoryName($object, PropertyMapping $mapping)
+    public function directoryName($object, PropertyMapping $mapping): string
     {
-        return $object instanceof AbstractImage ? $object->getUploadDir() : null;
+        if (!$object instanceof AbstractImage) {
+            throw new \InvalidArgumentException(sprintf('Object must be instance of "%s".', AbstractImage::class));
+        }
+
+        return $object->getUploadDir();
     }
 }

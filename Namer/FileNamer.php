@@ -36,7 +36,7 @@ class FileNamer implements NamerInterface
     /**
      * {@inheritdoc}
      */
-    public function name($object, PropertyMapping $mapping)
+    public function name($object, PropertyMapping $mapping): string
     {
         $uploadDir = $mapping->getUploadDestination().DIRECTORY_SEPARATOR.$mapping->getUploadDir($object);
 

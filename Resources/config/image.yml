@@ -8,6 +8,9 @@ parameters:
     darvin_image.image.update_properties_event_subscriber.class: Darvin\ImageBundle\EventListener\UpdateImagePropertiesSubscriber
 
 services:
+    _defaults:
+        public: true
+
     darvin_image.image.copy_cloned_file_event_subscriber:
         class: "%darvin_image.image.copy_cloned_file_event_subscriber.class%"
         arguments:

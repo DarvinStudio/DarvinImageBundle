@@ -2,6 +2,9 @@ parameters:
     darvin_image.archiver.zip.class: Darvin\ImageBundle\Archive\ZipArchiver
 
 services:
+    _defaults:
+        public: true
+
     darvin_image.archiver.zip:
         class:  "%darvin_image.archiver.zip.class%"
         public: false

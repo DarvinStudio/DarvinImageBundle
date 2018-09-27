@@ -2,6 +2,9 @@ parameters:
     darvin_image.archive.form_factory.class: Darvin\ImageBundle\Form\Factory\ArchiveFormFactory
 
 services:
+    _defaults:
+        public: true
+
     darvin_image.archive.form_factory:
         class: "%darvin_image.archive.form_factory.class%"
         arguments:
