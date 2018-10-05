@@ -41,3 +41,7 @@ form:
 6.1.6: Add list orphan images command.
 
 6.1.7: Use placeholder image in "image_original" Twig filter.
+
+7.0.0:
+
+- remove redundant commands.
