@@ -10,10 +10,8 @@
 
 namespace Darvin\ImageBundle\Entity\Image;
 
-use Darvin\ImageBundle\Exception\DarvinImageException;
 use Darvin\ImageBundle\Validation\Constraints as DarvinImageAssert;
 use Darvin\Utils\Mapping\Annotation\Clonable;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\HttpFoundation\File\File;
@@ -131,16 +129,8 @@ abstract class AbstractImage
 
     /**
      * @return string
-     * @throws \Darvin\ImageBundle\Exception\DarvinImageException
      */
-    public function getUploadDir()
-    {
-        if (!method_exists($this, 'getSizeGroupName')) {
-            throw new DarvinImageException(sprintf('You must override method "%s()" in class "%s".', __FUNCTION__, ClassUtils::getClass($this)));
-        }
-
-        return $this->{'getSizeGroupName'}();
-    }
+    abstract public function getUploadDir();
 
     /**
      * @return string

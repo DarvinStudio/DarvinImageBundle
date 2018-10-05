@@ -48,4 +48,6 @@ form:
 
 - remove image configuration interface;
 
-- remove image size classes.
+- remove image size classes;
+
+- make AbstractImage::getUploadDir() abstract.
