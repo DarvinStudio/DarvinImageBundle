@@ -46,4 +46,6 @@ form:
 
 - remove redundant commands;
 
-- remove image configuration interface.
+- remove image configuration interface;
+
+- remove image size classes.
