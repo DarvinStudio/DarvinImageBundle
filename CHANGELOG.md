@@ -44,4 +44,6 @@ form:
 
 7.0.0:
 
-- remove redundant commands.
+- remove redundant commands;
+
+- remove image configuration interface.
