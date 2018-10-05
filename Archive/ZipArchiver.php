@@ -90,24 +90,24 @@ class ZipArchiver implements ArchiverInterface
     /**
      * @param string $pathname Pathname
      *
-     * @throws \Darvin\ImageBundle\Archive\ArchiveException
+     * @throws \RuntimeException
      */
     private function buildZip($pathname)
     {
         $zip = new \ZipArchive();
 
         if (true !== $zip->open($pathname, \ZipArchive::CREATE)) {
-            throw new ArchiveException(sprintf('Unable to create image archive "%s".', $pathname));
+            throw new \RuntimeException(sprintf('Unable to create image archive "%s".', $pathname));
         }
         try {
             $finder = (new Finder())->in($this->uploadDir);
         } catch (\InvalidArgumentException $ex) {
-            throw new ArchiveException(sprintf('Image upload directory "%s" does not exist.', $this->uploadDir));
+            throw new \RuntimeException(sprintf('Image upload directory "%s" does not exist.', $this->uploadDir));
         }
         /** @var \Symfony\Component\Finder\SplFileInfo $dir */
         foreach ($finder->directories() as $dir) {
             if (!$zip->addEmptyDir($dir->getRelativePathname())) {
-                throw new ArchiveException(
+                throw new \RuntimeException(
                     sprintf('Unable to create directory "%s" in image archive "%s".', $dir->getRelativePathname(), $pathname)
                 );
             }
@@ -115,18 +115,18 @@ class ZipArchiver implements ArchiverInterface
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
         foreach ($finder->files() as $file) {
             if (!$zip->addFile($file->getPathname(), $file->getRelativePathname())) {
-                throw new ArchiveException(
+                throw new \RuntimeException(
                     sprintf('Unable to add file "%s" to image archive "%s".', $file->getPathname(), $pathname)
                 );
             }
         }
         if (!$zip->close()) {
-            throw new ArchiveException(sprintf('Unable to close image archive "%s".', $pathname));
+            throw new \RuntimeException(sprintf('Unable to close image archive "%s".', $pathname));
         }
     }
 
     /**
-     * @throws \Darvin\ImageBundle\Archive\ArchiveException
+     * @throws \RuntimeException
      */
     private function prepareCacheDir()
     {
@@ -134,7 +134,7 @@ class ZipArchiver implements ArchiverInterface
             try {
                 $this->filesystem->mkdir($this->cacheDir);
             } catch (IOException $ex) {
-                throw new ArchiveException(
+                throw new \RuntimeException(
                     sprintf('Unable to create image archive cache directory "%s": "%s".', $this->cacheDir, $ex->getMessage())
                 );
             }
