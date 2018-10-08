@@ -15,6 +15,6 @@ services:
             - "@vich_uploader.storage"
             - "%darvin_image.image.list_orphans_command.chunk_size%"
             - "%darvin_image.upload_path%"
-            - "%kernel.project_dir%/web"
+            - "%kernel.project_dir%/public"
         tags:
             - { name: console.command }

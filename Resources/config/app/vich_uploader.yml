@@ -3,6 +3,6 @@ vich_uploader:
     mappings:
         darvin_image:
             uri_prefix:         "/%env(resolve:IMAGE_UPLOAD_PATH)%"
-            upload_destination: "%kernel.root_dir%/../web/%env(resolve:IMAGE_UPLOAD_PATH)%"
+            upload_destination: "%kernel.project_dir%/public/%env(resolve:IMAGE_UPLOAD_PATH)%"
             directory_namer:    darvin_image.namer.directory
             namer:              darvin_image.namer.file

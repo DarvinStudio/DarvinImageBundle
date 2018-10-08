@@ -38,7 +38,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->arrayNode('cache_resolver')->addDefaultsIfNotSet()
                             ->children()
-                                ->scalarNode('web_root')->defaultValue('%kernel.project_dir%/web')->cannotBeEmpty()->end()
+                                ->scalarNode('web_root')->defaultValue('%kernel.project_dir%/public')->cannotBeEmpty()->end()
                                 ->scalarNode('cache_prefix')->defaultValue('cache')->cannotBeEmpty()->end()
                             ->end()
                         ->end()

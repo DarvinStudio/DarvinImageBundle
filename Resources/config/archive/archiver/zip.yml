@@ -13,4 +13,4 @@ services:
             - "@request_stack"
             - "%darvin_image.archive.cache_dir%"
             - "%darvin_image.archive.filename_suffix%"
-            - "%kernel.root_dir%/../web/%darvin_image.upload_path%"
+            - "%kernel.project_dir%/public/%darvin_image.upload_path%"
