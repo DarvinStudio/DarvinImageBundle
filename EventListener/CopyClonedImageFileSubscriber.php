@@ -12,7 +12,7 @@ namespace Darvin\ImageBundle\EventListener;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\Utils\Event\CloneEvent;
-use Darvin\Utils\Event\Events;
+use Darvin\Utils\Event\CloneEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Filesystem\Filesystem;
@@ -57,7 +57,7 @@ class CopyClonedImageFileSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            Events::POST_CLONE => 'copyFile',
+            CloneEvents::CREATED => 'copyFile',
         ];
     }
 
