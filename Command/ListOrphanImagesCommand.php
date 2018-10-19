@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
  * @copyright Copyright (c) 2018, Darvin Studio
@@ -16,7 +16,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Vich\UploaderBundle\Metadata\MetadataReader;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
@@ -30,6 +32,16 @@ class ListOrphanImagesCommand extends Command
     private $em;
 
     /**
+     * @var \Symfony\Component\Filesystem\Filesystem
+     */
+    private $filesystem;
+
+    /**
+     * @var \Vich\UploaderBundle\Metadata\MetadataReader
+     */
+    private $uploaderMetaReader;
+
+    /**
      * @var \Vich\UploaderBundle\Storage\StorageInterface
      */
     private $uploaderStorage;
@@ -40,38 +52,42 @@ class ListOrphanImagesCommand extends Command
     private $chunkSize;
 
     /**
-     * @var string
+     * @var array
      */
-    private $uploadPath;
+    private $uploaderMappings;
 
     /**
-     * @var string
+     * @param string                                        $name               Command name
+     * @param \Doctrine\ORM\EntityManager                   $em                 Entity manager
+     * @param \Symfony\Component\Filesystem\Filesystem      $filesystem         Filesystem
+     * @param \Vich\UploaderBundle\Metadata\MetadataReader  $uploaderMetaReader Uploader metadata reader
+     * @param \Vich\UploaderBundle\Storage\StorageInterface $uploaderStorage    Uploader storage
+     * @param int                                           $chunkSize          Chunk size
+     * @param array                                         $uploaderMappings   Uploader mappings
      */
-    private $webDir;
-
-    /**
-     * @param string                                        $name            Command name
-     * @param \Doctrine\ORM\EntityManager                   $em              Entity manager
-     * @param \Vich\UploaderBundle\Storage\StorageInterface $uploaderStorage Uploader storage
-     * @param int                                           $chunkSize       Chunk size
-     * @param string                                        $uploadPath      Upload path
-     * @param string                                        $webDir          Web directory
-     */
-    public function __construct($name, EntityManager $em, StorageInterface $uploaderStorage, $chunkSize, $uploadPath, $webDir)
-    {
+    public function __construct(
+        string $name,
+        EntityManager $em,
+        Filesystem $filesystem,
+        MetadataReader $uploaderMetaReader,
+        StorageInterface $uploaderStorage,
+        int $chunkSize,
+        array $uploaderMappings
+    ) {
         parent::__construct($name);
 
         $this->em = $em;
+        $this->filesystem = $filesystem;
+        $this->uploaderMetaReader = $uploaderMetaReader;
         $this->uploaderStorage = $uploaderStorage;
         $this->chunkSize = $chunkSize;
-        $this->uploadPath = trim($uploadPath, DIRECTORY_SEPARATOR);
-        $this->webDir = rtrim($webDir, DIRECTORY_SEPARATOR);
+        $this->uploaderMappings = $uploaderMappings;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Shows list of orphan images.');
     }
@@ -83,60 +99,79 @@ class ListOrphanImagesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $inDatabase   = $this->findInDatabase();
-        $inFilesystem = $this->findInFilesystem();
-
-        foreach ($inDatabase as $pathname) {
-            if (!isset($inFilesystem[$pathname])) {
-                $io->error(sprintf('Image "%s" exists in database but not in filesystem.', $pathname));
-
+        foreach ($this->em->getMetadataFactory()->getAllMetadata() as $metadata) {
+            if ($metadata->getReflectionClass()->isAbstract() || !$this->uploaderMetaReader->isUploadable($metadata->getName())) {
                 continue;
             }
 
-            unset($inFilesystem[$pathname]);
-        }
-        foreach ($inFilesystem as $pathname) {
-            $io->error(sprintf('Image "%s" exists in filesystem but not in database.', $pathname));
+            $inDatabase   = $this->findInDatabase($metadata->getName());
+            $inFilesystem = $this->findInFilesystem($metadata->getName());
+
+            foreach ($inDatabase as $pathname) {
+                if (!isset($inFilesystem[$pathname])) {
+                    $io->error(sprintf('Image "%s" exists in database but not in filesystem.', $pathname));
+
+                    continue;
+                }
+
+                unset($inFilesystem[$pathname]);
+            }
+            foreach ($inFilesystem as $pathname) {
+                $io->error(sprintf('Image "%s" exists in filesystem but not in database.', $pathname));
+            }
         }
     }
 
     /**
+     * @param string $class Entity class
+     *
      * @return array
      */
-    private function findInDatabase()
+    private function findInDatabase(string $class): array
     {
         $pathnames = [];
-
-        $iterator = $this->em->getRepository(AbstractImage::class)->createQueryBuilder('o')->getQuery()->iterate();
+        $iterator  = $this->em->getRepository($class)->createQueryBuilder('o')->getQuery()->iterate();
 
         while ($row = $iterator->next()) {
-            /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $image */
-            $image = reset($row);
+            foreach (array_keys($this->uploaderMetaReader->getUploadableFields($class)) as $field) {
+                $pathname = $this->uploaderStorage->resolvePath(reset($row), $field);
 
-            $pathname = $this->uploaderStorage->resolveUri($image, AbstractImage::PROPERTY_FILE);
-
-            $pathnames[$pathname] = $pathname;
-
+                $pathnames[$pathname] = $pathname;
+            }
             if ($iterator->key() > 0 && 0 === $iterator->key() % $this->chunkSize) {
                 $this->em->clear();
             }
         }
 
+        $this->em->clear();
+
         return $pathnames;
     }
 
     /**
+     * @param string $class Entity class
+     *
      * @return array
      */
-    private function findInFilesystem()
+    private function findInFilesystem(string $class): array
     {
         $pathnames = [];
 
-        /** @var \Symfony\Component\Finder\SplFileInfo $file */
-        foreach ((new Finder())->in($this->webDir.DIRECTORY_SEPARATOR.$this->uploadPath)->files() as $file) {
-            $pathname = DIRECTORY_SEPARATOR.$this->uploadPath.DIRECTORY_SEPARATOR.$file->getRelativePathname();
+        foreach ($this->uploaderMetaReader->getUploadableFields($class) as $field => $params) {
+            $dir = $this->uploaderMappings[$params['mapping']]['upload_destination'];
 
-            $pathnames[$pathname] = $pathname;
+            if (in_array(AbstractImage::class, class_parents($class))) {
+                $dir .= DIRECTORY_SEPARATOR.$class::{'getUploadDir'}();
+            }
+            if (!$this->filesystem->exists($dir)) {
+                continue;
+            }
+            /** @var \Symfony\Component\Finder\SplFileInfo $file */
+            foreach ((new Finder())->in($dir)->files() as $file) {
+                $pathname = implode(DIRECTORY_SEPARATOR, [$dir, $file->getFilename()]);
+
+                $pathnames[$pathname] = $pathname;
+            }
         }
 
         return $pathnames;
