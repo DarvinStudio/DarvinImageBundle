@@ -130,7 +130,7 @@ abstract class AbstractImage
     /**
      * @return string
      */
-    abstract public function getUploadDir();
+    abstract public static function getUploadDir();
 
     /**
      * @return string

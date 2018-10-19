@@ -50,4 +50,4 @@ form:
 
 - remove image size classes;
 
-- make AbstractImage::getUploadDir() abstract.
+- make AbstractImage::getUploadDir() abstract and static.

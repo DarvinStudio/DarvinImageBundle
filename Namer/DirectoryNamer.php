@@ -29,6 +29,6 @@ class DirectoryNamer implements DirectoryNamerInterface
             throw new \InvalidArgumentException(sprintf('Object must be instance of "%s".', AbstractImage::class));
         }
 
-        return $object->getUploadDir();
+        return $object::getUploadDir();
     }
 }
