@@ -1,26 +1,26 @@
 darvin_image_image_delete:
     path:         /{id}/delete
-    defaults:     { _controller: DarvinImageBundle:Image:delete }
+    defaults:     { _controller: Darvin\ImageBundle\Controller\ImageController::deleteAction }
     requirements: { id: \d+ }
     methods:      [ post ]
     condition:    request.isXmlHttpRequest()
 
 darvin_image_image_disable:
     path:         /{id}/disable
-    defaults:     { _controller: DarvinImageBundle:Image:disable }
+    defaults:     { _controller: Darvin\ImageBundle\Controller\ImageController::disableAction }
     requirements: { id: \d+ }
     methods:      [ post ]
     condition:    request.isXmlHttpRequest()
 
 darvin_image_image_enable:
     path:         /{id}/enable
-    defaults:     { _controller: DarvinImageBundle:Image:enable }
+    defaults:     { _controller: Darvin\ImageBundle\Controller\ImageController::enableAction }
     requirements: { id: \d+ }
     methods:      [ post ]
     condition:    request.isXmlHttpRequest()
 
 darvin_image_image_sort:
     path:      /sort
-    defaults:  { _controller: DarvinImageBundle:Image:sort }
+    defaults:  { _controller: Darvin\ImageBundle\Controller\ImageController::sortAction }
     methods:   [ post ]
     condition: request.isXmlHttpRequest()
