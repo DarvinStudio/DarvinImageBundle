@@ -11,7 +11,7 @@
 namespace Darvin\ImageBundle\Size;
 
 use Liip\ImagineBundle\Imagine\Filter\FilterConfiguration;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Image size describer
@@ -24,7 +24,7 @@ class SizeDescriber
     private $filterConfig;
 
     /**
-     * @var \Symfony\Component\Translation\TranslatorInterface
+     * @var \Symfony\Contracts\Translation\TranslatorInterface
      */
     private $translator;
 
@@ -35,7 +35,7 @@ class SizeDescriber
 
     /**
      * @param \Liip\ImagineBundle\Imagine\Filter\FilterConfiguration $filterConfig Imagine filter configuration
-     * @param \Symfony\Component\Translation\TranslatorInterface     $translator   Translator
+     * @param \Symfony\Contracts\Translation\TranslatorInterface     $translator   Translator
      * @param array                                                  $entityConfig Entity filter set configuration
      */
     public function __construct(FilterConfiguration $filterConfig, TranslatorInterface $translator, array $entityConfig)

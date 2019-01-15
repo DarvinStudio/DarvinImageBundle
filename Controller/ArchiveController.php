@@ -109,7 +109,7 @@ class ArchiveController extends AbstractController
     }
 
     /**
-     * @return \Symfony\Component\Translation\TranslatorInterface
+     * @return \Symfony\Contracts\Translation\TranslatorInterface
      */
     private function getTranslator()
     {
