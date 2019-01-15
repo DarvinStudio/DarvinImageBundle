@@ -11,14 +11,14 @@
 namespace Darvin\ImageBundle\Controller;
 
 use Darvin\Utils\HttpFoundation\AjaxResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Archive controller
  */
-class ArchiveController extends Controller
+class ArchiveController extends AbstractController
 {
     /**
      * @param \Symfony\Component\HttpFoundation\Request $request Request

@@ -11,14 +11,14 @@
 namespace Darvin\ImageBundle\Controller;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Image controller
  */
-class ImageController extends Controller
+class ImageController extends AbstractController
 {
     /**
      * @param int $id Image ID
