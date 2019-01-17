@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
  * @copyright Copyright (c) 2015-2018, Darvin Studio
@@ -11,12 +11,11 @@
 namespace Darvin\ImageBundle\DependencyInjection;
 
 use Darvin\Utils\DependencyInjection\ConfigInjector;
-use Symfony\Component\Config\FileLocator;
+use Darvin\Utils\DependencyInjection\ConfigLoader;
+use Darvin\Utils\DependencyInjection\ExtensionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\Yaml\Yaml;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -28,13 +27,11 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
     /**
      * {@inheritdoc}
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         (new ConfigInjector())->inject($this->processConfiguration(new Configuration(), $configs), $container, $this->getAlias());
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-
-        foreach ([
+        (new ConfigLoader($container, __DIR__.'/../Resources/config'))->load([
             'archive/twig_extension',
             'image',
             'imagine',
@@ -43,39 +40,25 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
             'size',
             'url_builder',
             'validation',
-        ] as $resource) {
-            $loader->load($resource.'.yaml');
-        }
-        if ('dev' === $container->getParameter('kernel.environment')) {
-            foreach ([
-                'image',
-            ] as $resource) {
-                $loader->load(sprintf('dev/%s.yaml', $resource));
-            }
-        }
+
+            'dev/image'            => ['env' => 'dev'],
+
+            'archive/archiver/zip' => ['extension' => 'zip'],
+            'archive/form_factory' => ['extension' => 'zip'],
+        ]);
+
         if (extension_loaded('zip')) {
-            $loader->load('archive/archiver/zip.yaml');
-
             $container->setAlias('darvin_image.archiver', 'darvin_image.archiver.zip');
-
-            $loader->load('archive/form_factory.yaml');
+            $container->getAlias('darvin_image.archiver')->setPublic(true);
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function prepend(ContainerBuilder $container)
+    public function prepend(ContainerBuilder $container): void
     {
-        $fileLocator = new FileLocator(__DIR__.'/../Resources/config/app');
-
-        foreach ([
-            'vich_uploader',
-        ] as $extension) {
-            if ($container->hasExtension($extension)) {
-                $container->prependExtensionConfig($extension, Yaml::parse(file_get_contents($fileLocator->locate($extension.'.yaml')))[$extension]);
-            }
-        }
+        (new ExtensionConfigurator(__DIR__.'/../Resources/config/app'))->configure($container, 'vich_uploader');
 
         $config = $this->processConfiguration(
             new Configuration(),
