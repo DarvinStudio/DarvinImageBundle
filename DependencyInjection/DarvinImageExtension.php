@@ -44,21 +44,21 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
             'url_builder',
             'validation',
         ] as $resource) {
-            $loader->load($resource.'.yml');
+            $loader->load($resource.'.yaml');
         }
         if ('dev' === $container->getParameter('kernel.environment')) {
             foreach ([
                 'image',
             ] as $resource) {
-                $loader->load(sprintf('dev/%s.yml', $resource));
+                $loader->load(sprintf('dev/%s.yaml', $resource));
             }
         }
         if (extension_loaded('zip')) {
-            $loader->load('archive/archiver/zip.yml');
+            $loader->load('archive/archiver/zip.yaml');
 
             $container->setAlias('darvin_image.archiver', 'darvin_image.archiver.zip');
 
-            $loader->load('archive/form_factory.yml');
+            $loader->load('archive/form_factory.yaml');
         }
     }
 
@@ -73,7 +73,7 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
             'vich_uploader',
         ] as $extension) {
             if ($container->hasExtension($extension)) {
-                $container->prependExtensionConfig($extension, Yaml::parse(file_get_contents($fileLocator->locate($extension.'.yml')))[$extension]);
+                $container->prependExtensionConfig($extension, Yaml::parse(file_get_contents($fileLocator->locate($extension.'.yaml')))[$extension]);
             }
         }
 

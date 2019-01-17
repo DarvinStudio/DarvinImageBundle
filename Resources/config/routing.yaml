@@ -1,0 +1,7 @@
+darvin_image_import_archive:
+    resource: "@DarvinImageBundle/Resources/config/routing/archive.yaml"
+    prefix:   /archive
+
+darvin_image_import_image:
+    resource: "@DarvinImageBundle/Resources/config/routing/image.yaml"
+    prefix:   /image
