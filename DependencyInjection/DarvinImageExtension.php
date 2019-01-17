@@ -29,7 +29,7 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        (new ConfigInjector())->inject($this->processConfiguration(new Configuration(), $configs), $container, $this->getAlias());
+        (new ConfigInjector($container))->inject($this->processConfiguration(new Configuration(), $configs), $this->getAlias());
 
         (new ConfigLoader($container, __DIR__.'/../Resources/config'))->load([
             'archive/twig_extension',
