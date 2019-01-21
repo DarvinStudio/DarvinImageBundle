@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
  * @copyright Copyright (c) 2015, Darvin Studio
@@ -19,14 +19,13 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class AddUrlBuilderFiltersPass implements CompilerPassInterface
 {
-    const TAG_URL_BUILDER_FILTER = 'darvin_image.url_builder_filter';
-
-    const URL_BUILDER_ID = 'darvin_image.url_builder.builder';
+    private const TAG_URL_BUILDER_FILTER = 'darvin_image.url_builder_filter';
+    private const URL_BUILDER_ID         = 'darvin_image.url_builder.builder';
 
     /**
      * {@inheritdoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         if (!$container->hasDefinition(self::URL_BUILDER_ID)) {
             return;

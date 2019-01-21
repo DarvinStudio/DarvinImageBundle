@@ -17,9 +17,8 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
  */
 class DirectImagineFilter implements FilterInterface
 {
-    const FILTER_NAME_PARAM = 'filter_name';
-
-    const NAME = 'direct_imagine';
+    public const FILTER_NAME_PARAM = 'filter_name';
+    public const NAME              = 'direct_imagine';
 
     /**
      * @var \Liip\ImagineBundle\Imagine\Cache\CacheManager

@@ -31,7 +31,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 abstract class AbstractImage
 {
-    const PROPERTY_FILE = 'file';
+    public const PROPERTY_FILE = 'file';
 
     /**
      * @var int
