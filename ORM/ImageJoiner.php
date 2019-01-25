@@ -12,7 +12,7 @@ namespace Darvin\ImageBundle\ORM;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\Utils\Strings\StringsUtil;
-use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 
@@ -29,7 +29,7 @@ class ImageJoiner implements ImageJoinerInterface
         $class = $qb->getRootEntities()[0];
 
         foreach ($qb->getEntityManager()->getClassMetadata($class)->associationMappings as $mapping) {
-            if (ClassMetadata::ONE_TO_ONE !== $mapping['type']
+            if (ClassMetadataInfo::ONE_TO_ONE !== $mapping['type']
                 || !in_array(AbstractImage::class, class_parents($mapping['targetEntity']))
             ) {
                 continue;
