@@ -45,7 +45,7 @@ class FileNamer implements NamerInterface
 
         $extension = $file->guessExtension();
 
-        $name = preg_replace(sprintf('/\.%s$/', $file->getClientOriginalExtension()), '', $file->getClientOriginalName());
+        $name = preg_replace(sprintf('/\.%s$/', $file->getClientOriginalExtension()), '', $file->getClientOriginalName() ?: '');
         $name = str_replace('.', '-', $name);
         $name = $this->transliterator->transliterate($name);
         $name = $this->makeNameUnique($name, $uploadDir, $extension);
