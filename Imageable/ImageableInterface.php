@@ -8,13 +8,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Darvin\ImageBundle\ImageableEntity;
+namespace Darvin\ImageBundle\Imageable;
 
 /**
  * This interface provides getImage method
  * It returns main image entity for present the object 
  */
-interface ImageableEntityInterface
+interface ImageableInterface
 {
     /**
      * @return \Darvin\ImageBundle\Entity\Image\AbstractImage|null An image that presents object
