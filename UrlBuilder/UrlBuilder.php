@@ -17,6 +17,7 @@ use Darvin\ImageBundle\UrlBuilder\Exception\FilterNotFoundException;
 use Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException;
 use Darvin\ImageBundle\UrlBuilder\Exception\UrlBuilderException;
 use Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface;
+use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
@@ -73,7 +74,7 @@ class UrlBuilder implements UrlBuilderInterface
         $this->checkIfFileExists($image);
 
         $url = !empty($image)
-            ? $this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, get_class($image))
+            ? $this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image))
             : '/'.$this->placeholder;
 
         if (!$addHost) {
@@ -186,6 +187,6 @@ class UrlBuilder implements UrlBuilderInterface
      */
     private function getImagePathname(AbstractImage $image)
     {
-        return $this->storage->resolvePath($image, AbstractImage::PROPERTY_FILE, get_class($image));
+        return $this->storage->resolvePath($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image));
     }
 }
