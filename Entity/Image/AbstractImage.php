@@ -52,7 +52,7 @@ abstract class AbstractImage
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      *
      * @Assert\NotBlank(groups={"AdminUpdateProperty"})
      */
@@ -61,14 +61,14 @@ abstract class AbstractImage
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      */
     private $extension;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column
      */
     private $filename;
 
