@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2017, Darvin Studio
+ * @copyright Copyright (c) 2017-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -20,7 +20,7 @@ class Resolver extends WebPathResolver
     /**
      * {@inheritdoc}
      */
-    public function remove(array $paths, array $filters)
+    public function remove(array $paths, array $filters): void
     {
         if (!empty($paths)) {
             parent::remove($paths, $filters);
@@ -43,18 +43,18 @@ class Resolver extends WebPathResolver
     /**
      * {@inheritdoc}
      */
-    protected function getFileUrl($path, $filter)
+    protected function getFileUrl($path, $filter): string
     {
-        return implode(DIRECTORY_SEPARATOR, [$this->cachePrefix, $this->getFilterCacheDir($filter), preg_replace('/.*\//', '', $path)]);
+        return implode(DIRECTORY_SEPARATOR, [$this->cachePrefix, $this->getFilterCacheDir($filter), preg_replace('/.*\//', '', $path ?: '')]);
     }
 
     /**
-     * @param string $filter Filter name
+     * @param string|null $filter Filter name
      *
      * @return string
      */
-    private function getFilterCacheDir($filter)
+    private function getFilterCacheDir(?string $filter): string
     {
-        return str_replace('_', '/', $filter);
+        return str_replace('_', '/', $filter ?: '');
     }
 }
