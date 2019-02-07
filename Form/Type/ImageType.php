@@ -1,14 +1,14 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2015-2018, Darvin Studio
+ * @copyright Copyright (c) 2015-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Darvin\ImageBundle\Form\Type\Image;
+namespace Darvin\ImageBundle\Form\Type;
 
 use Darvin\ImageBundle\Size\SizeDescriber;
 use Symfony\Component\Form\AbstractType;
@@ -40,7 +40,7 @@ class ImageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('file', FileType::class, [
             'label'    => false,
@@ -54,7 +54,7 @@ class ImageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function finishView(FormView $view, FormInterface $form, array $options)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
     {
         $description = $view->children['file']->vars['description'];
 
@@ -74,7 +74,7 @@ class ImageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $sizeDescriber = $this->sizeDescriber;
 
@@ -107,7 +107,7 @@ class ImageType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'darvin_image_image';
     }

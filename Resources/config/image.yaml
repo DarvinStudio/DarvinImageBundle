@@ -1,7 +1,7 @@
 parameters:
     darvin_image.image.copy_cloned_file_event_subscriber.class: Darvin\ImageBundle\EventListener\CopyClonedImageFileSubscriber
 
-    darvin_image.image.form_type.class: Darvin\ImageBundle\Form\Type\Image\ImageType
+    darvin_image.image.form_type.class: Darvin\ImageBundle\Form\Type\ImageType
 
     darvin_image.image.rename_event_subscriber.class: Darvin\ImageBundle\EventListener\RenameImageSubscriber
 
