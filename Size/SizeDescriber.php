@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2018, Darvin Studio
+ * @copyright Copyright (c) 2018-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -16,7 +16,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * Image size describer
  */
-class SizeDescriber
+class SizeDescriber implements ImageSizeDescriberInterface
 {
     /**
      * @var \Liip\ImagineBundle\Imagine\Filter\FilterConfiguration
@@ -46,14 +46,9 @@ class SizeDescriber
     }
 
     /**
-     * @param string|string[]|null $filterSetNames Imagine filter set names
-     * @param int                  $width          Width
-     * @param int                  $height         Height
-     * @param string               $entityClass    Image entity class
-     *
-     * @return string|null
+     * {@inheritDoc}
      */
-    public function describeSize($filterSetNames = null, $width = 0, $height = 0, $entityClass = null)
+    public function describeSize($filterSetNames = null, int $width = 0, int $height = 0, ?string $entityClass = null): ?string
     {
         if (null === $filterSetNames) {
             $filterSetNames = !empty($entityClass) ? $this->getEntityFilterSets($entityClass) : [];
@@ -85,7 +80,7 @@ class SizeDescriber
      *
      * @return string[]
      */
-    private function getEntityFilterSets($class)
+    private function getEntityFilterSets(string $class): array
     {
         $filterSetNames = [];
 
@@ -103,7 +98,7 @@ class SizeDescriber
      *
      * @return int[]
      */
-    private function getMaxSize(array $filterSetNames)
+    private function getMaxSize(array $filterSetNames): array
     {
         $maxWidth = $maxHeight = 0;
 
@@ -126,7 +121,7 @@ class SizeDescriber
      *
      * @return int[]
      */
-    private function getSize($filterSetName)
+    private function getSize(string $filterSetName): array
     {
         $filterSet = $this->filterConfig->get($filterSetName);
 

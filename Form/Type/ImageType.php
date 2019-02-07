@@ -10,7 +10,7 @@
 
 namespace Darvin\ImageBundle\Form\Type;
 
-use Darvin\ImageBundle\Size\SizeDescriber;
+use Darvin\ImageBundle\Size\ImageSizeDescriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,14 +25,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ImageType extends AbstractType
 {
     /**
-     * @var \Darvin\ImageBundle\Size\SizeDescriber
+     * @var \Darvin\ImageBundle\Size\ImageSizeDescriberInterface
      */
     private $sizeDescriber;
 
     /**
-     * @param \Darvin\ImageBundle\Size\SizeDescriber $sizeDescriber Image size describer
+     * @param \Darvin\ImageBundle\Size\ImageSizeDescriberInterface $sizeDescriber Image size describer
      */
-    public function __construct(SizeDescriber $sizeDescriber)
+    public function __construct(ImageSizeDescriberInterface $sizeDescriber)
     {
         $this->sizeDescriber = $sizeDescriber;
     }
