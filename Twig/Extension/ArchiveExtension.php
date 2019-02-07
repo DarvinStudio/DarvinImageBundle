@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2016, Darvin Studio
+ * @copyright Copyright (c) 2016-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -11,21 +11,24 @@
 namespace Darvin\ImageBundle\Twig\Extension;
 
 use Darvin\ImageBundle\Form\Factory\ArchiveFormFactory;
+use Twig\Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
 /**
  * Archive Twig extension
  */
-class ArchiveExtension extends \Twig_Extension
+class ArchiveExtension extends AbstractExtension
 {
     /**
-     * @var \Darvin\ImageBundle\Form\Factory\ArchiveFormFactory
+     * @var \Darvin\ImageBundle\Form\Factory\ArchiveFormFactory|null
      */
     private $archiveFormFactory;
 
     /**
-     * @param \Darvin\ImageBundle\Form\Factory\ArchiveFormFactory $archiveFormFactory Archive form factory
+     * @param \Darvin\ImageBundle\Form\Factory\ArchiveFormFactory|null $archiveFormFactory Archive form factory
      */
-    public function __construct(ArchiveFormFactory $archiveFormFactory = null)
+    public function __construct(?ArchiveFormFactory $archiveFormFactory = null)
     {
         $this->archiveFormFactory = $archiveFormFactory;
     }
@@ -33,29 +36,27 @@ class ArchiveExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): iterable
     {
-        return [
-            new \Twig_SimpleFunction('image_archive_build_form', [$this, 'renderBuildForm'], [
-                'is_safe'           => ['html'],
-                'needs_environment' => true,
-            ]),
-        ];
+        yield new TwigFunction('image_archive_build_form', [$this, 'renderBuildForm'], [
+            'needs_environment' => true,
+            'is_safe'           => ['html'],
+        ]);
     }
 
     /**
-     * @param \Twig_Environment $environment Environment
-     * @param string            $template    Template
+     * @param \Twig\Environment $twig     Twig
+     * @param string            $template Template
      *
      * @return string
      */
-    public function renderBuildForm(\Twig_Environment $environment, $template = 'DarvinImageBundle:Archive/widget:build_form.html.twig')
+    public function renderBuildForm(Environment $twig, string $template = 'DarvinImageBundle:Archive/widget:build_form.html.twig'): string
     {
         if (empty($this->archiveFormFactory)) {
             return '';
         }
 
-        return $environment->render($template, [
+        return $twig->render($template, [
             'form' => $this->archiveFormFactory->createBuildFormView(),
         ]);
     }
