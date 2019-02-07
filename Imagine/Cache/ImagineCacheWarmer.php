@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2017, Darvin Studio
+ * @copyright Copyright (c) 2017-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -21,7 +21,7 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 /**
  * Imagine cache warmer
  */
-class ImagineCacheWarmer
+class ImagineCacheWarmer implements ImagineCacheWarmerInterface
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -86,9 +86,9 @@ class ImagineCacheWarmer
     }
 
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Image
+     * {@inheritDoc}
      */
-    public function warmupImageCache(AbstractImage $image)
+    public function warmupImageCache(AbstractImage $image): void
     {
         $filters = [];
 
