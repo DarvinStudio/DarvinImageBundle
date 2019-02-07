@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Lev Semin     <lev@darvin-studio.ru>
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2015-2018, Darvin Studio
+ * @copyright Copyright (c) 2015-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -45,6 +45,10 @@ class FileNamer implements NamerInterface
 
         $extension = $file->guessExtension();
 
+        if (null === $extension) {
+            $extension = '';
+        }
+
         $name = preg_replace(sprintf('/\.%s$/', $file->getClientOriginalExtension()), '', $file->getClientOriginalName() ?: '');
         $name = str_replace('.', '-', $name);
         $name = $this->transliterator->transliterate($name);
@@ -60,7 +64,7 @@ class FileNamer implements NamerInterface
      *
      * @return string
      */
-    protected function makeNameUnique($name, $uploadDir, $extension)
+    protected function makeNameUnique(string $name, string $uploadDir, string $extension): string
     {
         $prefix = $name;
 
