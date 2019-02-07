@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2015-2018, Darvin Studio
+ * @copyright Copyright (c) 2015-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -15,6 +15,8 @@ use Darvin\ImageBundle\UrlBuilder\Filter\DirectImagineFilter;
 use Darvin\ImageBundle\UrlBuilder\UrlBuilderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Psr\Log\LoggerInterface;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
 
 /**
  * URL builder Twig extension
@@ -44,22 +46,22 @@ class UrlBuilderExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getFilters(): iterable
     {
-        return [
-            new \Twig_SimpleFilter('image_filter', [$this, 'buildImagine']),
-            new \Twig_SimpleFilter('image_original', [$this, 'buildUrlToOriginal']),
-        ];
+        foreach ([
+            'image_filter'   => 'buildImagineUrl',
+            'image_original' => 'buildOriginalUrl',
+        ] as $name => $method) {
+            yield new TwigFilter($name, [$this, $method]);
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): iterable
     {
-        return [
-            new \Twig_SimpleFunction('image_exists', [$this->urlBuilder, 'fileExists']),
-        ];
+        yield new TwigFunction('image_exists', [$this->urlBuilder, 'fileExists']);
     }
 
     /**
@@ -69,7 +71,7 @@ class UrlBuilderExtension extends \Twig_Extension
      *
      * @return string|null
      */
-    public function buildImagine(AbstractImage $image = null, $filterName, $fallback = null)
+    public function buildImagineUrl(?AbstractImage $image = null, string $filterName, ?string $fallback = null): ?string
     {
         if (empty($image) && !empty($fallback)) {
             return $fallback;
@@ -92,7 +94,7 @@ class UrlBuilderExtension extends \Twig_Extension
      *
      * @return string|null
      */
-    public function buildUrlToOriginal(AbstractImage $image = null, $absolute = false, $fallback = null)
+    public function buildOriginalUrl(?AbstractImage $image = null, bool $absolute = false, ?string $fallback = null): ?string
     {
         if (empty($image) && !empty($fallback)) {
             return $fallback;
@@ -110,7 +112,7 @@ class UrlBuilderExtension extends \Twig_Extension
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image Image
      * @param \Exception                                          $ex    Exception
      */
-    private function logError(AbstractImage $image = null, \Exception $ex)
+    private function logError(?AbstractImage $image = null, \Exception $ex): void
     {
         if (empty($image)) {
             $this->logger->error(sprintf('Unable to build URL for placeholder image: "%s".', $ex->getMessage()));
