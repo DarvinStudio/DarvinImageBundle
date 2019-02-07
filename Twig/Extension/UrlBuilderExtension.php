@@ -15,13 +15,14 @@ use Darvin\ImageBundle\UrlBuilder\Filter\DirectImagineFilter;
 use Darvin\ImageBundle\UrlBuilder\UrlBuilderInterface;
 use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Psr\Log\LoggerInterface;
+use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
 /**
  * URL builder Twig extension
  */
-class UrlBuilderExtension extends \Twig_Extension
+class UrlBuilderExtension extends AbstractExtension
 {
     /**
      * @var \Psr\Log\LoggerInterface
