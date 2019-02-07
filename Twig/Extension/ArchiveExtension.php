@@ -10,7 +10,7 @@
 
 namespace Darvin\ImageBundle\Twig\Extension;
 
-use Darvin\ImageBundle\Form\Factory\ArchiveFormFactory;
+use Darvin\ImageBundle\Form\Factory\ArchiveFormFactoryInterface;
 use Twig\Environment;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -21,14 +21,14 @@ use Twig\TwigFunction;
 class ArchiveExtension extends AbstractExtension
 {
     /**
-     * @var \Darvin\ImageBundle\Form\Factory\ArchiveFormFactory|null
+     * @var \Darvin\ImageBundle\Form\Factory\ArchiveFormFactoryInterface|null
      */
     private $archiveFormFactory;
 
     /**
-     * @param \Darvin\ImageBundle\Form\Factory\ArchiveFormFactory|null $archiveFormFactory Archive form factory
+     * @param \Darvin\ImageBundle\Form\Factory\ArchiveFormFactoryInterface|null $archiveFormFactory Archive form factory
      */
-    public function __construct(?ArchiveFormFactory $archiveFormFactory = null)
+    public function __construct(?ArchiveFormFactoryInterface $archiveFormFactory = null)
     {
         $this->archiveFormFactory = $archiveFormFactory;
     }

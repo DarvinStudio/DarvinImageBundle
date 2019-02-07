@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2016, Darvin Studio
+ * @copyright Copyright (c) 2016-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -12,12 +12,14 @@ namespace Darvin\ImageBundle\Form\Factory;
 
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Archive form factory
  */
-class ArchiveFormFactory
+class ArchiveFormFactory implements ArchiveFormFactoryInterface
 {
     /**
      * @var \Symfony\Component\Form\FormFactoryInterface
@@ -40,17 +42,17 @@ class ArchiveFormFactory
     }
 
     /**
-     * @return \Symfony\Component\Form\FormView
+     * {@inheritDoc}
      */
-    public function createBuildFormView()
+    public function createBuildFormView(): FormView
     {
         return $this->createBuildForm()->createView();
     }
 
     /**
-     * @return \Symfony\Component\Form\FormInterface
+     * {@inheritDoc}
      */
-    public function createBuildForm()
+    public function createBuildForm(): FormInterface
     {
         return $this->genericFormFactory->createNamed('darvin_image_archive_build', FormType::class, null, [
             'action'        => $this->router->generate('darvin_image_archive_build'),

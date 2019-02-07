@@ -10,6 +10,7 @@
 
 namespace Darvin\ImageBundle\Controller;
 
+use Darvin\ImageBundle\Form\Factory\ArchiveFormFactoryInterface;
 use Darvin\Utils\HttpFoundation\AjaxResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -85,9 +86,9 @@ class ArchiveController extends AbstractController
     }
 
     /**
-     * @return \Darvin\ImageBundle\Form\Factory\ArchiveFormFactory
+     * @return \Darvin\ImageBundle\Form\Factory\ArchiveFormFactoryInterface
      */
-    private function getArchiveFormFactory()
+    private function getArchiveFormFactory(): ArchiveFormFactoryInterface
     {
         return $this->get('darvin_image.archive.form_factory');
     }
