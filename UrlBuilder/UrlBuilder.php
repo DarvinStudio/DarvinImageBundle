@@ -15,7 +15,6 @@ use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\UrlBuilder\Exception\FilterAlreadyExistsException;
 use Darvin\ImageBundle\UrlBuilder\Exception\FilterNotFoundException;
 use Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException;
-use Darvin\ImageBundle\UrlBuilder\Exception\UrlBuilderException;
 use Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -84,7 +83,7 @@ class UrlBuilder implements UrlBuilderInterface
         $request = $this->requestStack->getCurrentRequest();
 
         if (empty($request)) {
-            throw new UrlBuilderException('Unable to add host to URL: current request is empty.');
+            return $url;
         }
 
         return $request->getSchemeAndHttpHost().$url;

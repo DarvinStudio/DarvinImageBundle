@@ -14,7 +14,7 @@ namespace Darvin\ImageBundle\UrlBuilder\Exception;
 /**
  * URL builder filter not found exception
  */
-class FilterNotFoundException extends UrlBuilderException
+class FilterNotFoundException extends \Exception
 {
     /**
      * @param string $filterName Filter name

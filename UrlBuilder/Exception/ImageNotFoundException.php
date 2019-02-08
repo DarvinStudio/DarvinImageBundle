@@ -14,7 +14,7 @@ namespace Darvin\ImageBundle\UrlBuilder\Exception;
 /**
  * URL builder image not found exception
  */
-class ImageNotFoundException extends UrlBuilderException
+class ImageNotFoundException extends \Exception
 {
     /**
      * @param string $imagePathname Image pathname

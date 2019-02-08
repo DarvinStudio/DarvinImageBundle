@@ -14,7 +14,7 @@ namespace Darvin\ImageBundle\UrlBuilder\Exception;
 /**
  * URL builder filter already exists exception
  */
-class FilterAlreadyExistsException extends UrlBuilderException
+class FilterAlreadyExistsException extends \Exception
 {
     /**
      * @param string $filterName Filter name

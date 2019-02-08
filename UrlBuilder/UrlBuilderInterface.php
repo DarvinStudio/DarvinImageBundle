@@ -24,7 +24,6 @@ interface UrlBuilderInterface
      *
      * @return string
      * @throws \Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException
-     * @throws \Darvin\ImageBundle\UrlBuilder\Exception\UrlBuilderException
      */
     public function buildUrlToOriginal(AbstractImage $image = null, $addHost = false);
 

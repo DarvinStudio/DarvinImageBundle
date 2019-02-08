@@ -10,12 +10,10 @@
 
 namespace Darvin\ImageBundle\UrlBuilder\Filter;
 
-use Darvin\ImageBundle\UrlBuilder\Exception\UrlBuilderException;
-
 /**
  * URL builder filter exception
  */
-class FilterException extends UrlBuilderException
+class FilterException extends \Exception
 {
 
 }
