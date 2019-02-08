@@ -38,12 +38,12 @@ class DirectImagineFilter implements FilterInterface
      * @param array  $parameters    Parameters
      *
      * @return string
-     * @throws \Darvin\ImageBundle\UrlBuilder\Filter\FilterException
+     * @throws \InvalidArgumentException
      */
     public function buildUrl($imagePathname, array $parameters)
     {
         if (!isset($parameters[self::FILTER_NAME_PARAM])) {
-            throw new FilterException(sprintf("%s must be provided to %s options", self::FILTER_NAME_PARAM, self::class));
+            throw new \InvalidArgumentException(sprintf("%s must be provided to %s options", self::FILTER_NAME_PARAM, self::class));
         }
 
         return $this->imagineCacheManager->getBrowserPath($imagePathname, $parameters[self::FILTER_NAME_PARAM]);
