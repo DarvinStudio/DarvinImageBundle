@@ -57,6 +57,36 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end()
+                ->arrayNode('action')
+                    ->children()
+                        ->arrayNode('edit')
+                            ->children()
+                                ->arrayNode('template')->addDefaultsIfNotSet()
+                                    ->children()
+                                        ->scalarNode('full')->defaultValue('@DarvinImage/image/edit.html.twig')->cannotBeEmpty()->end()
+                                        ->scalarNode('partial')->defaultValue('@DarvinImage/image/_edit.html.twig')->cannotBeEmpty()->end()
+                                    ->end()
+                                ->end()
+                                ->arrayNode('fields')
+                                    ->prototype('array')->children()->end()->end()
+                                    ->validate()
+                                        ->ifTrue(function (array $config) {
+                                            foreach (array_keys($config) as $class) {
+                                                if (!class_exists($class)) {
+                                                    throw new \InvalidArgumentException(sprintf('Class "%s" does not exist.', $class));
+                                                }
+                                                if (AbstractImage::class !== $class && !is_subclass_of($class, AbstractImage::class)) {
+                                                    throw new \InvalidArgumentException(sprintf('Class "%s" is not image entity class.', $class));
+                                                }
+                                            }
+                                        })
+                                        ->thenInvalid('')
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
                 ->arrayNode('imagine')->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('cache_resolver')->addDefaultsIfNotSet()
@@ -90,10 +120,10 @@ class Configuration implements ConfigurationInterface
                                         }
                                         foreach ($filterSet['entities'] as $class) {
                                             if (!class_exists($class)) {
-                                                throw new \RuntimeException(sprintf('Entity class "%s" does not exist.', $class));
+                                                throw new \InvalidArgumentException(sprintf('Entity class "%s" does not exist.', $class));
                                             }
                                             if (AbstractImage::class !== $class && !in_array(AbstractImage::class, class_parents($class))) {
-                                                throw new \RuntimeException(
+                                                throw new \InvalidArgumentException(
                                                     sprintf('Entity class "%s" must be instance of "%s" or it\'s descendant.', $class, AbstractImage::class)
                                                 );
                                             }

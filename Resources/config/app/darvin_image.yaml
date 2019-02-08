@@ -1,0 +1,5 @@
+darvin_image:
+    action:
+        edit:
+            fields:
+                Darvin\ImageBundle\Entity\Image\AbstractImage: ~
