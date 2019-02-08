@@ -61,6 +61,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->arrayNode('edit')
                             ->children()
+                                ->scalarNode('translation_domain')->defaultValue('darvin_image')->cannotBeEmpty()->end()
                                 ->arrayNode('template')->addDefaultsIfNotSet()
                                     ->children()
                                         ->scalarNode('full')->defaultValue('@DarvinImage/image/edit.html.twig')->cannotBeEmpty()->end()

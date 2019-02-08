@@ -19,16 +19,24 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Image edit form type
  */
 class ImageEditType extends AbstractType
 {
+    private const FALLBACK_TRANSLATION_DOMAIN = 'darvin_image';
+
     /**
      * @var \Darvin\Utils\ObjectNamer\ObjectNamerInterface
      */
     private $objectNamer;
+
+    /**
+     * @var \Symfony\Contracts\Translation\TranslatorInterface
+     */
+    private $translator;
 
     /**
      * @var array
@@ -36,13 +44,22 @@ class ImageEditType extends AbstractType
     private $fields;
 
     /**
-     * @param \Darvin\Utils\ObjectNamer\ObjectNamerInterface $objectNamer Object namer
-     * @param array                                          $fields      Fields
+     * @var string
      */
-    public function __construct(ObjectNamerInterface $objectNamer, array $fields)
+    private $translationDomain;
+
+    /**
+     * @param \Darvin\Utils\ObjectNamer\ObjectNamerInterface     $objectNamer       Object namer
+     * @param \Symfony\Contracts\Translation\TranslatorInterface $translator        Translator
+     * @param array                                              $fields            Fields
+     * @param string                                             $translationDomain Translation domain
+     */
+    public function __construct(ObjectNamerInterface $objectNamer, TranslatorInterface $translator, array $fields, string $translationDomain)
     {
         $this->objectNamer = $objectNamer;
+        $this->translator = $translator;
         $this->fields = $fields;
+        $this->translationDomain = $translationDomain;
     }
 
     /**
@@ -75,7 +92,15 @@ class ImageEditType extends AbstractType
 
             $prefix = array_key_exists($name, $this->fields[AbstractImage::class]) ? $genericPrefix : $currentPrefix;
 
-            $field->vars['label'] = $prefix.StringsUtil::toUnderscore($name);
+            $label = $prefix.StringsUtil::toUnderscore($name);
+
+            $translated = $this->translator->trans($label, [], $this->translationDomain);
+
+            if ($translated === $label) {
+                $translated = $this->translator->trans($label, [], self::FALLBACK_TRANSLATION_DOMAIN);
+            }
+
+            $field->vars['label'] = $translated;
         }
     }
 
@@ -87,7 +112,7 @@ class ImageEditType extends AbstractType
         $resolver->setDefaults([
             'csrf_token_id'      => md5(__FILE__.__METHOD__.$this->getBlockPrefix()),
             'data_class'         => AbstractImage::class,
-            'translation_domain' => 'darvin_image',
+            'translation_domain' => $this->translationDomain,
         ]);
     }
 

@@ -28,7 +28,9 @@ services:
         class: '%darvin_image.image.edit_form_type.class%'
         arguments:
             - '@darvin_utils.object_namer'
+            - '@translator'
             - '%darvin_image.action.edit.fields%'
+            - '%darvin_image.action.edit.translation_domain%'
         tags:
             - { name: form.type }
 
