@@ -6,7 +6,6 @@ archive:
 
 image:
     edit:
-        submit:  Сохранить
         success: Изображение сохранено
 
 size:

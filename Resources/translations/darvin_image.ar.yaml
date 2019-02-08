@@ -5,7 +5,6 @@ archive:
             success: 'الصور المؤرشفة'
 image:
     edit:
-        submit: 'تحديث صورة'
         success: 'صورة تحديث'
 size:
     description: 'أوصت الحد الأدنى الحجم: %width%px x %height%px'
