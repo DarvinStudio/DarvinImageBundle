@@ -33,12 +33,12 @@ class ZipArchiver implements ArchiverInterface
     /**
      * @var string
      */
-    private $cacheDir;
+    private $filenameSuffix;
 
     /**
      * @var string
      */
-    private $filenameSuffix;
+    private $tmpDir;
 
     /**
      * @var string
@@ -48,16 +48,16 @@ class ZipArchiver implements ArchiverInterface
     /**
      * @param \Symfony\Component\Filesystem\Filesystem       $filesystem     Filesystem
      * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack   Request stack
-     * @param string                                         $cacheDir       Cache directory
      * @param string                                         $filenameSuffix Filename suffix
+     * @param string                                         $tmpDir         Temporary file directory
      * @param string                                         $uploadDir      Upload directory
      */
-    public function __construct(Filesystem $filesystem, RequestStack $requestStack, string $cacheDir, string $filenameSuffix, string $uploadDir)
+    public function __construct(Filesystem $filesystem, RequestStack $requestStack, string $filenameSuffix, string $tmpDir, string $uploadDir)
     {
         $this->filesystem = $filesystem;
         $this->requestStack = $requestStack;
-        $this->cacheDir = $cacheDir;
         $this->filenameSuffix = $filenameSuffix;
+        $this->tmpDir = $tmpDir;
         $this->uploadDir = $uploadDir;
     }
 
@@ -66,7 +66,7 @@ class ZipArchiver implements ArchiverInterface
      */
     public function archive(): string
     {
-        $this->prepareCacheDir();
+        $this->prepareTmpDir();
 
         $filename = $this->buildFilename();
         $pathname = $this->buildPathname($filename);
@@ -82,7 +82,7 @@ class ZipArchiver implements ArchiverInterface
     public function buildPathname(string $filename): string
     {
         return implode(DIRECTORY_SEPARATOR, [
-            $this->cacheDir,
+            $this->tmpDir,
             $filename,
         ]);
     }
@@ -128,19 +128,19 @@ class ZipArchiver implements ArchiverInterface
     /**
      * @throws \RuntimeException
      */
-    private function prepareCacheDir(): void
+    private function prepareTmpDir(): void
     {
-        if (!$this->filesystem->exists($this->cacheDir)) {
+        if (!$this->filesystem->exists($this->tmpDir)) {
             try {
-                $this->filesystem->mkdir($this->cacheDir);
+                $this->filesystem->mkdir($this->tmpDir);
             } catch (IOException $ex) {
                 throw new \RuntimeException(
-                    sprintf('Unable to create image archive cache directory "%s": "%s".', $this->cacheDir, $ex->getMessage())
+                    sprintf('Unable to create image archive temporary file directory "%s": "%s".', $this->tmpDir, $ex->getMessage())
                 );
             }
         }
         /** @var \Symfony\Component\Finder\SplFileInfo $file */
-        foreach ((new Finder())->in($this->cacheDir) as $file) {
+        foreach ((new Finder())->in($this->tmpDir) as $file) {
             $this->filesystem->remove($file->getPathname());
         }
     }
@@ -152,7 +152,7 @@ class ZipArchiver implements ArchiverInterface
     {
         $parts = array_merge(preg_split('/[^0-9a-z]+/i', $this->getHost()), [
             $this->filenameSuffix,
-            (new \DateTime())->format('dmY_Hi'),
+            (new \DateTime())->format('Y-m-d_h-i'),
         ]);
 
         return sprintf('%s.zip', implode('_', $parts));

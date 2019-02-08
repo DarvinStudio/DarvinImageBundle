@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2015-2018, Darvin Studio
+ * @copyright Copyright (c) 2015-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -24,18 +24,39 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('darvin_image');
+        $builder = new TreeBuilder('darvin_image');
 
-        /** @var \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $rootNode */
-        $rootNode = $treeBuilder->getRootNode();
+        /** @var \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $root */
+        $root = $builder->getRootNode();
 
         // Here you should define the parameters that are allowed to
         // configure your bundle. See the documentation linked above for
         // more information on that topic.
-        $rootNode
+        $root
             ->children()
+                ->scalarNode('tmp_dir')->defaultValue(sprintf('%s/darvin/image', sys_get_temp_dir()))->cannotBeEmpty()->end()
+                ->scalarNode('upload_path')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('placeholder')->defaultNull()
+                    ->info('Placeholder image pathname relative to the web directory.')
+                    ->example('assets/images/placeholder.png')
+                ->end()
+                ->arrayNode('archive')->addDefaultsIfNotSet()
+                    ->children()
+                        ->scalarNode('filename_suffix')->defaultValue('images')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('constraints')->addDefaultsIfNotSet()
+                    ->children()
+                        ->integerNode('max_width')->defaultValue(10000)->min(1)->end()
+                        ->integerNode('max_height')->defaultValue(10000)->min(1)->end()
+                        ->arrayNode('mime_types')->requiresAtLeastOneElement()
+                            ->prototype('scalar')->cannotBeEmpty()->end()
+                            ->defaultValue(['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'])
+                        ->end()
+                    ->end()
+                ->end()
                 ->arrayNode('imagine')->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('cache_resolver')->addDefaultsIfNotSet()
@@ -80,37 +101,8 @@ class Configuration implements ConfigurationInterface
 
                                         return false;
                                     })
-                                    ->thenInvalid('')
-                                ->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-                ->arrayNode('archive')->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('cache_dir')->defaultValue('%kernel.cache_dir%/images')->end()
-                        ->scalarNode('filename_suffix')->defaultValue('images')->end()
-                    ->end()
-                ->end()
-                ->arrayNode('constraints')->addDefaultsIfNotSet()
-                    ->children()
-                        ->integerNode('max_width')->defaultValue(10000)->end()
-                        ->integerNode('max_height')->defaultValue(10000)->end()
-                        ->arrayNode('mime_types')
-                            ->prototype('scalar')->end()
-                            ->requiresAtLeastOneElement()
-                            ->defaultValue(['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'])
-                        ->end()
-                    ->end()
-                ->end()
-                ->scalarNode('placeholder')
-                    ->defaultNull()
-                    ->info('Placeholder image pathname relative to the web directory.')
-                    ->example('assets/images/placeholder.png')
-                ->end()
-                ->scalarNode('upload_path')->isRequired()->cannotBeEmpty()->end()
-            ->end();
+                                    ->thenInvalid('');
 
-        return $treeBuilder;
+        return $builder;
     }
 }
