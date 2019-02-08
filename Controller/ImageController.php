@@ -11,7 +11,7 @@
 namespace Darvin\ImageBundle\Controller;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
-use Darvin\ImageBundle\Form\Type\EditType;
+use Darvin\ImageBundle\Form\Type\ImageEditType;
 use Darvin\Utils\HttpFoundation\AjaxResponse;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -71,7 +71,7 @@ class ImageController extends AbstractController
     {
         $image = $this->getImage($id);
 
-        $form = $this->createForm(EditType::class, $image, [
+        $form = $this->createForm(ImageEditType::class, $image, [
             'action' => $this->generateUrl('darvin_image_image_edit', [
                 'id' => $id,
             ]),

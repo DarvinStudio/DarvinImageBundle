@@ -2,4 +2,5 @@ darvin_image:
     action:
         edit:
             fields:
-                Darvin\ImageBundle\Entity\Image\AbstractImage: ~
+                Darvin\ImageBundle\Entity\Image\AbstractImage:
+                    name: ~
