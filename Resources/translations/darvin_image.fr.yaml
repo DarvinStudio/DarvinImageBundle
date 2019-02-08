@@ -5,6 +5,7 @@ archive:
             success: 'Les Images archivées'
 image:
     edit:
+        submit: 'Mise à jour de l''image'
         success: 'Image mise à jour'
 size:
     description: 'Recommandé taille minimale: %width%px x %height%px'

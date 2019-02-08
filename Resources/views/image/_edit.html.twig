@@ -1,1 +1,6 @@
-<h1>Hello!</h1>
+{% trans_default_domain 'darvin_image' %}
+
+{{ form_start(form) }}
+{{ form_widget(form) }}
+<button type="submit">{% trans %}image.edit.submit{% endtrans %}</button>
+{{ form_end(form) }}
