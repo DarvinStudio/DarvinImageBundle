@@ -12,6 +12,12 @@ darvin_image_image_disable:
     methods:      [ post ]
     condition:    request.isXmlHttpRequest()
 
+darvin_image_image_edit:
+    path:         /{id}/edit
+    defaults:     { _controller: Darvin\ImageBundle\Controller\ImageController::editAction }
+    requirements: { id: \d+ }
+    methods:      [ get, post ]
+
 darvin_image_image_enable:
     path:         /{id}/enable
     defaults:     { _controller: Darvin\ImageBundle\Controller\ImageController::enableAction }

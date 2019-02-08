@@ -63,6 +63,17 @@ class ImageController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
+    public function editAction($id): Response
+    {
+        return new Response();
+    }
+
+    /**
+     * @param mixed $id Image ID
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
     public function enableAction($id): Response
     {
         $image = $this->getImage($id);
