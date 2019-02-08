@@ -69,7 +69,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                                 ->arrayNode('fields')->useAttributeAsKey('entity')
                                     ->prototype('array')->useAttributeAsKey('name')
-                                        ->prototype('array')
+                                        ->prototype('array')->canBeDisabled()
                                             ->children()
                                                 ->scalarNode('type')->defaultNull()->end()
                                                 ->arrayNode('options')->useAttributeAsKey('name')->prototype('variable')->end()->end()

@@ -53,7 +53,9 @@ class ImageEditType extends AbstractType
         $class = null !== $builder->getData() ? ClassUtils::getClass($builder->getData()) : AbstractImage::class;
 
         foreach ($this->fields[$class] ?? $this->fields[AbstractImage::class] as $name => $attr) {
-            $builder->add($name, $attr['type'], $attr['options']);
+            if ($attr['enabled']) {
+                $builder->add($name, $attr['type'], $attr['options']);
+            }
         }
     }
 
