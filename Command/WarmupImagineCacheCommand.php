@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2017, Darvin Studio
+ * @copyright Copyright (c) 2017-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -43,21 +43,21 @@ class WarmupImagineCacheCommand extends Command
      * @param string                                                        $name               Command name
      * @param \Doctrine\ORM\EntityManager                                   $em                 Entity manager
      * @param \Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface $imagineCacheWarmer Imagine cache warmer
-     * @param int                                                           $chunkSize          Chunk size
+     * @param mixed                                                         $chunkSize          Chunk size
      */
-    public function __construct($name, EntityManager $em, ImagineCacheWarmerInterface $imagineCacheWarmer, $chunkSize)
+    public function __construct(string $name, EntityManager $em, ImagineCacheWarmerInterface $imagineCacheWarmer, $chunkSize)
     {
         parent::__construct($name);
 
         $this->em = $em;
         $this->imagineCacheWarmer = $imagineCacheWarmer;
-        $this->chunkSize = $chunkSize;
+        $this->chunkSize = (int)$chunkSize;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Generates Imagine cache for all images.');
     }

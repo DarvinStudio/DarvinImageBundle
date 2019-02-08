@@ -62,7 +62,7 @@ class ListOrphanImagesCommand extends Command
      * @param \Symfony\Component\Filesystem\Filesystem      $filesystem         Filesystem
      * @param \Vich\UploaderBundle\Metadata\MetadataReader  $uploaderMetaReader Uploader metadata reader
      * @param \Vich\UploaderBundle\Storage\StorageInterface $uploaderStorage    Uploader storage
-     * @param int                                           $chunkSize          Chunk size
+     * @param mixed                                         $chunkSize          Chunk size
      * @param array                                         $uploaderMappings   Uploader mappings
      */
     public function __construct(
@@ -71,7 +71,7 @@ class ListOrphanImagesCommand extends Command
         Filesystem $filesystem,
         MetadataReader $uploaderMetaReader,
         StorageInterface $uploaderStorage,
-        int $chunkSize,
+        $chunkSize,
         array $uploaderMappings
     ) {
         parent::__construct($name);
@@ -80,7 +80,7 @@ class ListOrphanImagesCommand extends Command
         $this->filesystem = $filesystem;
         $this->uploaderMetaReader = $uploaderMetaReader;
         $this->uploaderStorage = $uploaderStorage;
-        $this->chunkSize = $chunkSize;
+        $this->chunkSize = (int)$chunkSize;
         $this->uploaderMappings = $uploaderMappings;
     }
 
