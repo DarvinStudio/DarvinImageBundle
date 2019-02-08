@@ -66,6 +66,15 @@ class Configuration implements ConfigurationInterface
                                         ->scalarNode('full')->defaultValue('@DarvinImage/image/edit.html.twig')->cannotBeEmpty()->end()
                                         ->scalarNode('partial')->defaultValue('@DarvinImage/image/_edit.html.twig')->cannotBeEmpty()->end()
                                     ->end()
+                                    ->beforeNormalization()->ifString()->then(function (string $template) {
+                                        $parts   = explode('/', $template);
+                                        $parts[] = sprintf('_%s', array_pop($parts));
+
+                                        return [
+                                            'full'    => $template,
+                                            'partial' => implode('/', $parts),
+                                        ];
+                                    })->end()
                                 ->end()
                                 ->arrayNode('fields')->useAttributeAsKey('entity')
                                     ->prototype('array')->useAttributeAsKey('name')
