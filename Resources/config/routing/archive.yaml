@@ -6,5 +6,5 @@ darvin_image_archive_build:
 darvin_image_archive_download:
     path:         /download/{filename}
     defaults:     { _controller: Darvin\ImageBundle\Controller\ArchiveController::downloadAction }
-    requirements: { filename: '\\w+%darvin_image.archive.filename_suffix%_\\d{4}-\\d{2}-\\d{2}_\\d{2}-\\d{2}.zip' }
+    requirements: { filename: '\w+%darvin_image.archive.filename_suffix%_\d{4}-\d{2}-\d{2}_\d{2}-\d{2}.zip' }
     methods:      [ get ]
