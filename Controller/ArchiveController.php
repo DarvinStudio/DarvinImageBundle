@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2016, Darvin Studio
+ * @copyright Copyright (c) 2016-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -10,11 +10,15 @@
 
 namespace Darvin\ImageBundle\Controller;
 
+use Darvin\ImageBundle\Archive\ArchiverInterface;
 use Darvin\ImageBundle\Form\Factory\ArchiveFormFactoryInterface;
+use Darvin\Utils\Flash\FlashNotifierInterface;
 use Darvin\Utils\HttpFoundation\AjaxResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Archive controller
@@ -26,7 +30,7 @@ class ArchiveController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function buildAction(Request $request)
+    public function buildAction(Request $request): Response
     {
         $form = $this->getArchiveFormFactory()->createBuildForm()->handleRequest($request);
 
@@ -74,7 +78,7 @@ class ArchiveController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function downloadAction($filename)
+    public function downloadAction(string $filename): Response
     {
         $pathname = $this->getArchiver()->buildPathname($filename);
 
@@ -96,7 +100,7 @@ class ArchiveController extends AbstractController
     /**
      * @return \Darvin\ImageBundle\Archive\ArchiverInterface
      */
-    private function getArchiver()
+    private function getArchiver(): ArchiverInterface
     {
         return $this->get('darvin_image.archiver');
     }
@@ -104,7 +108,7 @@ class ArchiveController extends AbstractController
     /**
      * @return \Darvin\Utils\Flash\FlashNotifierInterface
      */
-    private function getFlashNotifier()
+    private function getFlashNotifier(): FlashNotifierInterface
     {
         return $this->get('darvin_utils.flash.notifier');
     }
@@ -112,7 +116,7 @@ class ArchiveController extends AbstractController
     /**
      * @return \Symfony\Contracts\Translation\TranslatorInterface
      */
-    private function getTranslator()
+    private function getTranslator(): TranslatorInterface
     {
         return $this->get('translator');
     }
