@@ -2,6 +2,9 @@ archive:
     action:
         build:
             submit: 存档的图像
-            success: 成功存档的图像
+            success: 图像归档
+image:
+    edit:
+        success: 图像更新
 size:
-    description: '建议的最小的尺寸: %width%px x %height%px'
+    description: '建议的最小尺寸: %width%px x %height%px'

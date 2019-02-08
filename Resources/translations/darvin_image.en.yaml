@@ -2,7 +2,11 @@ archive:
     action:
         build:
             submit:  Archive images
-            success: Images successfully archived
+            success: Images archived
+
+image:
+    edit:
+        success: Image updated
 
 size:
     description: 'Recommended minimal size: %width%px x %height%px'

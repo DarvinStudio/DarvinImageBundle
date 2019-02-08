@@ -2,7 +2,11 @@ archive:
     action:
         build:
             submit:  Архивировать изображения
-            success: Изображения успешно архивированы
+            success: Изображения архивированы
+
+image:
+    edit:
+        success: Изображение сохранено
 
 size:
     description: 'Рекомендуемый минимальный размер: %width%px x %height%px'

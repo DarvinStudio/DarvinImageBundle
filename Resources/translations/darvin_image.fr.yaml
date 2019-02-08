@@ -2,6 +2,9 @@ archive:
     action:
         build:
             submit: 'Des images d''archives'
-            success: 'Images archivés'
+            success: 'Les Images archivées'
+image:
+    edit:
+        success: 'Image mise à jour'
 size:
-    description: 'Taille minimale recommandée: %width%px x %height%px'
+    description: 'Recommandé taille minimale: %width%px x %height%px'

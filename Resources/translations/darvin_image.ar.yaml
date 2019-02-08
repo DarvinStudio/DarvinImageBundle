@@ -2,6 +2,9 @@ archive:
     action:
         build:
             submit: 'أرشيف الصور'
-            success: 'الصور بنجاح ^ '
+            success: 'الصور المؤرشفة'
+image:
+    edit:
+        success: 'صورة تحديث'
 size:
-    description: 'أوصى الحد الأدنى من حجم: %width%س%height%'
+    description: 'أوصت الحد الأدنى الحجم: %width%px x %height%px'

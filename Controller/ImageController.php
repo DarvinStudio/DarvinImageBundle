@@ -11,10 +11,13 @@
 namespace Darvin\ImageBundle\Controller;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
+use Darvin\ImageBundle\Form\Type\EditType;
+use Darvin\Utils\HttpFoundation\AjaxResponse;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Image controller
@@ -58,14 +61,47 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @param mixed $id Image ID
+     * @param \Symfony\Component\HttpFoundation\Request $request Request
+     * @param mixed                                     $id      Image ID
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function editAction($id): Response
+    public function editAction(Request $request, $id): Response
     {
-        return new Response();
+        $image = $this->getImage($id);
+
+        $form = $this->createForm(EditType::class, $image, [
+            'action' => $this->generateUrl('darvin_image_image_edit', [
+                'id' => $id,
+            ]),
+        ])->handleRequest($request);
+
+        $template = $this->container->getParameter(
+            sprintf('darvin_image.action.edit.template.%s', $request->isXmlHttpRequest() ? 'partial' : 'full')
+        );
+
+        if (!$form->isSubmitted()) {
+            return $this->render($template, [
+                'form' => $form->createView(),
+            ]);
+        }
+
+        $this->getDoctrine()->getManager()->flush();
+
+        $message = $this->getTranslator()->trans('image.edit.success', [], 'darvin_image');
+
+        if ($request->isXmlHttpRequest()) {
+            return new AjaxResponse($this->renderView($template, [
+                'form' => $form->createView(),
+            ]), true, $message);
+        }
+
+        $this->addFlash('success', $message);
+
+        return $this->redirectToRoute('darvin_image_image_edit', [
+            'id' => $id,
+        ]);
     }
 
     /**
@@ -172,5 +208,13 @@ class ImageController extends AbstractController
     private function getImageRepository(): EntityRepository
     {
         return $this->getDoctrine()->getManager()->getRepository(AbstractImage::class);
+    }
+
+    /**
+     * @return \Symfony\Contracts\Translation\TranslatorInterface
+     */
+    private function getTranslator(): TranslatorInterface
+    {
+        return $this->get('translator');
     }
 }
