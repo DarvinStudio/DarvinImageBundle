@@ -50,7 +50,7 @@ class ArchiveExtension extends AbstractExtension
      *
      * @return string
      */
-    public function renderBuildForm(Environment $twig, string $template = 'DarvinImageBundle:Archive/widget:build_form.html.twig'): string
+    public function renderBuildForm(Environment $twig, string $template = '@DarvinImage/archive/build.html.twig'): string
     {
         if (empty($this->archiveFormFactory)) {
             return '';
