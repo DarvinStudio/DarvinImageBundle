@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2016-2018, Darvin Studio
+ * @copyright Copyright (c) 2016-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -19,12 +19,12 @@ interface ArchiverInterface
      * @return string Archive filename
      * @throws \RuntimeException
      */
-    public function archive();
+    public function archive(): string;
 
     /**
      * @param string $filename Archive filename
      *
      * @return string
      */
-    public function buildPathname($filename);
+    public function buildPathname(string $filename): string;
 }

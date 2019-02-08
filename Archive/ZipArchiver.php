@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2016-2018, Darvin Studio
+ * @copyright Copyright (c) 2016-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -52,7 +52,7 @@ class ZipArchiver implements ArchiverInterface
      * @param string                                         $filenameSuffix Filename suffix
      * @param string                                         $uploadDir      Upload directory
      */
-    public function __construct(Filesystem $filesystem, RequestStack $requestStack, $cacheDir, $filenameSuffix, $uploadDir)
+    public function __construct(Filesystem $filesystem, RequestStack $requestStack, string $cacheDir, string $filenameSuffix, string $uploadDir)
     {
         $this->filesystem = $filesystem;
         $this->requestStack = $requestStack;
@@ -64,7 +64,7 @@ class ZipArchiver implements ArchiverInterface
     /**
      * {@inheritdoc}
      */
-    public function archive()
+    public function archive(): string
     {
         $this->prepareCacheDir();
 
@@ -79,7 +79,7 @@ class ZipArchiver implements ArchiverInterface
     /**
      * {@inheritdoc}
      */
-    public function buildPathname($filename)
+    public function buildPathname(string $filename): string
     {
         return implode(DIRECTORY_SEPARATOR, [
             $this->cacheDir,
@@ -92,7 +92,7 @@ class ZipArchiver implements ArchiverInterface
      *
      * @throws \RuntimeException
      */
-    private function buildZip($pathname)
+    private function buildZip(string $pathname): void
     {
         $zip = new \ZipArchive();
 
@@ -128,7 +128,7 @@ class ZipArchiver implements ArchiverInterface
     /**
      * @throws \RuntimeException
      */
-    private function prepareCacheDir()
+    private function prepareCacheDir(): void
     {
         if (!$this->filesystem->exists($this->cacheDir)) {
             try {
@@ -148,7 +148,7 @@ class ZipArchiver implements ArchiverInterface
     /**
      * @return string
      */
-    private function buildFilename()
+    private function buildFilename(): string
     {
         $parts = array_merge(preg_split('/[^0-9a-z]+/i', $this->getHost()), [
             $this->filenameSuffix,
@@ -161,7 +161,7 @@ class ZipArchiver implements ArchiverInterface
     /**
      * @return string
      */
-    private function getHost()
+    private function getHost(): string
     {
         $request = $this->requestStack->getCurrentRequest();
 
