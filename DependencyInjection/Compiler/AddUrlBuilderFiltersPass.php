@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2015, Darvin Studio
+ * @copyright Copyright (c) 2015-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -27,22 +27,10 @@ class AddUrlBuilderFiltersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition(self::URL_BUILDER_ID)) {
-            return;
-        }
+        $urlBuilder = $container->getDefinition(self::URL_BUILDER_ID);
 
-        $urlBuilderFilterIds = $container->findTaggedServiceIds(self::TAG_URL_BUILDER_FILTER);
-
-        if (empty($urlBuilderFilterIds)) {
-            return;
-        }
-
-        $urlBuilderDefinition = $container->getDefinition(self::URL_BUILDER_ID);
-
-        foreach ($urlBuilderFilterIds as $id => $attr) {
-            $urlBuilderDefinition->addMethodCall('addFilter', [
-                new Reference($id),
-            ]);
+        foreach (array_keys($container->findTaggedServiceIds(self::TAG_URL_BUILDER_FILTER)) as $id) {
+            $urlBuilder->addMethodCall('addFilter', [new Reference($id)]);
         }
     }
 }
