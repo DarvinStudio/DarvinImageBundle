@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2017-2018, Darvin Studio
+ * @copyright Copyright (c) 2017-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -37,24 +37,24 @@ class CopyClonedImageFileSubscriber implements EventSubscriberInterface
     /**
      * @var string
      */
-    private $cacheDir;
+    private $tmpDir;
 
     /**
      * @param \Symfony\Component\Filesystem\Filesystem      $filesystem      Filesystem
      * @param \Vich\UploaderBundle\Storage\StorageInterface $uploaderStorage Uploader storage
-     * @param string                                        $cacheDir        Cache directory
+     * @param string                                        $tmpDir          Temporary file directory
      */
-    public function __construct(Filesystem $filesystem, StorageInterface $uploaderStorage, $cacheDir)
+    public function __construct(Filesystem $filesystem, StorageInterface $uploaderStorage, string $tmpDir)
     {
         $this->filesystem = $filesystem;
         $this->uploaderStorage = $uploaderStorage;
-        $this->cacheDir = $cacheDir;
+        $this->tmpDir = $tmpDir;
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ClonableEvents::CLONED => 'copyFile',
@@ -64,7 +64,7 @@ class CopyClonedImageFileSubscriber implements EventSubscriberInterface
     /**
      * @param \Darvin\Utils\Event\CloneEvent $event Event
      */
-    public function copyFile(CloneEvent $event)
+    public function copyFile(CloneEvent $event): void
     {
         $original = $event->getOriginal();
 
@@ -73,9 +73,8 @@ class CopyClonedImageFileSubscriber implements EventSubscriberInterface
         }
 
         /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $clone */
-        $clone = $event->getClone();
-
-        $pathname = $this->uploaderStorage->resolvePath($original, AbstractImage::PROPERTY_FILE);
+        $clone       = $event->getClone();
+        $pathname    = $this->uploaderStorage->resolvePath($original, AbstractImage::PROPERTY_FILE);
         $tmpPathname = $this->generateTmpPathname();
 
         try {
@@ -93,9 +92,17 @@ class CopyClonedImageFileSubscriber implements EventSubscriberInterface
 
     /**
      * @return string
+     *
+     * @throws \RuntimeException
      */
-    private function generateTmpPathname()
+    private function generateTmpPathname(): string
     {
-        return tempnam($this->cacheDir, 'darvin_image_');
+        $pathname = tempnam($this->tmpDir, '');
+
+        if (false === $pathname) {
+            throw new \RuntimeException(sprintf('Unable to create temporary file for cloned image in "%s".', $this->tmpDir));
+        }
+
+        return $pathname;
     }
 }

@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2015, Darvin Studio
+ * @copyright Copyright (c) 2015-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -36,24 +36,24 @@ class RenameImageSubscriber implements EventSubscriber
     /**
      * @var string
      */
-    private $cacheDir;
+    private $tmpDir;
 
     /**
      * @param \Symfony\Component\Filesystem\Filesystem      $filesystem      Filesystem
      * @param \Vich\UploaderBundle\Storage\StorageInterface $uploaderStorage Uploader storage
-     * @param string                                        $cacheDir        Cache directory
+     * @param string                                        $tmpDir          Temporary file directory
      */
-    public function __construct(Filesystem $filesystem, StorageInterface $uploaderStorage, $cacheDir)
+    public function __construct(Filesystem $filesystem, StorageInterface $uploaderStorage, string $tmpDir)
     {
         $this->filesystem = $filesystem;
         $this->uploaderStorage = $uploaderStorage;
-        $this->cacheDir = $cacheDir;
+        $this->tmpDir = $tmpDir;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSubscribedEvents()
+    public function getSubscribedEvents(): array
     {
         return [
             Events::onFlush,
@@ -63,7 +63,7 @@ class RenameImageSubscriber implements EventSubscriber
     /**
      * @param \Doctrine\ORM\Event\OnFlushEventArgs $args Event arguments
      */
-    public function onFlush(OnFlushEventArgs $args)
+    public function onFlush(OnFlushEventArgs $args): void
     {
         $uow = $args->getEntityManager()->getUnitOfWork();
 
@@ -91,8 +91,14 @@ class RenameImageSubscriber implements EventSubscriber
     /**
      * @return string
      */
-    private function generateTmpPathname()
+    private function generateTmpPathname(): string
     {
-        return tempnam($this->cacheDir, 'darvin_image_');
+        $pathname = tempnam($this->tmpDir, '');
+
+        if (false === $pathname) {
+            throw new \RuntimeException(sprintf('Unable to create temporary file for renamed image in "%s".', $this->tmpDir));
+        }
+
+        return $pathname;
     }
 }
