@@ -85,8 +85,9 @@ class ImageEditType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'csrf_token_id' => md5(__FILE__.__METHOD__.$this->getBlockPrefix()),
-            'data_class'    => AbstractImage::class,
+            'csrf_token_id'      => md5(__FILE__.__METHOD__.$this->getBlockPrefix()),
+            'data_class'         => AbstractImage::class,
+            'translation_domain' => 'darvin_image',
         ]);
     }
 

@@ -6,5 +6,7 @@ archive:
 image:
     edit:
         success: 图像更新
+    entity:
+        name: 名称
 size:
     description: '建议的最小尺寸: %width%px x %height%px'

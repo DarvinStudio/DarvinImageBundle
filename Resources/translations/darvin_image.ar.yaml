@@ -6,5 +6,7 @@ archive:
 image:
     edit:
         success: 'صورة تحديث'
+    entity:
+        name: اسم
 size:
     description: 'أوصت الحد الأدنى الحجم: %width%px x %height%px'

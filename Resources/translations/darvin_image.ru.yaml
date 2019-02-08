@@ -7,6 +7,8 @@ archive:
 image:
     edit:
         success: Изображение сохранено
+    entity:
+        name: Название
 
 size:
     description: 'Рекомендуемый минимальный размер: %width%px x %height%px'

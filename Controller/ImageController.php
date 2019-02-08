@@ -12,6 +12,7 @@ namespace Darvin\ImageBundle\Controller;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\Form\Type\ImageEditType;
+use Darvin\Utils\Flash\FlashNotifierInterface;
 use Darvin\Utils\HttpFoundation\AjaxResponse;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -81,10 +82,24 @@ class ImageController extends AbstractController
             sprintf('darvin_image.action.edit.template.%s', $request->isXmlHttpRequest() ? 'partial' : 'full')
         );
 
-        if (!$form->isSubmitted()) {
-            return $this->render($template, [
-                'form' => $form->createView(),
+        $render = function (AbstractController $controller) use ($form, $image, $template) {
+            return $controller->renderView($template, [
+                'form'  => $form->createView(),
+                'image' => $image,
             ]);
+        };
+
+        if (!$form->isSubmitted()) {
+            return new Response($render($this));
+        }
+        if (!$form->isValid()) {
+            if ($request->isXmlHttpRequest()) {
+                return new AjaxResponse($render($this), false, FlashNotifierInterface::MESSAGE_FORM_ERROR);
+            }
+
+            $this->getFlashNotifier()->formError();
+
+            return new Response($render($this));
         }
 
         $this->getDoctrine()->getManager()->flush();
@@ -92,12 +107,10 @@ class ImageController extends AbstractController
         $message = $this->getTranslator()->trans('image.edit.success', [], 'darvin_image');
 
         if ($request->isXmlHttpRequest()) {
-            return new AjaxResponse($this->renderView($template, [
-                'form' => $form->createView(),
-            ]), true, $message);
+            return new AjaxResponse($render($this), true, $message);
         }
 
-        $this->addFlash('success', $message);
+        $this->getFlashNotifier()->success($message);
 
         return $this->redirectToRoute('darvin_image_image_edit', [
             'id' => $id,
@@ -200,6 +213,14 @@ class ImageController extends AbstractController
         }
 
         return $image;
+    }
+
+    /**
+     * @return \Darvin\Utils\Flash\FlashNotifierInterface
+     */
+    private function getFlashNotifier(): FlashNotifierInterface
+    {
+        return $this->get('darvin_utils.flash.notifier');
     }
 
     /**
