@@ -121,6 +121,6 @@ class UrlBuilderExtension extends AbstractExtension
             return;
         }
 
-        $this->logger->error(sprintf('Unable to build URL for image with ID "%d": "%s".', $image->getId(), $ex->getMessage()));
+        $this->logger->error(sprintf('Unable to build URL for image with ID "%s": "%s".', $image->getId(), $ex->getMessage()));
     }
 }
