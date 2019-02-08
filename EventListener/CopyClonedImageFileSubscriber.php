@@ -97,7 +97,7 @@ class CopyClonedImageFileSubscriber implements EventSubscriberInterface
      */
     private function generateTmpPathname(): string
     {
-        $pathname = tempnam($this->tmpDir, '');
+        $pathname = @tempnam($this->tmpDir, '');
 
         if (false === $pathname) {
             throw new \RuntimeException(sprintf('Unable to create temporary file for cloned image in "%s".', $this->tmpDir));
