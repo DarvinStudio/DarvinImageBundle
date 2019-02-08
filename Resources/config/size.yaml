@@ -6,9 +6,9 @@ services:
         public: true
 
     darvin_image.size.describer:
-        class:  "%darvin_image.size.describer.class%"
+        class:  '%darvin_image.size.describer.class%'
         public: false
         arguments:
-            - "@liip_imagine.filter.configuration"
-            - "@translator"
-            - "%darvin_image.imagine.filter_sets%"
+            - '@liip_imagine.filter.configuration'
+            - '@translator'
+            - '%darvin_image.imagine.filter_sets%'

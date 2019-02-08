@@ -6,9 +6,9 @@ services:
         public: true
 
     darvin_image.archive.twig_extension:
-        class:  "%darvin_image.archive.twig_extension.class%"
+        class:  '%darvin_image.archive.twig_extension.class%'
         public: false
         arguments:
-            - "@?darvin_image.archive.form_factory"
+            - '@?darvin_image.archive.form_factory'
         tags:
             - { name: twig.extension }

@@ -6,7 +6,7 @@ services:
         public: true
 
     darvin_image.archive.form_factory:
-        class: "%darvin_image.archive.form_factory.class%"
+        class: '%darvin_image.archive.form_factory.class%'
         arguments:
-            - "@form.factory"
-            - "@router"
+            - '@form.factory'
+            - '@router'

@@ -7,11 +7,11 @@ services:
         public: true
 
     darvin_image.archiver.zip:
-        class:  "%darvin_image.archiver.zip.class%"
+        class:  '%darvin_image.archiver.zip.class%'
         public: false
         arguments:
-            - "@filesystem"
-            - "@request_stack"
-            - "%darvin_image.archive.filename_suffix%"
-            - "%darvin_image.archiver.zip.tmp_dir%"
-            - "%kernel.project_dir%/public/%darvin_image.upload_path%"
+            - '@filesystem'
+            - '@request_stack'
+            - '%darvin_image.archive.filename_suffix%'
+            - '%darvin_image.archiver.zip.tmp_dir%'
+            - '%kernel.project_dir%/public/%darvin_image.upload_path%'

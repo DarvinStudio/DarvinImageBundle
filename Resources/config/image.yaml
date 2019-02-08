@@ -14,32 +14,32 @@ services:
         public: true
 
     darvin_image.image.copy_cloned_file_event_subscriber:
-        class: "%darvin_image.image.copy_cloned_file_event_subscriber.class%"
+        class: '%darvin_image.image.copy_cloned_file_event_subscriber.class%'
         arguments:
-            - "@filesystem"
-            - "@vich_uploader.storage"
-            - "%darvin_image.image.copy_cloned_file_event_subscriber.tmp_dir%"
+            - '@filesystem'
+            - '@vich_uploader.storage'
+            - '%darvin_image.image.copy_cloned_file_event_subscriber.tmp_dir%'
         tags:
             - { name: kernel.event_subscriber }
 
     darvin_image.image.form_type:
-        class: "%darvin_image.image.form_type.class%"
+        class: '%darvin_image.image.form_type.class%'
         arguments:
-            - "@darvin_image.size.describer"
+            - '@darvin_image.size.describer'
         tags:
             - { name: form.type }
 
     darvin_image.image.rename_event_subscriber:
-        class:  "%darvin_image.image.rename_event_subscriber.class%"
+        class:  '%darvin_image.image.rename_event_subscriber.class%'
         public: false
         arguments:
-            - "@filesystem"
-            - "@vich_uploader.storage"
-            - "%darvin_image.image.rename_event_subscriber.tmp_dir%"
+            - '@filesystem'
+            - '@vich_uploader.storage'
+            - '%darvin_image.image.rename_event_subscriber.tmp_dir%'
         tags:
             - { name: doctrine.event_subscriber }
 
     darvin_image.image.update_properties_event_subscriber:
-        class: "%darvin_image.image.update_properties_event_subscriber.class%"
+        class: '%darvin_image.image.update_properties_event_subscriber.class%'
         tags:
             - { name: kernel.event_subscriber }

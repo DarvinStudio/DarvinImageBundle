@@ -10,24 +10,24 @@ services:
         public: true
 
     darvin_image.url_builder.builder:
-        class: "%darvin_image.url_builder.builder.class%"
+        class: '%darvin_image.url_builder.builder.class%'
         arguments:
-            - "@request_stack"
-            - "@vich_uploader.storage"
-            - "%darvin_image.placeholder%"
+            - '@request_stack'
+            - '@vich_uploader.storage'
+            - '%darvin_image.placeholder%'
 
     darvin_image.url_builder.filter.direct_imagine:
-        class: "%darvin_image.url_builder.filter.direct_imagine.class%"
+        class: '%darvin_image.url_builder.filter.direct_imagine.class%'
         arguments:
-            - "@liip_imagine.cache.manager"
+            - '@liip_imagine.cache.manager'
         tags:
             - { name: darvin_image.url_builder_filter }
 
     darvin_image.url_builder.twig_extension:
-        class:  "%darvin_image.url_builder.twig_extension.class%"
+        class:  '%darvin_image.url_builder.twig_extension.class%'
         public: false
         arguments:
-            - "@logger"
-            - "@darvin_image.url_builder.builder"
+            - '@logger'
+            - '@darvin_image.url_builder.builder'
         tags:
             - { name: twig.extension }

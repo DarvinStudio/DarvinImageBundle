@@ -6,8 +6,8 @@ services:
         public: true
 
     darvin_image.validation.darvin_image_validator:
-        class: "%darvin_image.validation.darvin_image_validator.class%"
+        class: '%darvin_image.validation.darvin_image_validator.class%'
         arguments:
-            - "%darvin_image.constraints%"
+            - '%darvin_image.constraints%'
         tags:
             - { name: validator.constraint_validator }
