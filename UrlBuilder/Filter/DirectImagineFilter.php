@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Lev Semin <lev@darvin-studio.ru>
- * @copyright Copyright (c) 2017, Darvin Studio
+ * @copyright Copyright (c) 2017-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -34,13 +34,9 @@ class DirectImagineFilter implements FilterInterface
     }
 
     /**
-     * @param string $imagePathname Image pathname
-     * @param array  $parameters    Parameters
-     *
-     * @return string
-     * @throws \InvalidArgumentException
+     * {@inheritDoc}
      */
-    public function buildUrl($imagePathname, array $parameters)
+    public function buildUrl(string $imagePathname, array $parameters = []): string
     {
         if (!isset($parameters[self::FILTER_NAME_PARAM])) {
             throw new \InvalidArgumentException(sprintf("%s must be provided to %s options", self::FILTER_NAME_PARAM, self::class));
@@ -52,7 +48,7 @@ class DirectImagineFilter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return self::NAME;
     }

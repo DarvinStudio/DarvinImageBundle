@@ -72,7 +72,7 @@ class UrlBuilderExtension extends AbstractExtension
      *
      * @return string|null
      */
-    public function buildImagineUrl(?AbstractImage $image = null, string $filterName, ?string $fallback = null): ?string
+    public function buildImagineUrl(?AbstractImage $image, string $filterName, ?string $fallback = null): ?string
     {
         if (empty($image) && !empty($fallback)) {
             return $fallback;
@@ -95,7 +95,7 @@ class UrlBuilderExtension extends AbstractExtension
      *
      * @return string|null
      */
-    public function buildOriginalUrl(?AbstractImage $image = null, bool $absolute = false, ?string $fallback = null): ?string
+    public function buildOriginalUrl(?AbstractImage $image, bool $absolute = false, ?string $fallback = null): ?string
     {
         if (empty($image) && !empty($fallback)) {
             return $fallback;
@@ -113,7 +113,7 @@ class UrlBuilderExtension extends AbstractExtension
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image Image
      * @param \Exception                                          $ex    Exception
      */
-    private function logError(?AbstractImage $image = null, \Exception $ex): void
+    private function logError(?AbstractImage $image, \Exception $ex): void
     {
         if (empty($image)) {
             $this->logger->error(sprintf('Unable to build URL for placeholder image: "%s".', $ex->getMessage()));

@@ -1,8 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Lev Semin     <lev@darvin-studio.ru>
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2015, Darvin Studio
+ * @copyright Copyright (c) 2015-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -25,7 +25,7 @@ interface UrlBuilderInterface
      * @return string
      * @throws \Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException
      */
-    public function buildUrlToOriginal(AbstractImage $image = null, $addHost = false);
+    public function buildUrlToOriginal(?AbstractImage $image, bool $addHost = false): string;
 
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image      Image
@@ -35,12 +35,12 @@ interface UrlBuilderInterface
      * @return string
      * @throws \Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException
      */
-    public function buildUrlToFilter(AbstractImage $image = null, $filterName, array $parameters = []);
+    public function buildUrlToFilter(?AbstractImage $image, string $filterName, array $parameters = []): string;
 
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image Image
      *
      * @return bool
      */
-    public function fileExists(AbstractImage $image = null);
+    public function fileExists(?AbstractImage $image): bool;
 }
