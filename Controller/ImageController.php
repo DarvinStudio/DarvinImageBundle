@@ -1,7 +1,7 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
- * @copyright Copyright (c) 2015, Darvin Studio
+ * @copyright Copyright (c) 2015-2019, Darvin Studio
  * @link      https://www.darvin-studio.ru
  *
  * For the full copyright and license information, please view the LICENSE
@@ -11,6 +11,7 @@
 namespace Darvin\ImageBundle\Controller;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,12 +22,12 @@ use Symfony\Component\HttpFoundation\Response;
 class ImageController extends AbstractController
 {
     /**
-     * @param int $id Image ID
+     * @param mixed $id Image ID
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function deleteAction($id)
+    public function deleteAction($id): Response
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($this->getImage($id));
@@ -36,17 +37,17 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @param int $id Image ID
+     * @param mixed $id Image ID
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function disableAction($id)
+    public function disableAction($id): Response
     {
         $image = $this->getImage($id);
 
         if (!$image->isEnabled()) {
-            throw $this->createNotFoundException(sprintf('Image with ID "%d" already disabled.', $id));
+            throw $this->createNotFoundException(sprintf('Image with ID "%s" already disabled.', $id));
         }
 
         $image->setEnabled(false);
@@ -57,17 +58,17 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @param int $id Image ID
+     * @param mixed $id Image ID
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function enableAction($id)
+    public function enableAction($id): Response
     {
         $image = $this->getImage($id);
 
         if ($image->isEnabled()) {
-            throw $this->createNotFoundException(sprintf('Image with ID "%d" already enabled.', $id));
+            throw $this->createNotFoundException(sprintf('Image with ID "%s" already enabled.', $id));
         }
 
         $image->setEnabled(true);
@@ -83,7 +84,7 @@ class ImageController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    public function sortAction(Request $request)
+    public function sortAction(Request $request): Response
     {
         $ids = $request->request->get('ids');
 
@@ -111,12 +112,12 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @param int[] $ids Image IDs
+     * @param array $ids Image IDs
      *
      * @return \Darvin\ImageBundle\Entity\Image\AbstractImage[]
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    private function getImages(array $ids)
+    private function getImages(array $ids): array
     {
         if (empty($ids)) {
             return [];
@@ -138,17 +139,17 @@ class ImageController extends AbstractController
     }
 
     /**
-     * @param int $id Image ID
+     * @param mixed $id Image ID
      *
      * @return \Darvin\ImageBundle\Entity\Image\AbstractImage
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
-    private function getImage($id)
+    private function getImage($id): AbstractImage
     {
         $image = $this->getImageRepository()->find($id);
 
         if (empty($image)) {
-            throw $this->createNotFoundException(sprintf('Unable to find image by ID "%d".', $id));
+            throw $this->createNotFoundException(sprintf('Unable to find image by ID "%s".', $id));
         }
 
         return $image;
@@ -157,7 +158,7 @@ class ImageController extends AbstractController
     /**
      * @return \Doctrine\ORM\EntityRepository
      */
-    private function getImageRepository()
+    private function getImageRepository(): EntityRepository
     {
         return $this->getDoctrine()->getManager()->getRepository(AbstractImage::class);
     }

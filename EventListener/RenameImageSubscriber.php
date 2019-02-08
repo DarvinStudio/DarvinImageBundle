@@ -90,6 +90,8 @@ class RenameImageSubscriber implements EventSubscriber
 
     /**
      * @return string
+     *
+     * @throws \RuntimeException
      */
     private function generateTmpPathname(): string
     {
