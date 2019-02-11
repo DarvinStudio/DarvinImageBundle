@@ -10,6 +10,7 @@
 
 namespace Darvin\ImageBundle\Entity\Image;
 
+use Darvin\ContentBundle\Traits\TranslatableTrait;
 use Darvin\ImageBundle\Validation\Constraints as DarvinImageAssert;
 use Darvin\Utils\Mapping\Annotation\Clonable;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,6 +32,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 abstract class AbstractImage
 {
+    use TranslatableTrait;
+
     public const PROPERTY_FILE = 'file';
 
     /**
@@ -131,6 +134,14 @@ abstract class AbstractImage
      * @return string
      */
     abstract public static function getUploadDir();
+
+    /**
+     * {@inheritDoc}
+     */
+    public static function getTranslationEntityClass()
+    {
+        return ImageTranslation::class;
+    }
 
     /**
      * @return string
