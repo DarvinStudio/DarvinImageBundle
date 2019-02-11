@@ -4,3 +4,7 @@ darvin_image:
             fields:
                 Darvin\ImageBundle\Entity\Image\AbstractImage:
                     name: ~
+                    translations:
+                        type: A2lix\TranslationFormBundle\Form\Type\TranslationsType
+                        options:
+                            label: false

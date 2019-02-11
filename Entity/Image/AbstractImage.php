@@ -51,7 +51,7 @@ abstract class AbstractImage
     /**
      * @var bool
      *
-     * @ORM\Column(type="boolean", options={"default"=1})
+     * @ORM\Column(type="boolean")
      */
     private $enabled;
 
