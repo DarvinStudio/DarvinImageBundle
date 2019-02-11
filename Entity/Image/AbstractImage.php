@@ -146,11 +146,6 @@ abstract class AbstractImage
     }
 
     /**
-     * @return string
-     */
-    abstract public static function getUploadDir();
-
-    /**
      * {@inheritDoc}
      */
     public static function getTranslationEntityClass()
@@ -161,9 +156,36 @@ abstract class AbstractImage
     /**
      * @return string
      */
+    abstract public static function getUploadDir();
+
+    /**
+     * @return string
+     */
     public function getDimensions()
     {
-        return $this->width.'x'.$this->height;
+        return sprintf('%dx%d', $this->width, $this->height);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\File\File $file file
+     *
+     * @return AbstractImage
+     */
+    public function setFile(File $file = null)
+    {
+        if (!empty($file)) {
+            $size = @getimagesize($file->getPathname());
+
+            if (is_array($size)) {
+                list($this->width, $this->height) = $size;
+            }
+
+            $this->updatedAt = new \DateTime();
+        }
+
+        $this->file = $file;
+
+        return $this;
     }
 
     /**
@@ -335,42 +357,10 @@ abstract class AbstractImage
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\File\File $file file
-     *
-     * @return AbstractImage
-     */
-    public function setFile(File $file = null)
-    {
-        $this->file = $file;
-
-        if (!empty($file)) {
-            $size = @getimagesize($file->getPathname());
-
-            if (is_array($size)) {
-                list($this->width, $this->height) = $size;
-            }
-
-            $this->refreshUpdatedAt();
-        }
-
-        return $this;
-    }
-
-    /**
      * @return \Symfony\Component\HttpFoundation\File\File
      */
     public function getFile()
     {
         return $this->file;
-    }
-
-    /**
-     * @return AbstractImage
-     */
-    protected function refreshUpdatedAt()
-    {
-        $this->updatedAt = new \DateTime();
-
-        return $this;
     }
 }
