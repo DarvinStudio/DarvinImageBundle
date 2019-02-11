@@ -24,10 +24,64 @@ class ImageTranslation
     use TranslationTrait;
 
     /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $alt;
+
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(nullable=true)
+     */
+    private $title;
+
+    /**
      * {@inheritDoc}
      */
     public static function getTranslatableEntityClass(): string
     {
         return AbstractImage::class;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAlt(): ?string
+    {
+        return $this->alt;
+    }
+
+    /**
+     * @param string|null $alt alt
+     *
+     * @return ImageTranslation
+     */
+    public function setAlt(?string $alt): ImageTranslation
+    {
+        $this->alt = $alt;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string|null $title title
+     *
+     * @return ImageTranslation
+     */
+    public function setTitle(?string $title): ImageTranslation
+    {
+        $this->title = $title;
+
+        return $this;
     }
 }
