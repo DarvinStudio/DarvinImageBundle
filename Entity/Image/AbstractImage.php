@@ -29,6 +29,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @Clonable\Clonable(copyingPolicy="ALL")
  *
  * @Vich\Uploadable
+ *
+ * @method string|null getAlt()
+ * @method string|null getTitle()
  */
 abstract class AbstractImage
 {
@@ -127,6 +130,18 @@ abstract class AbstractImage
      */
     public function __toString()
     {
+        $alt = (string)$this->getAlt();
+
+        if ('' !== $alt) {
+            return $alt;
+        }
+
+        $title = (string)$this->getTitle();
+
+        if ('' !== $title) {
+            return $title;
+        }
+
         return $this->name;
     }
 
