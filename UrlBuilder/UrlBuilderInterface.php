@@ -19,28 +19,28 @@ use Darvin\ImageBundle\Entity\Image\AbstractImage;
 interface UrlBuilderInterface
 {
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image   Image
-     * @param bool                                                $addHost Whether to add host to URL
-     *
-     * @return string
-     * @throws \Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException
-     */
-    public function buildUrlToOriginal(?AbstractImage $image, bool $addHost = false): string;
-
-    /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image      Image
      * @param string                                              $filterName Filter name
      * @param array                                               $parameters Parameters
+     * @param string|null                                         $fallback   Fallback
      *
-     * @return string
-     * @throws \Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException
+     * @return string|null
      */
-    public function buildUrlToFilter(?AbstractImage $image, string $filterName, array $parameters = []): string;
+    public function buildFilteredUrl(?AbstractImage $image, string $filterName, array $parameters = [], ?string $fallback = null): ?string;
+
+    /**
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image    Image
+     * @param bool                                                $absolute Whether to build absolute URL
+     * @param string|null                                         $fallback Fallback
+     *
+     * @return string|null
+     */
+    public function buildOriginalUrl(?AbstractImage $image, bool $absolute = false, ?string $fallback = null): ?string;
 
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image Image
      *
      * @return bool
      */
-    public function fileExists(?AbstractImage $image): bool;
+    public function isActive(?AbstractImage $image): bool;
 }

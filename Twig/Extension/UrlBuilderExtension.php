@@ -50,10 +50,10 @@ class UrlBuilderExtension extends AbstractExtension
     public function getFilters(): iterable
     {
         foreach ([
-            'image_filter'   => 'buildImagineUrl',
-            'image_original' => 'buildOriginalUrl',
-        ] as $name => $method) {
-            yield new TwigFilter($name, [$this, $method]);
+            'image_filter'   => [$this, 'buildImagineUrl'],
+            'image_original' => [$this->urlBuilder, 'buildOriginalUrl'],
+        ] as $name => $callback) {
+            yield new TwigFilter($name, $callback);
         }
     }
 
@@ -62,7 +62,7 @@ class UrlBuilderExtension extends AbstractExtension
      */
     public function getFunctions(): iterable
     {
-        yield new TwigFunction('image_exists', [$this->urlBuilder, 'fileExists']);
+        yield new TwigFunction('image_active', [$this->urlBuilder, 'isActive']);
     }
 
     /**
@@ -74,53 +74,16 @@ class UrlBuilderExtension extends AbstractExtension
      */
     public function buildImagineUrl(?AbstractImage $image, string $filterName, ?string $fallback = null): ?string
     {
-        if (empty($image) && !empty($fallback)) {
-            return $fallback;
-        }
         try {
-            return $this->urlBuilder->buildUrlToFilter($image, DirectImagineFilter::NAME, [
+            return $this->urlBuilder->buildFilteredUrl($image, DirectImagineFilter::NAME, [
                 DirectImagineFilter::FILTER_NAME_PARAM => $filterName,
-            ]);
+            ], $fallback);
         } catch (NotLoadableException $ex) {
-            $this->logError($image, $ex);
+            if (!empty($image)) {
+                $this->logger->error(sprintf('Unable to build URL for image with ID "%s": "%s".', $image->getId(), $ex->getMessage()));
+            }
 
             return null;
         }
-    }
-
-    /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image    Image
-     * @param bool                                                $absolute Whether to build absolute URL
-     * @param string|null                                         $fallback Fallback
-     *
-     * @return string|null
-     */
-    public function buildOriginalUrl(?AbstractImage $image, bool $absolute = false, ?string $fallback = null): ?string
-    {
-        if (empty($image) && !empty($fallback)) {
-            return $fallback;
-        }
-        try {
-            return $this->urlBuilder->buildUrlToOriginal($image, $absolute);
-        } catch (NotLoadableException $ex) {
-            $this->logError($image, $ex);
-
-            return null;
-        }
-    }
-
-    /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image Image
-     * @param \Exception                                          $ex    Exception
-     */
-    private function logError(?AbstractImage $image, \Exception $ex): void
-    {
-        if (empty($image)) {
-            $this->logger->error(sprintf('Unable to build URL for placeholder image: "%s".', $ex->getMessage()));
-
-            return;
-        }
-
-        $this->logger->error(sprintf('Unable to build URL for image with ID "%s": "%s".', $image->getId(), $ex->getMessage()));
     }
 }

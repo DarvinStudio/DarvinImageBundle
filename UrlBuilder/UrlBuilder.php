@@ -14,7 +14,6 @@ namespace Darvin\ImageBundle\UrlBuilder;
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\UrlBuilder\Exception\FilterAlreadyExistsException;
 use Darvin\ImageBundle\UrlBuilder\Exception\FilterNotFoundException;
-use Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException;
 use Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -41,11 +40,6 @@ class UrlBuilder implements UrlBuilderInterface
     private $placeholder;
 
     /**
-     * @var bool
-     */
-    private $placeholderIsVector;
-
-    /**
      * @var \Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface[]
      */
     private $filters;
@@ -61,73 +55,39 @@ class UrlBuilder implements UrlBuilderInterface
         $this->storage = $storage;
         $this->placeholder = $placeholder;
 
-        $this->placeholderIsVector = !empty($placeholder) && preg_match('/\.svg$/', $placeholder);
         $this->filters = [];
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function buildUrlToOriginal(?AbstractImage $image, bool $addHost = false): string
+    public function buildFilteredUrl(?AbstractImage $image, string $filterName, array $parameters = [], ?string $fallback = null): ?string
     {
-        $this->checkIfFileExists($image);
-
-        $url = !empty($image)
-            ? $this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image))
-            : sprintf('/%s', $this->placeholder);
-
-        if (null === $url) {
-            $url = '';
-        }
-        if (!$addHost) {
-            return $url;
+        if ($this->isActive($image)) {
+            return $this->getFilter($filterName)->buildUrl($this->buildOriginalUrl($image), $parameters);
         }
 
-        $request = $this->requestStack->getCurrentRequest();
-
-        if (empty($request)) {
-            return $url;
-        }
-
-        return $request->getSchemeAndHttpHost().$url;
+        return $this->makeUrlAbsolute(null !== $fallback ? $fallback : $this->placeholder);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function buildUrlToFilter(?AbstractImage $image, string $filterName, array $parameters = []): string
+    public function buildOriginalUrl(?AbstractImage $image, bool $absolute = false, ?string $fallback = null): ?string
     {
-        $this->checkIfFileExists($image);
-
-        $filter = $this->getFilter($filterName);
-
-        if (!empty($image)) {
-            return $filter->buildUrl($this->buildUrlToOriginal($image), $parameters);
-        }
-        if (!$this->placeholderIsVector) {
-            return $filter->buildUrl($this->placeholder, $parameters);
+        if ($this->isActive($image)) {
+            return $this->makeUrlAbsolute($this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image)));
         }
 
-        $prefix  = '/';
-        $request = $this->requestStack->getCurrentRequest();
-
-        if (!empty($request)) {
-            $prefix = $request->getSchemeAndHttpHost().$prefix;
-        }
-
-        return $prefix.$this->placeholder;
+        return $this->makeUrlAbsolute(null !== $fallback ? $fallback : $this->placeholder);
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function fileExists(?AbstractImage $image): bool
+    public function isActive(?AbstractImage $image): bool
     {
-        if (empty($image)) {
-            return !empty($this->placeholder);
-        }
-
-        return (bool)$this->getImagePathname($image);
+        return !empty($image) && $image->isEnabled();
     }
 
     /**
@@ -170,24 +130,23 @@ class UrlBuilder implements UrlBuilderInterface
     }
 
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image Image
+     * @param string|null $url URL
      *
-     * @throws \Darvin\ImageBundle\UrlBuilder\Exception\ImageNotFoundException
+     * @return string|null
      */
-    private function checkIfFileExists(?AbstractImage $image): void
+    private function makeUrlAbsolute(?string $url): ?string
     {
-        if (!$this->fileExists($image)) {
-            throw new ImageNotFoundException(!empty($image) ? $this->getImagePathname($image) : '');
+        if (null === $url) {
+            return null;
         }
-    }
 
-    /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Image
-     *
-     * @return string
-     */
-    private function getImagePathname(AbstractImage $image): string
-    {
-        return $this->storage->resolvePath($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image)) ?: '';
+        $parts   = ['/', ltrim($url, '/')];
+        $request = $this->requestStack->getCurrentRequest();
+
+        if (!empty($request)) {
+            array_unshift($parts, $request->getSchemeAndHttpHost());
+        }
+
+        return implode('', $parts);
     }
 }
