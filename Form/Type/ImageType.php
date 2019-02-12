@@ -56,6 +56,8 @@ class ImageType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options): void
     {
+        $view->vars['toggle_enabled'] = $options['toggle_enabled'];
+
         $description = $view->children['file']->vars['description'];
 
         if (empty($description)) {
@@ -80,28 +82,22 @@ class ImageType extends AbstractType
 
         $resolver
             ->setDefaults([
-                'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
-                'required'      => false,
-                'filters'       => [],
-                'width'         => 0,
-                'height'        => 0,
-                'description'   => function (Options $options) use ($sizeDescriber) {
+                'csrf_token_id'  => md5(__FILE__.$this->getBlockPrefix()),
+                'required'       => false,
+                'toggle_enabled' => true,
+                'filters'        => [],
+                'width'          => 0,
+                'height'         => 0,
+                'description'    => function (Options $options) use ($sizeDescriber) {
                     return $sizeDescriber->describeSize($options['filters'], $options['width'], $options['height'], $options['data_class']);
                 },
             ])
-            ->setAllowedTypes('filters', [
-                'array',
-                'null',
-                'string',
-            ])
+            ->setAllowedTypes('toggle_enabled', 'boolean')
+            ->setAllowedTypes('filters', ['array', 'null', 'string'])
             ->setAllowedTypes('width', 'integer')
             ->setAllowedTypes('height', 'integer')
-            ->remove([
-                'data_class',
-            ])
-            ->setRequired([
-                'data_class',
-            ]);
+            ->remove('data_class')
+            ->setRequired('data_class');
     }
 
     /**
