@@ -64,7 +64,7 @@ class UrlBuilder implements UrlBuilderInterface
     public function buildFilteredUrl(?AbstractImage $image, string $filterName, array $parameters = [], ?string $fallback = null): ?string
     {
         if ($this->isActive($image)) {
-            return $this->getFilter($filterName)->buildUrl($this->buildOriginalUrl($image), $parameters);
+            return $this->getFilter($filterName)->buildUrl($this->buildOriginalUrl($image, false), $parameters);
         }
 
         return $this->makeUrlAbsolute(null !== $fallback ? $fallback : $this->placeholder);
@@ -73,13 +73,13 @@ class UrlBuilder implements UrlBuilderInterface
     /**
      * {@inheritDoc}
      */
-    public function buildOriginalUrl(?AbstractImage $image, bool $absolute = false, ?string $fallback = null): ?string
+    public function buildOriginalUrl(?AbstractImage $image, bool $prependHost = true, ?string $fallback = null): ?string
     {
         if ($this->isActive($image)) {
-            return $this->makeUrlAbsolute($this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image)));
+            return $this->makeUrlAbsolute($this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image)), $prependHost);
         }
 
-        return $this->makeUrlAbsolute(null !== $fallback ? $fallback : $this->placeholder);
+        return $this->makeUrlAbsolute(null !== $fallback ? $fallback : $this->placeholder, $prependHost);
     }
 
     /**
@@ -130,21 +130,25 @@ class UrlBuilder implements UrlBuilderInterface
     }
 
     /**
-     * @param string|null $url URL
+     * @param string|null $url         URL
+     * @param bool        $prependHost Whether to prepend host
      *
      * @return string|null
      */
-    private function makeUrlAbsolute(?string $url): ?string
+    private function makeUrlAbsolute(?string $url, bool $prependHost = true): ?string
     {
         if (null === $url) {
             return null;
         }
 
-        $parts   = ['/', ltrim($url, '/')];
-        $request = $this->requestStack->getCurrentRequest();
+        $parts = ['/', ltrim($url, '/')];
 
-        if (!empty($request)) {
-            array_unshift($parts, $request->getSchemeAndHttpHost());
+        if ($prependHost) {
+            $request = $this->requestStack->getCurrentRequest();
+
+            if (!empty($request)) {
+                array_unshift($parts, $request->getSchemeAndHttpHost());
+            }
         }
 
         return implode('', $parts);

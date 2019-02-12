@@ -29,13 +29,13 @@ interface UrlBuilderInterface
     public function buildFilteredUrl(?AbstractImage $image, string $filterName, array $parameters = [], ?string $fallback = null): ?string;
 
     /**
-     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image    Image
-     * @param bool                                                $absolute Whether to build absolute URL
-     * @param string|null                                         $fallback Fallback
+     * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image       Image
+     * @param bool                                                $prependHost Whether to prepend host
+     * @param string|null                                         $fallback    Fallback
      *
      * @return string|null
      */
-    public function buildOriginalUrl(?AbstractImage $image, bool $absolute = false, ?string $fallback = null): ?string;
+    public function buildOriginalUrl(?AbstractImage $image, bool $prependHost = true, ?string $fallback = null): ?string;
 
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage|null $image Image
