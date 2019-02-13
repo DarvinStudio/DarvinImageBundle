@@ -24,7 +24,7 @@ class ImageJoiner implements ImageJoinerInterface
     /**
      * {@inheritdoc}
      */
-    public function joinImages(QueryBuilder $qb): void
+    public function joinImages(QueryBuilder $qb, ?string $locale = null): void
     {
         $class = $qb->getRootEntities()[0];
 
@@ -35,21 +35,40 @@ class ImageJoiner implements ImageJoinerInterface
                 continue;
             }
 
-            $parts = $qb->getDQLParts();
+            $parts     = $qb->getDQLParts();
             $rootAlias = $qb->getRootAliases()[0];
 
             $existingJoins = array_map(function (Join $expr) {
                 return $expr->getJoin();
             }, isset($parts['join'][$rootAlias]) ? $parts['join'][$rootAlias] : []);
 
-            $join = sprintf('%s.%s', $rootAlias, $mapping['fieldName']);
-
-            if (!in_array($join, $existingJoins)) {
-                $alias = StringsUtil::toUnderscore($mapping['fieldName']);
+            foreach ([
+                sprintf('%s.%s', $rootAlias, $mapping['fieldName']) => [
+                    'alias' => StringsUtil::toUnderscore($mapping['fieldName']),
+                ],
+                sprintf('%s.translations', $mapping['fieldName']) => [
+                    'alias'  => sprintf('%s_translations', StringsUtil::toUnderscore($mapping['fieldName'])),
+                    'locale' => $locale,
+                ],
+            ] as $join => $attr) {
+                if (in_array($join, $existingJoins)) {
+                    continue;
+                }
 
                 $qb
-                    ->addSelect($alias)
-                    ->leftJoin($join, $alias);
+                    ->addSelect($attr['alias'])
+                    ->leftJoin($join, $attr['alias']);
+
+                if (null === $locale || !array_key_exists('locale', $attr)) {
+                    continue;
+                }
+
+                $qb
+                    ->andWhere($qb->expr()->orX(
+                        sprintf('%s.locale IS NULL', $attr['alias']),
+                        sprintf('%s.locale = :locale', $attr['alias'])
+                    ))
+                    ->setParameter('locale', $locale);
             }
         }
     }

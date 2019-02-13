@@ -18,7 +18,8 @@ use Doctrine\ORM\QueryBuilder;
 interface ImageJoinerInterface
 {
     /**
-     * @param \Doctrine\ORM\QueryBuilder $qb Query builder
+     * @param \Doctrine\ORM\QueryBuilder $qb     Query builder
+     * @param string|null                $locale Locale
      */
-    public function joinImages(QueryBuilder $qb): void;
+    public function joinImages(QueryBuilder $qb, ?string $locale = null): void;
 }
