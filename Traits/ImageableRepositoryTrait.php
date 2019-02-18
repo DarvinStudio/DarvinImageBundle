@@ -22,6 +22,8 @@ trait ImageableRepositoryTrait
      * @param string|null                $locale    Locale
      * @param bool                       $addSelect Whether to add select
      * @param string                     $join      Join
+     *
+     * @return self
      */
     protected function innerJoinImage(QueryBuilder $qb, ?string $locale = null, bool $addSelect = true, string $join = 'o.image')
     {
@@ -39,6 +41,8 @@ trait ImageableRepositoryTrait
                 ->addSelect('image')
                 ->addSelect('image_translations');
         }
+
+        return $this;
     }
 
     /**
@@ -46,6 +50,8 @@ trait ImageableRepositoryTrait
      * @param string|null                $locale    Locale
      * @param bool                       $addSelect Whether to add select
      * @param string                     $join      Join
+     *
+     * @return self
      */
     protected function leftJoinImage(QueryBuilder $qb, ?string $locale = null, bool $addSelect = true, string $join = 'o.image')
     {
@@ -66,5 +72,7 @@ trait ImageableRepositoryTrait
                 ->addSelect('image')
                 ->addSelect('image_translations');
         }
+
+        return $this;
     }
 }
