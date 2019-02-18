@@ -22,24 +22,27 @@ trait ImageableRepositoryTrait
      * @param string|null                $locale    Locale
      * @param bool                       $addSelect Whether to add select
      * @param string                     $join      Join
+     * @param string                     $alias     Alias
      *
      * @return self
      */
-    protected function innerJoinImage(QueryBuilder $qb, ?string $locale = null, bool $addSelect = true, string $join = 'o.image')
+    protected function innerJoinImage(QueryBuilder $qb, ?string $locale = null, bool $addSelect = true, string $join = 'o.image', string $alias = 'image')
     {
+        $translationsAlias = sprintf('%s_translations', $alias);
+
         $qb
-            ->innerJoin($join, 'image')
-            ->innerJoin('image.translations', 'image_translations');
+            ->innerJoin($join, $alias)
+            ->innerJoin(sprintf('%s.translations', $alias), $translationsAlias);
 
         if (null !== $locale) {
             $qb
-                ->andWhere('image_translations.locale = :locale')
+                ->andWhere(sprintf('%s.locale = :locale', $translationsAlias))
                 ->setParameter('locale', $locale);
         }
         if ($addSelect) {
             $qb
-                ->addSelect('image')
-                ->addSelect('image_translations');
+                ->addSelect($alias)
+                ->addSelect($translationsAlias);
         }
 
         return $this;
@@ -50,27 +53,30 @@ trait ImageableRepositoryTrait
      * @param string|null                $locale    Locale
      * @param bool                       $addSelect Whether to add select
      * @param string                     $join      Join
+     * @param string                     $alias     Alias
      *
      * @return self
      */
-    protected function leftJoinImage(QueryBuilder $qb, ?string $locale = null, bool $addSelect = true, string $join = 'o.image')
+    protected function leftJoinImage(QueryBuilder $qb, ?string $locale = null, bool $addSelect = true, string $join = 'o.image', string $alias = 'image')
     {
+        $translationsAlias = sprintf('%s_translations', $alias);
+
         $qb
-            ->leftJoin($join, 'image')
-            ->leftJoin('image.translations', 'image_translations');
+            ->leftJoin($join, $alias)
+            ->leftJoin(sprintf('%s.translations', $alias), $translationsAlias);
 
         if (null !== $locale) {
             $qb
                 ->andWhere($qb->expr()->orX(
-                    'image_translations.locale IS NULL',
-                    'image_translations.locale = :locale'
+                    sprintf('%s.locale IS NULL', $translationsAlias),
+                    sprintf('%s.locale = :locale', $translationsAlias)
                 ))
                 ->setParameter('locale', $locale);
         }
         if ($addSelect) {
             $qb
-                ->addSelect('image')
-                ->addSelect('image_translations');
+                ->addSelect($alias)
+                ->addSelect($translationsAlias);
         }
 
         return $this;
