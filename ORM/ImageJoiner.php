@@ -46,7 +46,7 @@ class ImageJoiner implements ImageJoinerInterface
                 sprintf('%s.%s', $rootAlias, $mapping['fieldName']) => [
                     'alias' => StringsUtil::toUnderscore($mapping['fieldName']),
                 ],
-                sprintf('%s.translations', $mapping['fieldName']) => [
+                sprintf('%s.translations', StringsUtil::toUnderscore($mapping['fieldName'])) => [
                     'alias'  => sprintf('%s_translations', StringsUtil::toUnderscore($mapping['fieldName'])),
                     'locale' => $locale,
                 ],
