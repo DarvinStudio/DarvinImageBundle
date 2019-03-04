@@ -58,19 +58,19 @@ class ImageType extends AbstractType
     {
         $view->vars['toggle_enabled'] = $options['toggle_enabled'];
 
-        $description = $view->children['file']->vars['description'];
+        $help = $view->children['file']->vars['help'];
 
-        if (empty($description)) {
+        if (empty($help)) {
             return;
         }
 
-        $view->children['file']->vars['description'] = null;
+        $view->children['file']->vars['help'] = null;
 
-        if (!empty($view->vars['description'])) {
-            $view->vars['description'] .= '<br>';
+        if (!empty($view->vars['help'])) {
+            $view->vars['help'] .= '<br>';
         }
 
-        $view->vars['description'] .= $description;
+        $view->vars['help'] .= $help;
     }
 
     /**
@@ -88,7 +88,7 @@ class ImageType extends AbstractType
                 'filters'        => [],
                 'width'          => 0,
                 'height'         => 0,
-                'description'    => function (Options $options) use ($sizeDescriber) {
+                'help'           => function (Options $options) use ($sizeDescriber) {
                     return $sizeDescriber->describeSize($options['filters'], $options['width'], $options['height'], $options['data_class']);
                 },
             ])
