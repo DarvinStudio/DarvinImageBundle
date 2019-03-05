@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Igor Nikolaev <igor.sv.n@gmail.com>
  * @copyright Copyright (c) 2015-2019, Darvin Studio
@@ -109,7 +109,7 @@ abstract class AbstractImage
     private $updatedAt;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\File\File
+     * @var \Symfony\Component\HttpFoundation\File\File|null
      *
      * @Vich\UploadableField(mapping="darvin_image", fileNameProperty="filename")
      *
@@ -122,13 +122,14 @@ abstract class AbstractImage
      */
     public function __construct()
     {
-        $this->enabled = true;
+        $this->enabled   = true;
+        $this->updatedAt = new \DateTime();
     }
 
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $alt = (string)$this->getAlt();
 
@@ -148,7 +149,7 @@ abstract class AbstractImage
     /**
      * {@inheritDoc}
      */
-    public static function getTranslationEntityClass()
+    public static function getTranslationEntityClass(): string
     {
         return ImageTranslation::class;
     }
@@ -156,22 +157,22 @@ abstract class AbstractImage
     /**
      * @return string
      */
-    abstract public static function getUploadDir();
+    abstract public static function getUploadDir(): string;
 
     /**
      * @return string
      */
-    public function getDimensions()
+    public function getDimensions(): string
     {
         return sprintf('%dx%d', $this->width, $this->height);
     }
 
     /**
-     * @param \Symfony\Component\HttpFoundation\File\File $file file
+     * @param \Symfony\Component\HttpFoundation\File\File|null $file file
      *
      * @return AbstractImage
      */
-    public function setFile(File $file = null)
+    public function setFile(?File $file): AbstractImage
     {
         if (!empty($file)) {
             $size = @getimagesize($file->getPathname());
@@ -191,17 +192,25 @@ abstract class AbstractImage
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @param boolean $enabled enabled
+     * @return bool
+     */
+    public function isEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled enabled
      *
      * @return AbstractImage
      */
-    public function setEnabled($enabled)
+    public function setEnabled(?bool $enabled): AbstractImage
     {
         $this->enabled = $enabled;
 
@@ -209,11 +218,11 @@ abstract class AbstractImage
     }
 
     /**
-     * @return boolean
+     * @return string
      */
-    public function isEnabled()
+    public function getName(): ?string
     {
-        return $this->enabled;
+        return $this->name;
     }
 
     /**
@@ -221,7 +230,7 @@ abstract class AbstractImage
      *
      * @return AbstractImage
      */
-    public function setName($name)
+    public function setName(?string $name): AbstractImage
     {
         $this->name = $name;
 
@@ -231,9 +240,9 @@ abstract class AbstractImage
     /**
      * @return string
      */
-    public function getName()
+    public function getExtension(): ?string
     {
-        return $this->name;
+        return $this->extension;
     }
 
     /**
@@ -241,7 +250,7 @@ abstract class AbstractImage
      *
      * @return AbstractImage
      */
-    public function setExtension($extension)
+    public function setExtension(?string $extension): AbstractImage
     {
         $this->extension = $extension;
 
@@ -251,9 +260,9 @@ abstract class AbstractImage
     /**
      * @return string
      */
-    public function getExtension()
+    public function getFilename(): ?string
     {
-        return $this->extension;
+        return $this->filename;
     }
 
     /**
@@ -261,7 +270,7 @@ abstract class AbstractImage
      *
      * @return AbstractImage
      */
-    public function setFilename($filename)
+    public function setFilename(?string $filename): AbstractImage
     {
         $this->filename = $filename;
 
@@ -269,11 +278,11 @@ abstract class AbstractImage
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getFilename()
+    public function getWidth(): ?int
     {
-        return $this->filename;
+        return $this->width;
     }
 
     /**
@@ -281,7 +290,7 @@ abstract class AbstractImage
      *
      * @return AbstractImage
      */
-    public function setWidth($width)
+    public function setWidth(?int $width): AbstractImage
     {
         $this->width = $width;
 
@@ -291,9 +300,9 @@ abstract class AbstractImage
     /**
      * @return int
      */
-    public function getWidth()
+    public function getHeight(): ?int
     {
-        return $this->width;
+        return $this->height;
     }
 
     /**
@@ -301,7 +310,7 @@ abstract class AbstractImage
      *
      * @return AbstractImage
      */
-    public function setHeight($height)
+    public function setHeight(?int $height): AbstractImage
     {
         $this->height = $height;
 
@@ -311,9 +320,9 @@ abstract class AbstractImage
     /**
      * @return int
      */
-    public function getHeight()
+    public function getPosition(): ?int
     {
-        return $this->height;
+        return $this->position;
     }
 
     /**
@@ -321,7 +330,7 @@ abstract class AbstractImage
      *
      * @return AbstractImage
      */
-    public function setPosition($position)
+    public function setPosition(?int $position): AbstractImage
     {
         $this->position = $position;
 
@@ -329,37 +338,17 @@ abstract class AbstractImage
     }
 
     /**
-     * @return int
-     */
-    public function getPosition()
-    {
-        return $this->position;
-    }
-
-    /**
-     * @param \DateTime $updatedAt updatedAt
-     *
-     * @return AbstractImage
-     */
-    public function setUpdatedAt(\DateTime $updatedAt = null)
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
-    /**
      * @return \DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ?\DateTime
     {
         return $this->updatedAt;
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\File\File
+     * @return \Symfony\Component\HttpFoundation\File\File|null
      */
-    public function getFile()
+    public function getFile(): ?File
     {
         return $this->file;
     }

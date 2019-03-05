@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /**
  * @author    Lev Semin <lev@darvin-studio.ru>
  * @copyright Copyright (c) 2017-2019, Darvin Studio
@@ -10,6 +10,8 @@
 
 namespace Darvin\ImageBundle\Imageable;
 
+use Darvin\ImageBundle\Entity\Image\AbstractImage;
+
 /**
  * This interface provides getImage method
  * It returns main image entity for present the object 
@@ -19,5 +21,5 @@ interface ImageableInterface
     /**
      * @return \Darvin\ImageBundle\Entity\Image\AbstractImage|null An image that presents object
      */
-    public function getImage();
+    public function getImage(): ?AbstractImage;
 }
