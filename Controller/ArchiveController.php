@@ -45,7 +45,7 @@ class ArchiveController extends AbstractController
             $url = $request->headers->get('referer');
 
             if ($request->isXmlHttpRequest()) {
-                return new AjaxResponse('', false, implode(' ', $messages), [], $url);
+                return new AjaxResponse(null, false, implode(' ', $messages), [], $url);
             }
             foreach ($messages as $message) {
                 $this->getFlashNotifier()->error($message);
@@ -64,7 +64,7 @@ class ArchiveController extends AbstractController
         ]);
 
         if ($request->isXmlHttpRequest()) {
-            return new AjaxResponse('', true, $message, [], $url);
+            return new AjaxResponse(null, true, $message, [], $url);
         }
 
         $this->getFlashNotifier()->success($message);
