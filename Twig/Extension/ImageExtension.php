@@ -22,14 +22,12 @@ class ImageExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function getFilters(): iterable
+    public function getFilters(): array
     {
-        foreach ([
-            'image_alt'   => 'getAlt',
-            'image_title' => 'getTitle',
-        ] as $name => $method) {
-            yield new TwigFilter($name, [$this, $method]);
-        }
+        return [
+            new TwigFilter('image_alt', [$this, 'getAlt']),
+            new TwigFilter('image_title', [$this, 'getTitle']),
+        ];
     }
 
     /**

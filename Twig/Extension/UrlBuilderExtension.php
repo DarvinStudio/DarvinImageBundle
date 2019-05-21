@@ -47,22 +47,22 @@ class UrlBuilderExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFilters(): iterable
+    public function getFilters(): array
     {
-        foreach ([
-            'image_filter'   => [$this, 'buildImagineUrl'],
-            'image_original' => [$this->urlBuilder, 'buildOriginalUrl'],
-        ] as $name => $callback) {
-            yield new TwigFilter($name, $callback);
-        }
+        return [
+            new TwigFilter('image_filter', [$this, 'buildImagineUrl']),
+            new TwigFilter('image_original', [$this->urlBuilder, 'buildOriginalUrl']),
+        ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFunctions(): iterable
+    public function getFunctions(): array
     {
-        yield new TwigFunction('image_active', [$this->urlBuilder, 'isActive']);
+        return [
+            new TwigFunction('image_active', [$this->urlBuilder, 'isActive']),
+        ];
     }
 
     /**

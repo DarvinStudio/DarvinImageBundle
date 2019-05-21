@@ -36,12 +36,14 @@ class ArchiveExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions(): iterable
+    public function getFunctions(): array
     {
-        yield new TwigFunction('image_archive_build_form', [$this, 'renderBuildForm'], [
-            'needs_environment' => true,
-            'is_safe'           => ['html'],
-        ]);
+        return [
+            new TwigFunction('image_archive_build_form', [$this, 'renderBuildForm'], [
+                'needs_environment' => true,
+                'is_safe'           => ['html'],
+            ]),
+        ];
     }
 
     /**
