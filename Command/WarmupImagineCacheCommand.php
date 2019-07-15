@@ -13,7 +13,6 @@ namespace Darvin\ImageBundle\Command;
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface;
 use Doctrine\ORM\EntityManager;
-use Liip\ImagineBundle\Exception\Binary\Loader\NotLoadableException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -91,7 +90,7 @@ class WarmupImagineCacheCommand extends Command
 
             try {
                 $this->imagineCacheWarmer->warmupImageCache($image);
-            } catch (NotLoadableException $ex) {
+            } catch (\Exception $ex) {
                 $io->warning($ex->getMessage());
             }
 
