@@ -56,7 +56,10 @@ class ImageType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options): void
     {
-        $view->vars['disableable'] = $options['disableable'];
+        $view->vars = array_merge($view->vars, [
+            'disableable' => $options['disableable'],
+            'editable'    => $options['editable'],
+        ]);
 
         $help = $view->children['file']->vars['help'];
 
@@ -85,6 +88,7 @@ class ImageType extends AbstractType
                 'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
                 'required'      => false,
                 'disableable'   => true,
+                'editable'      => true,
                 'filters'       => [],
                 'width'         => 0,
                 'height'        => 0,
@@ -93,6 +97,7 @@ class ImageType extends AbstractType
                 },
             ])
             ->setAllowedTypes('disableable', 'boolean')
+            ->setAllowedTypes('editable', 'boolean')
             ->setAllowedTypes('filters', ['array', 'null', 'string'])
             ->setAllowedTypes('width', 'integer')
             ->setAllowedTypes('height', 'integer')
