@@ -42,7 +42,7 @@ class ArchiveController extends AbstractController
                 $messages[] = $error->getMessage();
             }
 
-            $url = $request->headers->get('referer');
+            $url = $request->headers->get('referer', '/');
 
             if ($request->isXmlHttpRequest()) {
                 return new AjaxResponse(null, false, implode(' ', $messages), [], $url);
