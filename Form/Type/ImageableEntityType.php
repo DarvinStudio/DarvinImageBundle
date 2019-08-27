@@ -46,7 +46,7 @@ class ImageableEntityType extends AbstractType
             $image = $entity->getImage();
 
             if (null !== $image) {
-                $url = $urlBuilder->buildOriginalUrl($image);
+                $url = $urlBuilder->buildOriginalUrl($image, false);
 
                 if (null !== $url) {
                     $attr['data-img-src'] = $url;
