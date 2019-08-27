@@ -34,6 +34,7 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
         (new ConfigLoader($container, __DIR__.'/../Resources/config'))->load([
             'archive/twig_extension',
             'image',
+            'imageable',
             'imagine',
             'namer',
             'orm',
