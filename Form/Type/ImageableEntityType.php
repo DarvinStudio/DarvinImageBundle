@@ -42,9 +42,18 @@ class ImageableEntityType extends AbstractType
         $urlBuilder = $this->imageUrlBuilder;
 
         $resolver->setDefault('choice_attr', function (ImageableInterface $entity) use ($urlBuilder) {
-            return [
-                'data-image-src' => $urlBuilder->buildOriginalUrl($entity->getImage()),
-            ];
+            $attr  = [];
+            $image = $entity->getImage();
+
+            if (null !== $image) {
+                $url = $urlBuilder->buildOriginalUrl($image);
+
+                if (null !== $url) {
+                    $attr['data-img-src'] = $url;
+                }
+            }
+
+            return $attr;
         });
     }
 
