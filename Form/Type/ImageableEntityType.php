@@ -11,9 +11,11 @@
 namespace Darvin\ImageBundle\Form\Type;
 
 use Darvin\ImageBundle\Imageable\ImageableInterface;
+use Darvin\ImageBundle\UrlBuilder\Filter\DirectImagineFilter;
 use Darvin\ImageBundle\UrlBuilder\UrlBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -41,20 +43,31 @@ class ImageableEntityType extends AbstractType
     {
         $urlBuilder = $this->imageUrlBuilder;
 
-        $resolver->setDefault('choice_attr', function (ImageableInterface $entity) use ($urlBuilder) {
-            $attr  = [];
-            $image = $entity->getImage();
+        $resolver
+            ->setDefault('imagine_filter', null)
+            ->setAllowedTypes('imagine_filter', ['string', 'null'])
+            ->setNormalizer('choice_attr', function (Options $options) use ($urlBuilder) {
+                $imagineFilter = $options['imagine_filter'];
 
-            if (null !== $image) {
-                $url = $urlBuilder->buildOriginalUrl($image, false);
+                return function (ImageableInterface $entity) use ($imagineFilter, $urlBuilder) {
+                    $attr  = [];
+                    $image = $entity->getImage();
 
-                if (null !== $url) {
-                    $attr['data-img-src'] = $url;
-                }
-            }
+                    if (null !== $image) {
+                        $url = null !== $imagineFilter
+                            ? $urlBuilder->buildFilteredUrl($image, DirectImagineFilter::NAME, [
+                                DirectImagineFilter::FILTER_NAME_PARAM => $imagineFilter,
+                            ])
+                            : $urlBuilder->buildOriginalUrl($image, false);
 
-            return $attr;
-        });
+                        if (null !== $url) {
+                            $attr['data-img-src'] = $url;
+                        }
+                    }
+
+                    return $attr;
+                };
+            });
     }
 
     /**
