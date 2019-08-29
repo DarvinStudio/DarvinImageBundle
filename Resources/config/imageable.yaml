@@ -6,5 +6,6 @@ services:
         class: '%darvin_image.imageable.form_type.entity.class%'
         arguments:
             - '@darvin_image.url_builder.builder'
+            - '@property_accessor'
         tags:
             - { name: form.type }
