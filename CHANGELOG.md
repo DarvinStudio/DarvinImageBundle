@@ -51,3 +51,5 @@ form:
 - remove image size classes;
 
 - make AbstractImage::getUploadDir() abstract and static.
+
+7.0.3: Add imageable entity form type.
