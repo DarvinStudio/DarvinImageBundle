@@ -25,6 +25,12 @@ darvin_image_image_enable:
     methods:      [ post ]
     condition:    request.isXmlHttpRequest()
 
+darvin_image_image_exterminate:
+    path:      /exterminate
+    defaults:  { _controller: Darvin\ImageBundle\Controller\ImageController::exterminateAction }
+    methods:   [ post ]
+    condition: request.isXmlHttpRequest()
+
 darvin_image_image_sort:
     path:      /sort
     defaults:  { _controller: Darvin\ImageBundle\Controller\ImageController::sortAction }

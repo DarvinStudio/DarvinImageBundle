@@ -139,6 +139,14 @@ class ImageController extends AbstractController
     }
 
     /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function exterminateAction(): Response
+    {
+        return new Response();
+    }
+
+    /**
      * @param \Symfony\Component\HttpFoundation\Request $request Request
      *
      * @return \Symfony\Component\HttpFoundation\Response
