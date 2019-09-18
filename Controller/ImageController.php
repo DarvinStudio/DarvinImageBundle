@@ -16,6 +16,7 @@ use Darvin\Utils\Flash\FlashNotifierInterface;
 use Darvin\Utils\HttpFoundation\AjaxResponse;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -139,11 +140,32 @@ class ImageController extends AbstractController
     }
 
     /**
+     * @param \Symfony\Component\HttpFoundation\Request $request Request
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function exterminateAction(): Response
+    public function exterminateAction(Request $request): Response
     {
-        return new Response();
+        $exterminated = [];
+        $ids          = $request->request->get('ids', []);
+
+        if (!is_array($ids)) {
+            $ids = [$ids];
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        foreach ($this->getImages($ids) as $image) {
+            $em->remove($image);
+
+            $exterminated[] = $image->getId();
+        }
+
+        $em->flush();
+
+        return new JsonResponse([
+            'ids' => $exterminated,
+        ]);
     }
 
     /**
