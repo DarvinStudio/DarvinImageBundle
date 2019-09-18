@@ -146,15 +146,13 @@ class ImageController extends AbstractController
      */
     public function exterminateAction(Request $request): Response
     {
+        $em           = $this->getDoctrine()->getManager();
         $exterminated = [];
         $ids          = $request->request->get('ids', []);
 
         if (!is_array($ids)) {
             $ids = [$ids];
         }
-
-        $em = $this->getDoctrine()->getManager();
-
         foreach ($this->getImages($ids) as $image) {
             $em->remove($image);
 
