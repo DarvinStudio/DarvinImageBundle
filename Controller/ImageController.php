@@ -164,7 +164,7 @@ class ImageController extends AbstractController
         $em->flush();
 
         return new JsonResponse([
-            'ids' => $exterminated,
+            'exterminated' => $exterminated,
         ]);
     }
 
