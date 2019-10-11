@@ -24,7 +24,7 @@ services:
             - '%darvin_image.imagine.cache_resolver.web_root%'
             - '%darvin_image.imagine.cache_resolver.cache_prefix%'
         tags:
-            - { name: liip_imagine.cache.resolver, resolver: darvin_image }
+            - { name: liip_imagine.cache.resolver, resolver: darvin_image_custom }
 
     darvin_image.imagine.cache_warmer:
         class:  '%darvin_image.imagine.cache_warmer.class%'

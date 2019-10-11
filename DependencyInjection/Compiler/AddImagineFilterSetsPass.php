@@ -28,7 +28,7 @@ class AddImagineFilterSetsPass implements CompilerPassInterface
 
         foreach ($config['filter_sets'] as $name => $filterSet) {
             $filterSets[$name] = array_merge_recursive($config['filter_defaults'], [
-                'cache' => 'darvin_image',
+                'cache' => 'darvin_image_custom',
             ], $filterSet);
         }
 

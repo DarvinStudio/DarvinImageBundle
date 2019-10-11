@@ -70,9 +70,9 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
         );
 
         $container->prependExtensionConfig('liip_imagine', [
-            'cache'     => 'darvin_image',
+            'cache'     => 'darvin_image_common',
             'resolvers' => [
-                'darvin_image' => [
+                'darvin_image_common' => [
                     'web_path' => [
                         'web_root'     => $config['imagine']['cache_resolver']['web_root'],
                         'cache_prefix' => $config['imagine']['cache_resolver']['cache_prefix'],
