@@ -41,6 +41,14 @@ class Resolver extends WebPathResolver
     }
 
     /**
+     * {@inheritDoc}
+     */
+    protected function getFilePath($path, $filter): string
+    {
+        return implode(DIRECTORY_SEPARATOR, [$this->webRoot, $this->getFileUrl($path, $filter)]);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getFileUrl($path, $filter): string
