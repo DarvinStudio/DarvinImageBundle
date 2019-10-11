@@ -55,3 +55,5 @@ form:
 7.0.3: Add imageable entity form type.
 
 7.0.4: Add image exterminate action.
+
+7.0.5: Rename cache resolvers to escape collisions.
