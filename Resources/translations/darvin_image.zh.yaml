@@ -9,4 +9,4 @@ image:
     entity:
         name: 名称
 size:
-    description: '建议的最小尺寸: %width%px x %height%px'
+    description: '建议的最小尺寸: %width%x%height%.'

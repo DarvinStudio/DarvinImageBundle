@@ -1,7 +1,7 @@
 archive:
     action:
         build:
-            submit: 'Des images d''archives'
+            submit: 'Des Images D''Archives'
             success: 'Les Images archivées'
 image:
     edit:
@@ -9,4 +9,4 @@ image:
     entity:
         name: Nom
 size:
-    description: 'Recommandé taille minimale: %width%px x %height%px'
+    description: 'Recommandé taille minimale: %width%x%height%.'

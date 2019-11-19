@@ -9,4 +9,4 @@ image:
     entity:
         name: اسم
 size:
-    description: 'أوصت الحد الأدنى الحجم: %width%px x %height%px'
+    description: 'أوصت الحد الأدنى الحجم: %width%x%height%.'

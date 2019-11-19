@@ -1,7 +1,7 @@
 archive:
     action:
         build:
-            submit:  Archive images
+            submit:  Archive Images
             success: Images archived
 
 image:
@@ -11,4 +11,4 @@ image:
         name: Name
 
 size:
-    description: 'Recommended minimal size: %width%px x %height%px'
+    description: 'Recommended minimal size: %width%x%height%.'

@@ -11,4 +11,4 @@ image:
         name: Название
 
 size:
-    description: 'Рекомендуемый минимальный размер: %width%px x %height%px'
+    description: 'Рекомендуемый минимальный размер: %width%x%height%.'
