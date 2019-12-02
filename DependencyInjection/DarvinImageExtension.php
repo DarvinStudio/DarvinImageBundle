@@ -45,7 +45,7 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
             'dev/image'            => ['env' => 'dev'],
 
             'archive/archiver/zip' => ['extension' => 'zip'],
-            'archive/form_factory' => ['extension' => 'zip'],
+            'archive/common'       => ['extension' => 'zip'],
         ]);
 
         if (extension_loaded('zip')) {

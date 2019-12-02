@@ -1,0 +1,31 @@
+parameters:
+    darvin_image.archive.controller.build.class: Darvin\ImageBundle\Controller\Archive\BuildController
+
+    darvin_image.archive.controller.download.class: Darvin\ImageBundle\Controller\Archive\DownloadController
+
+    darvin_image.archive.form_factory.class: Darvin\ImageBundle\Form\Factory\ArchiveFormFactory
+
+services:
+    darvin_image.archive.controller.build:
+        class: '%darvin_image.archive.controller.build.class%'
+        arguments:
+            - '@darvin_image.archiver'
+            - '@darvin_utils.flash.notifier'
+            - '@darvin_image.archive.form_factory'
+            - '@router'
+            - '@translator'
+        tags:
+            - { name: controller.service_arguments }
+
+    darvin_image.archive.controller.download:
+        class: '%darvin_image.archive.controller.download.class%'
+        arguments:
+            - '@darvin_image.archiver'
+        tags:
+            - { name: controller.service_arguments }
+
+    darvin_image.archive.form_factory:
+        class: '%darvin_image.archive.form_factory.class%'
+        arguments:
+            - '@form.factory'
+            - '@router'
