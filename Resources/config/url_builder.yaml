@@ -6,9 +6,6 @@ parameters:
     darvin_image.url_builder.twig_extension.class: Darvin\ImageBundle\Twig\Extension\UrlBuilderExtension
 
 services:
-    _defaults:
-        public: true
-
     darvin_image.url_builder.builder:
         class: '%darvin_image.url_builder.builder.class%'
         arguments:
@@ -24,8 +21,7 @@ services:
             - { name: darvin_image.url_builder_filter }
 
     darvin_image.url_builder.twig_extension:
-        class:  '%darvin_image.url_builder.twig_extension.class%'
-        public: false
+        class: '%darvin_image.url_builder.twig_extension.class%'
         arguments:
             - '@logger'
             - '@darvin_image.url_builder.builder'

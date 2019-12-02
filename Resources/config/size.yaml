@@ -2,12 +2,8 @@ parameters:
     darvin_image.size.describer.class: Darvin\ImageBundle\Size\SizeDescriber
 
 services:
-    _defaults:
-        public: true
-
     darvin_image.size.describer:
-        class:  '%darvin_image.size.describer.class%'
-        public: false
+        class: '%darvin_image.size.describer.class%'
         arguments:
             - '@liip_imagine.filter.configuration'
             - '@translator'

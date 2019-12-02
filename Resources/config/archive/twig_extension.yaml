@@ -2,12 +2,8 @@ parameters:
     darvin_image.archive.twig_extension.class: Darvin\ImageBundle\Twig\Extension\ArchiveExtension
 
 services:
-    _defaults:
-        public: true
-
     darvin_image.archive.twig_extension:
-        class:  '%darvin_image.archive.twig_extension.class%'
-        public: false
+        class: '%darvin_image.archive.twig_extension.class%'
         arguments:
             - '@?darvin_image.archive.form_factory'
         tags:

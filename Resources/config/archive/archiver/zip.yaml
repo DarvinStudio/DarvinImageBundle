@@ -3,12 +3,8 @@ parameters:
     darvin_image.archiver.zip.tmp_dir: '%darvin_image.tmp_dir%/archives'
 
 services:
-    _defaults:
-        public: true
-
     darvin_image.archiver.zip:
-        class:  '%darvin_image.archiver.zip.class%'
-        public: false
+        class: '%darvin_image.archiver.zip.class%'
         arguments:
             - '@filesystem'
             - '@request_stack'

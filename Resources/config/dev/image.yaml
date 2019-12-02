@@ -4,9 +4,6 @@ parameters:
     darvin_image.image.list_orphans_command.chunk_size: 50
 
 services:
-    _defaults:
-        public: true
-
     darvin_image.image.list_orphans_command:
         class: '%darvin_image.image.list_orphans_command.class%'
         arguments:

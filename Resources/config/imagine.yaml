@@ -12,12 +12,8 @@ parameters:
     darvin_image.imagine.warmup_cache_event_subscriber.class: Darvin\ImageBundle\EventListener\WarmupImagineCacheSubscriber
 
 services:
-    _defaults:
-        public: true
-
     darvin_image.imagine.cache_resolver:
-        class:  '%darvin_image.imagine.cache_resolver.class%'
-        public: false
+        class: '%darvin_image.imagine.cache_resolver.class%'
         arguments:
             - '@filesystem'
             - '@router.request_context'
@@ -27,8 +23,7 @@ services:
             - { name: liip_imagine.cache.resolver, resolver: darvin_image_custom }
 
     darvin_image.imagine.cache_warmer:
-        class:  '%darvin_image.imagine.cache_warmer.class%'
-        public: false
+        class: '%darvin_image.imagine.cache_warmer.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@liip_imagine.cache.manager'
@@ -39,8 +34,7 @@ services:
             - '%darvin_image.imagine.filter_sets%'
 
     darvin_image.imagine.cleanup_cache_event_subscriber:
-        class:  '%darvin_image.imagine.cleanup_cache_event_subscriber.class%'
-        public: false
+        class: '%darvin_image.imagine.cleanup_cache_event_subscriber.class%'
         arguments:
             - '@liip_imagine.cache.manager'
             - '@liip_imagine.filter.manager'
