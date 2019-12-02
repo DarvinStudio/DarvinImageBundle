@@ -1,38 +1,38 @@
 darvin_image_image_delete:
     path:         /{id}/delete
-    defaults:     { _controller: Darvin\ImageBundle\Controller\ImageController::deleteAction }
+    defaults:     { _controller: darvin_image.image.controller.delete }
     requirements: { id: \d+ }
     methods:      [ post ]
     condition:    request.isXmlHttpRequest()
 
 darvin_image_image_disable:
     path:         /{id}/disable
-    defaults:     { _controller: Darvin\ImageBundle\Controller\ImageController::disableAction }
+    defaults:     { _controller: darvin_image.image.controller.disable }
     requirements: { id: \d+ }
     methods:      [ post ]
     condition:    request.isXmlHttpRequest()
 
 darvin_image_image_edit:
     path:         /{id}/edit
-    defaults:     { _controller: Darvin\ImageBundle\Controller\ImageController::editAction }
+    defaults:     { _controller: darvin_image.image.controller.edit }
     requirements: { id: \d+ }
     methods:      [ get, post ]
 
 darvin_image_image_enable:
     path:         /{id}/enable
-    defaults:     { _controller: Darvin\ImageBundle\Controller\ImageController::enableAction }
+    defaults:     { _controller: darvin_image.image.controller.enable }
     requirements: { id: \d+ }
     methods:      [ post ]
     condition:    request.isXmlHttpRequest()
 
 darvin_image_image_exterminate:
     path:      /exterminate
-    defaults:  { _controller: Darvin\ImageBundle\Controller\ImageController::exterminateAction }
+    defaults:  { _controller: darvin_image.image.controller.exterminate }
     methods:   [ post ]
     condition: request.isXmlHttpRequest()
 
 darvin_image_image_sort:
     path:      /sort
-    defaults:  { _controller: Darvin\ImageBundle\Controller\ImageController::sortAction }
+    defaults:  { _controller: darvin_image.image.controller.sort }
     methods:   [ post ]
     condition: request.isXmlHttpRequest()
