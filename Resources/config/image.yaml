@@ -22,6 +22,18 @@ parameters:
     darvin_image.image.update_properties_event_subscriber.class: Darvin\ImageBundle\EventListener\UpdateImagePropertiesSubscriber
 
 services:
+    darvin_image.image.controller.abstract:
+        class:    '%darvin_image.image.controller.abstract.class%'
+        abstract: true
+        calls:
+            - [ setEntityManager, [ '@doctrine.orm.entity_manager' ] ]
+
+    darvin_image.image.controller.delete:
+        class:  '%darvin_image.image.controller.delete.class%'
+        parent: darvin_image.image.controller.abstract
+        tags:
+            - { name: controller.service_arguments }
+
     darvin_image.image.copy_cloned_file_event_subscriber:
         class: '%darvin_image.image.copy_cloned_file_event_subscriber.class%'
         arguments:
