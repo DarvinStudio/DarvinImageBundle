@@ -50,7 +50,6 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
 
         if (extension_loaded('zip')) {
             $container->setAlias('darvin_image.archiver', 'darvin_image.archiver.zip');
-            $container->getAlias('darvin_image.archiver')->setPublic(true);
         }
     }
 
