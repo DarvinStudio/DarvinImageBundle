@@ -34,6 +34,26 @@ services:
         tags:
             - { name: controller.service_arguments }
 
+    darvin_image.image.controller.disable:
+        class:  '%darvin_image.image.controller.disable.class%'
+        parent: darvin_image.image.controller.abstract
+        tags:
+            - { name: controller.service_arguments }
+
+    darvin_image.image.controller.edit:
+        class:  '%darvin_image.image.controller.edit.class%'
+        parent: darvin_image.image.controller.abstract
+        arguments:
+            - '@darvin_utils.flash.notifier'
+            - '@form.factory'
+            - '@router'
+            - '@translator'
+            - '@twig'
+            - '%darvin_image.action.edit.template.full%'
+            - '%darvin_image.action.edit.template.partial%'
+        tags:
+            - { name: controller.service_arguments }
+
     darvin_image.image.copy_cloned_file_event_subscriber:
         class: '%darvin_image.image.copy_cloned_file_event_subscriber.class%'
         arguments:
