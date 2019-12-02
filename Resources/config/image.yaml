@@ -54,6 +54,24 @@ services:
         tags:
             - { name: controller.service_arguments }
 
+    darvin_image.image.controller.enable:
+        class:  '%darvin_image.image.controller.enable.class%'
+        parent: darvin_image.image.controller.abstract
+        tags:
+            - { name: controller.service_arguments }
+
+    darvin_image.image.controller.exterminate:
+        class:  '%darvin_image.image.controller.exterminate.class%'
+        parent: darvin_image.image.controller.abstract
+        tags:
+            - { name: controller.service_arguments }
+
+    darvin_image.image.controller.sort:
+        class:  '%darvin_image.image.controller.sort.class%'
+        parent: darvin_image.image.controller.abstract
+        tags:
+            - { name: controller.service_arguments }
+
     darvin_image.image.copy_cloned_file_event_subscriber:
         class: '%darvin_image.image.copy_cloned_file_event_subscriber.class%'
         arguments:
