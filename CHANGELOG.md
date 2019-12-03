@@ -57,3 +57,9 @@ form:
 7.0.4: Add image exterminate action.
 
 7.0.5: Rename cache resolvers to escape collisions.
+
+7.0.8:
+ 
+- Move service configs to "services" dir.
+
+- Replace "empty()" calls with null comparisons.
