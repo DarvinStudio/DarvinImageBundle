@@ -61,15 +61,15 @@ class ImageType extends AbstractType
             'editable'    => $options['editable'],
         ]);
 
-        $help = $view->children['file']->vars['help'];
+        $help = (string)$view->children['file']->vars['help'];
 
-        if (empty($help)) {
+        if ('' === $help) {
             return;
         }
 
         $view->children['file']->vars['help'] = null;
 
-        if (!empty($view->vars['help'])) {
+        if ('' !== (string)$view->vars['help']) {
             $view->vars['help'] .= '<br>';
         }
 

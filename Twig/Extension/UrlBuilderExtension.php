@@ -79,7 +79,7 @@ class UrlBuilderExtension extends AbstractExtension
                 DirectImagineFilter::FILTER_NAME_PARAM => $filterName,
             ], $fallback);
         } catch (NotLoadableException $ex) {
-            if (!empty($image)) {
+            if (null !== $image) {
                 $this->logger->error(sprintf('Unable to build URL for image with ID "%s": "%s".', $image->getId(), $ex->getMessage()));
             }
 

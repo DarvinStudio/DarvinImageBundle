@@ -174,7 +174,7 @@ abstract class AbstractImage
      */
     public function setFile(?File $file): AbstractImage
     {
-        if (!empty($file)) {
+        if (null !== $file) {
             $size = @getimagesize($file->getPathname());
 
             if (is_array($size)) {

@@ -70,7 +70,7 @@ abstract class AbstractImageController
     {
         $image = $this->getImageRepository()->find($id);
 
-        if (empty($image)) {
+        if (null === $image) {
             throw new NotFoundHttpException(sprintf('Unable to find image by ID "%s".', $id));
         }
 

@@ -106,10 +106,10 @@ class ImagineCacheWarmer implements ImagineCacheWarmerInterface
         // Remove old cached images if filename changed
         $changeSet = $this->em->getUnitOfWork()->getEntityChangeSet($image);
 
-        if (isset($changeSet['filename']) && !empty($changeSet['filename'][0])) {
+        if (isset($changeSet['filename']) && null !== $changeSet['filename'][0]) {
             $mapping = $this->uploaderMappingFactory->fromField($image, AbstractImage::PROPERTY_FILE, AbstractImage::class);
             $uploadDir = $mapping->getUploadDir($image);
-            $uploadDir = !empty($uploadDir) ? str_replace('\\', '/', $uploadDir).'/' : '';
+            $uploadDir = null !== $uploadDir ? str_replace('\\', '/', $uploadDir).'/' : '';
             $pathname = $mapping->getUriPrefix().'/'.$uploadDir.$changeSet['filename'][0];
 
             foreach (array_keys($this->imagineFilterManager->getFilterConfiguration()->all()) as $filter) {

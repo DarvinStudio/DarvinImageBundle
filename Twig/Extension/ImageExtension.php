@@ -38,7 +38,7 @@ class ImageExtension extends AbstractExtension
      */
     public function getAlt(?AbstractImage $image, ?string $fallback = null): ?string
     {
-        if (!empty($image) && null !== $image->getAlt()) {
+        if (null !== $image && null !== $image->getAlt()) {
             return $image->getAlt();
         }
 
@@ -53,7 +53,7 @@ class ImageExtension extends AbstractExtension
      */
     public function getTitle(?AbstractImage $image, ?string $fallback = null): ?string
     {
-        if (!empty($image) && null !== $image->getTitle()) {
+        if (null !== $image && null !== $image->getTitle()) {
             return $image->getTitle();
         }
 

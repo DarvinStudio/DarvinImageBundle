@@ -165,6 +165,6 @@ class ZipArchiver implements ArchiverInterface
     {
         $request = $this->requestStack->getCurrentRequest();
 
-        return !empty($request) ? $request->getHost() : '';
+        return null !== $request ? $request->getHost() : '';
     }
 }

@@ -51,7 +51,7 @@ class SizeDescriber implements ImageSizeDescriberInterface
     public function describeSize($filterSetNames = null, int $width = 0, int $height = 0, ?string $entityClass = null): ?string
     {
         if (null === $filterSetNames) {
-            $filterSetNames = !empty($entityClass) ? $this->getEntityFilterSets($entityClass) : [];
+            $filterSetNames = null !== $entityClass ? $this->getEntityFilterSets($entityClass) : [];
         }
         if (!is_array($filterSetNames)) {
             $filterSetNames = (array)$filterSetNames;

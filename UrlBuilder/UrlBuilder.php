@@ -87,7 +87,7 @@ class UrlBuilder implements UrlBuilderInterface
      */
     public function isActive(?AbstractImage $image): bool
     {
-        return !empty($image) && $image->isEnabled();
+        return null !== $image && $image->isEnabled();
     }
 
     /**
@@ -146,7 +146,7 @@ class UrlBuilder implements UrlBuilderInterface
         if ($prependHost) {
             $request = $this->requestStack->getCurrentRequest();
 
-            if (!empty($request)) {
+            if (null !== $request) {
                 array_unshift($parts, $request->getSchemeAndHttpHost());
             }
         }
