@@ -69,7 +69,9 @@ class ImageType extends AbstractType
 
         $view->children['file']->vars['help'] = null;
 
-        if ('' !== (string)$view->vars['help']) {
+        $view->vars['help'] = (string)$view->vars['help'];
+
+        if ('' !== $view->vars['help']) {
             $view->vars['help'] .= '<br>';
         }
 
