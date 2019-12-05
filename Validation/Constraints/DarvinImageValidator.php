@@ -38,7 +38,7 @@ class DarvinImageValidator extends ImageValidator
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function validate($value, Constraint $constraint): void
     {

@@ -23,7 +23,7 @@ class AddUrlBuilderFiltersPass implements CompilerPassInterface
     private const URL_BUILDER_ID         = 'darvin_image.url_builder.builder';
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function process(ContainerBuilder $container): void
     {

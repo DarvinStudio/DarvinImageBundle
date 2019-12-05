@@ -21,7 +21,7 @@ use Vich\UploaderBundle\Event\Events;
 class UpdateImagePropertiesSubscriber implements EventSubscriberInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public static function getSubscribedEvents(): array
     {

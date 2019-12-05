@@ -23,7 +23,7 @@ class DarvinImageBundle extends Bundle
     public const MAJOR_VERSION = 7;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function build(ContainerBuilder $container): void
     {

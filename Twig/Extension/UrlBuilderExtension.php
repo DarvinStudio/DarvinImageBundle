@@ -45,7 +45,7 @@ class UrlBuilderExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getFilters(): array
     {
@@ -56,7 +56,7 @@ class UrlBuilderExtension extends AbstractExtension
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getFunctions(): array
     {

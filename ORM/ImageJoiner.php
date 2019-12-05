@@ -22,7 +22,7 @@ use Doctrine\ORM\QueryBuilder;
 class ImageJoiner implements ImageJoinerInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function joinImages(QueryBuilder $qb, ?string $locale = null): void
     {

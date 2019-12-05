@@ -34,7 +34,7 @@ class FileNamer implements NamerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function name($object, PropertyMapping $mapping): string
     {

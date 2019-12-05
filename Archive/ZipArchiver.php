@@ -62,7 +62,7 @@ class ZipArchiver implements ArchiverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function archive(): string
     {
@@ -77,7 +77,7 @@ class ZipArchiver implements ArchiverInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function buildPathname(string $filename): string
     {

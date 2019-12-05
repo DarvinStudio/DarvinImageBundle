@@ -18,7 +18,7 @@ use Liip\ImagineBundle\Imagine\Cache\Resolver\WebPathResolver;
 class Resolver extends WebPathResolver
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function remove(array $paths, array $filters): void
     {
@@ -49,7 +49,7 @@ class Resolver extends WebPathResolver
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     protected function getFileUrl($path, $filter): string
     {

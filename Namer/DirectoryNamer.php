@@ -21,7 +21,7 @@ use Vich\UploaderBundle\Naming\DirectoryNamerInterface;
 class DirectoryNamer implements DirectoryNamerInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function directoryName($object, PropertyMapping $mapping): string
     {
