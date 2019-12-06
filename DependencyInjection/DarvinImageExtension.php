@@ -10,6 +10,7 @@
 
 namespace Darvin\ImageBundle\DependencyInjection;
 
+use Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface;
 use Darvin\Utils\DependencyInjection\ConfigInjector;
 use Darvin\Utils\DependencyInjection\ConfigLoader;
 use Darvin\Utils\DependencyInjection\ExtensionConfigurator;
@@ -24,11 +25,15 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
  */
 class DarvinImageExtension extends Extension implements PrependExtensionInterface
 {
+    public const TAG_URL_BUILDER_FILTER = 'darvin_image.url_builder_filter';
+
     /**
      * {@inheritDoc}
      */
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $container->registerForAutoconfiguration(FilterInterface::class)->addTag(self::TAG_URL_BUILDER_FILTER);
+
         (new ConfigInjector($container))->inject($this->processConfiguration(new Configuration(), $configs), $this->getAlias());
 
         (new ConfigLoader($container, __DIR__.'/../Resources/config/services'))->load([
