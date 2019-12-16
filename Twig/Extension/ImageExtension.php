@@ -42,7 +42,11 @@ class ImageExtension extends AbstractExtension
             return html_entity_decode($image->getAlt());
         }
 
-        return html_entity_decode($fallback);
+        if (null !== $fallback) {
+            $fallback = html_entity_decode($fallback);
+        }
+
+        return $fallback;
     }
 
     /**
@@ -57,6 +61,10 @@ class ImageExtension extends AbstractExtension
             return html_entity_decode($image->getTitle());
         }
 
-        return html_entity_decode($fallback);
+        if (null !== $fallback) {
+            $fallback = html_entity_decode($fallback);
+        }
+
+        return $fallback;
     }
 }
