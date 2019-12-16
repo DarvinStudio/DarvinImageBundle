@@ -39,10 +39,10 @@ class ImageExtension extends AbstractExtension
     public function getAlt(?AbstractImage $image, ?string $fallback = null): ?string
     {
         if (null !== $image && null !== $image->getAlt()) {
-            return $image->getAlt();
+            return html_entity_decode($image->getAlt());
         }
 
-        return $fallback;
+        return html_entity_decode($fallback);
     }
 
     /**
@@ -54,9 +54,9 @@ class ImageExtension extends AbstractExtension
     public function getTitle(?AbstractImage $image, ?string $fallback = null): ?string
     {
         if (null !== $image && null !== $image->getTitle()) {
-            return $image->getTitle();
+            return html_entity_decode($image->getTitle());
         }
 
-        return $fallback;
+        return html_entity_decode($fallback);
     }
 }
