@@ -41,7 +41,6 @@ class ImageExtension extends AbstractExtension
         if (null !== $image && null !== $image->getAlt()) {
             return html_entity_decode($image->getAlt());
         }
-
         if (null !== $fallback) {
             $fallback = html_entity_decode($fallback);
         }
@@ -60,7 +59,6 @@ class ImageExtension extends AbstractExtension
         if (null !== $image && null !== $image->getTitle()) {
             return html_entity_decode($image->getTitle());
         }
-
         if (null !== $fallback) {
             $fallback = html_entity_decode($fallback);
         }
