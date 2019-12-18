@@ -64,7 +64,7 @@ class WarmupImagineCacheCommand extends Command
     /**
      * {@inheritDoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -76,7 +76,7 @@ class WarmupImagineCacheCommand extends Command
         if (0 === $count) {
             $io->comment('No images found, exiting.');
 
-            return;
+            return 0;
         }
 
         $io->progressStart($count);
@@ -103,5 +103,7 @@ class WarmupImagineCacheCommand extends Command
         }
 
         $io->progressFinish();
+
+        return 0;
     }
 }

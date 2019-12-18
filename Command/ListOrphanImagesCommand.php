@@ -95,7 +95,7 @@ class ListOrphanImagesCommand extends Command
     /**
      * {@inheritDoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -120,6 +120,8 @@ class ListOrphanImagesCommand extends Command
                 $io->error(sprintf('Image "%s" exists in filesystem but not in database.', $pathname));
             }
         }
+
+        return 0;
     }
 
     /**
