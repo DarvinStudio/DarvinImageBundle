@@ -84,7 +84,7 @@ class RenameImageSubscriber implements EventSubscriber
             $this->filesystem->rename($pathname, $tmpPathname, true);
 
             $filename = $entity->getName().'.'.$entity->getExtension();
-            $entity->setFile(new UploadedFile($tmpPathname, $filename, null, null, null, true));
+            $entity->setFile(new UploadedFile($tmpPathname, $filename, null, null, true));
         }
     }
 

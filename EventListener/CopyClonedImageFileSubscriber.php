@@ -86,7 +86,7 @@ class CopyClonedImageFileSubscriber implements EventSubscriberInterface
         }
 
         $clone
-            ->setFile(new UploadedFile($tmpPathname, $original->getFilename(), null, null, null, true))
+            ->setFile(new UploadedFile($tmpPathname, $original->getFilename(), null, null, true))
             ->setName(null);
     }
 
