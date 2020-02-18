@@ -109,7 +109,7 @@ class ListOrphanImagesCommand extends Command
 
             foreach ($inDatabase as $pathname) {
                 if (!isset($inFilesystem[$pathname])) {
-                    $io->error(sprintf('Image "%s" exists in database but not in filesystem.', $pathname));
+                    $io->writeln(sprintf('Image "%s" exists in database but not in filesystem.', $pathname));
 
                     continue;
                 }
@@ -117,7 +117,7 @@ class ListOrphanImagesCommand extends Command
                 unset($inFilesystem[$pathname]);
             }
             foreach ($inFilesystem as $pathname) {
-                $io->error(sprintf('Image "%s" exists in filesystem but not in database.', $pathname));
+                $io->writeln(sprintf('Image "%s" exists in filesystem but not in database.', $pathname));
             }
         }
 
@@ -170,9 +170,7 @@ class ListOrphanImagesCommand extends Command
             }
             /** @var \Symfony\Component\Finder\SplFileInfo $file */
             foreach ((new Finder())->in($dir)->files() as $file) {
-                $pathname = implode(DIRECTORY_SEPARATOR, [$dir, $file->getFilename()]);
-
-                $pathnames[$pathname] = $pathname;
+                $pathnames[$file->getPathname()] = $file->getPathname();
             }
         }
 
