@@ -138,7 +138,9 @@ class ListOrphanImagesCommand extends Command
             foreach (array_keys($this->uploaderMetaReader->getUploadableFields($class)) as $field) {
                 $pathname = $this->uploaderStorage->resolvePath(reset($row), $field);
 
-                $pathnames[$pathname] = $pathname;
+                if (null !== $pathname) {
+                    $pathnames[$pathname] = $pathname;
+                }
             }
             if ($iterator->key() > 0 && 0 === $iterator->key() % $this->chunkSize) {
                 $this->em->clear();
@@ -169,7 +171,7 @@ class ListOrphanImagesCommand extends Command
                 continue;
             }
             /** @var \Symfony\Component\Finder\SplFileInfo $file */
-            foreach ((new Finder())->in($dir)->files() as $file) {
+            foreach ((new Finder())->in($dir)->depth(0)->files() as $file) {
                 $pathnames[$file->getPathname()] = $file->getPathname();
             }
         }
