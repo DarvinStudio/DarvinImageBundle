@@ -14,10 +14,6 @@ use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\Utils\Event\ClonableEvents;
 use Darvin\Utils\Event\CloneEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
-use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * Copy cloned image file event subscriber
@@ -25,39 +21,12 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 class CopyClonedImageFileSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var \Symfony\Component\Filesystem\Filesystem
-     */
-    private $filesystem;
-
-    /**
-     * @var \Vich\UploaderBundle\Storage\StorageInterface
-     */
-    private $uploaderStorage;
-
-    /**
-     * @var string
-     */
-    private $tmpDir;
-
-    /**
-     * @param \Symfony\Component\Filesystem\Filesystem      $filesystem      Filesystem
-     * @param \Vich\UploaderBundle\Storage\StorageInterface $uploaderStorage Uploader storage
-     * @param string                                        $tmpDir          Temporary file directory
-     */
-    public function __construct(Filesystem $filesystem, StorageInterface $uploaderStorage, string $tmpDir)
-    {
-        $this->filesystem = $filesystem;
-        $this->uploaderStorage = $uploaderStorage;
-        $this->tmpDir = $tmpDir;
-    }
-
-    /**
      * {@inheritDoc}
      */
     public static function getSubscribedEvents(): array
     {
         return [
-            ClonableEvents::CLONED => 'copyFile',
+            ClonableEvents::CLONED => ['copyFile', -10],
         ];
     }
 
@@ -73,36 +42,14 @@ class CopyClonedImageFileSubscriber implements EventSubscriberInterface
         }
 
         /** @var \Darvin\ImageBundle\Entity\Image\AbstractImage $clone */
-        $clone       = $event->getClone();
-        $pathname    = $this->uploaderStorage->resolvePath($original, AbstractImage::PROPERTY_FILE);
-        $tmpPathname = $this->generateTmpPathname();
+        $clone = $event->getClone();
 
-        try {
-            $this->filesystem->copy($pathname, $tmpPathname, true);
-        } catch (FileNotFoundException $ex) {
+        if (null === $clone->getFile()) {
             $event->setClone(null);
 
             return;
         }
 
-        $clone
-            ->setFile(new UploadedFile($tmpPathname, $original->getFilename(), null, null, true))
-            ->setName(null);
-    }
-
-    /**
-     * @return string
-     *
-     * @throws \RuntimeException
-     */
-    private function generateTmpPathname(): string
-    {
-        $pathname = @tempnam($this->tmpDir, '');
-
-        if (false === $pathname) {
-            throw new \RuntimeException(sprintf('Unable to create temporary file for cloned image in "%s".', $this->tmpDir));
-        }
-
-        return $pathname;
+        $clone->setName(null);
     }
 }

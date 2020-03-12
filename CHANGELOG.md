@@ -65,3 +65,5 @@ form:
 - Replace "empty()" calls with null comparisons.
 
 7.0.9: Register interfaces for autoconfiguration.
+
+7.0.16: Move part of functionality from copy cloned image file event subscriber to Utils.
