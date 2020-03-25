@@ -28,12 +28,13 @@ trait ImageableRepositoryTrait
      */
     protected function joinImage(QueryBuilder $qb, ?string $locale = null, bool $addSelect = true, string $join = 'o.image', string $alias = 'image')
     {
-        $translationsAlias = sprintf('%s_translations', $alias);
+//        $translationsAlias = sprintf('%s_translations', $alias);
 
         $qb
-            ->leftJoin($join, $alias)
-            ->leftJoin(sprintf('%s.translations', $alias), $translationsAlias);
+            ->leftJoin($join, $alias);
+//            ->leftJoin(sprintf('%s.translations', $alias), $translationsAlias);
 
+        /*
         if (null !== $locale) {
             $qb
                 ->andWhere($qb->expr()->orX(
@@ -42,10 +43,11 @@ trait ImageableRepositoryTrait
                 ))
                 ->setParameter('locale', $locale);
         }
+        */
         if ($addSelect) {
             $qb
-                ->addSelect($alias)
-                ->addSelect($translationsAlias);
+                ->addSelect($alias);
+//                ->addSelect($translationsAlias);
         }
 
         return $this;

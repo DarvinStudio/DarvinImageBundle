@@ -46,10 +46,10 @@ class ImageJoiner implements ImageJoinerInterface
                 sprintf('%s.%s', $rootAlias, $mapping['fieldName']) => [
                     'alias' => StringsUtil::toUnderscore($mapping['fieldName']),
                 ],
-                sprintf('%s.translations', StringsUtil::toUnderscore($mapping['fieldName'])) => [
-                    'alias'  => sprintf('%s_translations', StringsUtil::toUnderscore($mapping['fieldName'])),
-                    'locale' => $locale,
-                ],
+//                sprintf('%s.translations', StringsUtil::toUnderscore($mapping['fieldName'])) => [
+//                    'alias'  => sprintf('%s_translations', StringsUtil::toUnderscore($mapping['fieldName'])),
+//                    'locale' => $locale,
+//                ],
             ] as $join => $attr) {
                 if (in_array($join, $existingJoins)) {
                     continue;
