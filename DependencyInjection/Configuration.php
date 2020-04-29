@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
         $root
             ->children()
                 ->scalarNode('placeholder')->defaultValue('bundles/darvinimage/placeholder.svg')->end()
-                ->scalarNode('tmp_dir')->defaultValue(sprintf('%s/darvin/image', sys_get_temp_dir()))->cannotBeEmpty()->end()
+                ->scalarNode('tmp_dir')->defaultValue('%kernel.project_dir%/var/tmp/darvin/image')->cannotBeEmpty()->end()
                 ->scalarNode('upload_path')->isRequired()->cannotBeEmpty()->end()
                 ->arrayNode('archive')->addDefaultsIfNotSet()
                     ->children()

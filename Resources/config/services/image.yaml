@@ -7,8 +7,7 @@ parameters:
     darvin_image.image.controller.exterminate.class: Darvin\ImageBundle\Controller\Image\ExterminateController
     darvin_image.image.controller.sort.class:        Darvin\ImageBundle\Controller\Image\SortController
 
-    darvin_image.image.copy_cloned_file_event_subscriber.class:   Darvin\ImageBundle\EventListener\CopyClonedImageFileSubscriber
-    darvin_image.image.copy_cloned_file_event_subscriber.tmp_dir: '%darvin_image.tmp_dir%/cloned'
+    darvin_image.image.copy_cloned_file_event_subscriber.class: Darvin\ImageBundle\EventListener\CopyClonedImageFileSubscriber
 
     darvin_image.image.edit_form_type.class: Darvin\ImageBundle\Form\Type\ImageEditType
 

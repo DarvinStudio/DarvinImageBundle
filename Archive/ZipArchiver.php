@@ -152,7 +152,7 @@ class ZipArchiver implements ArchiverInterface
     {
         $parts = array_merge(preg_split('/[^0-9a-z]+/i', $this->getHost()), [
             $this->filenameSuffix,
-            (new \DateTime())->format('Y-m-d_h-i'),
+            (new \DateTime())->format('Y-m-d_H-i'),
         ]);
 
         return sprintf('%s.zip', implode('_', $parts));

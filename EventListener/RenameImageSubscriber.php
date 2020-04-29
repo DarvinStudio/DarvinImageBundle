@@ -95,6 +95,10 @@ class RenameImageSubscriber implements EventSubscriber
      */
     private function generateTmpPathname(): string
     {
+        if (!is_dir($this->tmpDir) && !mkdir($this->tmpDir, 0777, true)) {
+            throw new \RuntimeException(sprintf('Unable to create temporary files directory "%s".', $this->tmpDir));
+        }
+
         $pathname = @tempnam($this->tmpDir, '');
 
         if (false === $pathname) {
