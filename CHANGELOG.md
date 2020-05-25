@@ -71,3 +71,5 @@ form:
 7.1.0: Do not join image translations because of error "The discriminator column "dtype" is missing for "Darvin\ImageBundle\Entity\Image\ImageTranslation" using the DQL alias "images_translations"."
 
 7.1.1: Change temporary files directory from "/tmp" to "%kernel.project_dir%/var/tmp".
+
+7.1.2: Add help to "name" field of image edit form.

@@ -8,5 +8,7 @@ image:
         success: 'صورة تحديث'
     entity:
         name: اسم
+    help:
+        name: 'صورة اسم الملف (دون تمديد)'
 size:
     description: 'أوصت الحد الأدنى الحجم: %width%x%height%.'

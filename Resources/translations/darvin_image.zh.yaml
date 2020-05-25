@@ -8,5 +8,7 @@ image:
         success: 图像更新
     entity:
         name: 名称
+    help:
+        name: 像文件的名字(不扩)
 size:
     description: '建议的最小尺寸: %width%x%height%.'

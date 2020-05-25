@@ -9,6 +9,8 @@ image:
         success: Изображение сохранено
     entity:
         name: Название
+    help:
+        name: Имя файла изображения (без расширения)
 
 size:
     description: 'Рекомендуемый минимальный размер: %width%x%height%.'

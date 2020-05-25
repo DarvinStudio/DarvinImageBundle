@@ -9,6 +9,8 @@ image:
         success: Image updated
     entity:
         name: Name
+    help:
+        name: Image file name (without extension)
 
 size:
     description: 'Recommended minimal size: %width%x%height%.'

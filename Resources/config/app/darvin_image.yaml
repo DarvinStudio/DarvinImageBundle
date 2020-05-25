@@ -3,7 +3,10 @@ darvin_image:
         edit:
             fields:
                 Darvin\ImageBundle\Entity\Image\AbstractImage:
-                    name: ~
+                    name:
+                        options:
+                            help:               image.help.name
+                            translation_domain: darvin_image
                     translations:
                         type: A2lix\TranslationFormBundle\Form\Type\TranslationsType
                         options:
