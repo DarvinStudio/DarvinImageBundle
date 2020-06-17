@@ -50,7 +50,7 @@ class Configuration implements ConfigurationInterface
                         ->integerNode('max_height')->defaultValue(10000)->min(1)->end()
                         ->arrayNode('mime_types')->requiresAtLeastOneElement()
                             ->prototype('scalar')->cannotBeEmpty()->end()
-                            ->defaultValue(['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png'])
+                            ->defaultValue(['image/gif', 'image/jpeg', 'image/pjpeg', 'image/png', 'image/webp'])
                         ->end()
                     ->end()
                 ->end()

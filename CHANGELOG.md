@@ -73,3 +73,5 @@ form:
 7.1.1: Change temporary files directory from "/tmp" to "%kernel.project_dir%/var/tmp".
 
 7.1.2: Add help to "name" field of image edit form.
+
+7.1.3: Support WebP.
