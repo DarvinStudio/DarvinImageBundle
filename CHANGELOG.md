@@ -75,3 +75,5 @@ form:
 7.1.2: Add help to "name" field of image edit form.
 
 7.1.3: Support WebP.
+
+7.1.4: Support SVG.
