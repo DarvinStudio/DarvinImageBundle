@@ -90,6 +90,10 @@ class ImagineCacheWarmer implements ImagineCacheWarmerInterface
      */
     public function warmupImageCache(AbstractImage $image): void
     {
+        if ($image->isVector()) {
+            return;
+        }
+
         $filters = [];
 
         foreach ($this->imagineFilterSets as $filter => $options) {

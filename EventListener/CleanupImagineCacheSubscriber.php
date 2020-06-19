@@ -71,7 +71,7 @@ class CleanupImagineCacheSubscriber implements EventSubscriber
         $filters = null;
 
         foreach ($args->getEntityManager()->getUnitOfWork()->getScheduledEntityDeletions() as $entity) {
-            if (!$entity instanceof AbstractImage) {
+            if (!$entity instanceof AbstractImage || $entity->isVector()) {
                 continue;
             }
             if (null === $filters) {
