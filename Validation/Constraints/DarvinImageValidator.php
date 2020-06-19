@@ -26,14 +26,18 @@ class DarvinImageValidator extends ImageValidator
     private $options;
 
     /**
-     * @param array $options Options
+     * @param array $options         Options
+     * @param int   $uploadMaxSizeMb Max upload size in MB
      */
-    public function __construct(array $options)
+    public function __construct(array $options, int $uploadMaxSizeMb)
     {
         $this->options = [];
 
         foreach ($options as $key => $value) {
             $this->options[lcfirst(StringsUtil::toCamelCase($key))] = $value;
+        }
+        if (!isset($this->options['maxSize'])) {
+            $this->options['maxSize'] = sprintf('%dMi', $uploadMaxSizeMb);
         }
     }
 

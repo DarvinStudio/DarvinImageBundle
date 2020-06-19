@@ -30,11 +30,18 @@ class ImageType extends AbstractType
     private $sizeDescriber;
 
     /**
-     * @param \Darvin\ImageBundle\Size\ImageSizeDescriberInterface $sizeDescriber Image size describer
+     * @var int
      */
-    public function __construct(ImageSizeDescriberInterface $sizeDescriber)
+    private $uploadMaxSizeMb;
+
+    /**
+     * @param \Darvin\ImageBundle\Size\ImageSizeDescriberInterface $sizeDescriber   Image size describer
+     * @param int                                                  $uploadMaxSizeMb Max upload size in MB
+     */
+    public function __construct(ImageSizeDescriberInterface $sizeDescriber, int $uploadMaxSizeMb)
     {
         $this->sizeDescriber = $sizeDescriber;
+        $this->uploadMaxSizeMb = $uploadMaxSizeMb;
     }
 
     /**
@@ -43,9 +50,10 @@ class ImageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('file', FileType::class, [
-            'label'    => false,
-            'required' => false,
-            'attr'     => [
+            'label'              => false,
+            'upload_max_size_mb' => $this->uploadMaxSizeMb,
+            'required'           => false,
+            'attr'               => [
                 'accept' => 'image/*',
             ],
         ]);

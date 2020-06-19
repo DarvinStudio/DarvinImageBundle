@@ -6,5 +6,6 @@ services:
         class: '%darvin_image.validation.darvin_image_validator.class%'
         arguments:
             - '%darvin_image.constraints%'
+            - '%darvin_image.upload_max_size_mb%'
         tags:
             - { name: validator.constraint_validator }
