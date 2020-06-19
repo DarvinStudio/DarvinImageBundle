@@ -63,6 +63,9 @@ class UrlBuilder implements UrlBuilderInterface
      */
     public function buildFilteredUrl(?AbstractImage $image, string $filterName, array $parameters = [], ?string $fallback = null): ?string
     {
+        if (null !== $image && $image->isVector()) {
+            return $this->buildOriginalUrl($image, true, $fallback);
+        }
         if ($this->isActive($image)) {
             return $this->getFilter($filterName)->buildUrl($this->buildOriginalUrl($image, false), $parameters);
         }

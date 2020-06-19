@@ -41,7 +41,7 @@ class UpdateImagePropertiesSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $image->setExtension(pathinfo($image->getFilename(), PATHINFO_EXTENSION));
+        $image->setExtension(strtolower(pathinfo($image->getFilename(), PATHINFO_EXTENSION)));
 
         if (null === $image->getName()) {
             $image->setName(preg_replace(sprintf('/\.%s$/', $image->getExtension()), '', $image->getFilename()));

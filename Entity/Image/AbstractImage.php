@@ -39,6 +39,10 @@ abstract class AbstractImage
 
     public const PROPERTY_FILE = 'file';
 
+    private const VECTOR_EXTENSIONS = [
+        'svg',
+    ];
+
     /**
      * @var int
      *
@@ -79,16 +83,16 @@ abstract class AbstractImage
     private $filename;
 
     /**
-     * @var int
+     * @var int|null
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $width;
 
     /**
-     * @var int
+     * @var int|null
      *
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $height;
 
@@ -160,11 +164,23 @@ abstract class AbstractImage
     abstract public static function getUploadDir(): string;
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getDimensions(): string
+    public function getDimensions(): ?string
     {
-        return sprintf('%dx%d', $this->width, $this->height);
+        if (null !== $this->width && null !== $this->height) {
+            return implode('x', [$this->width, $this->height]);
+        }
+
+        return null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVector(): bool
+    {
+        return in_array($this->extension, self::VECTOR_EXTENSIONS);
     }
 
     /**
@@ -278,7 +294,7 @@ abstract class AbstractImage
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getWidth(): ?int
     {
@@ -286,7 +302,7 @@ abstract class AbstractImage
     }
 
     /**
-     * @param int $width width
+     * @param int|null $width width
      *
      * @return AbstractImage
      */
@@ -298,7 +314,7 @@ abstract class AbstractImage
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getHeight(): ?int
     {
@@ -306,7 +322,7 @@ abstract class AbstractImage
     }
 
     /**
-     * @param int $height height
+     * @param int|null $height height
      *
      * @return AbstractImage
      */
