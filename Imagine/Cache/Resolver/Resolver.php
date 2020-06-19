@@ -18,6 +18,21 @@ use Liip\ImagineBundle\Imagine\Cache\Resolver\WebPathResolver;
 class Resolver extends WebPathResolver
 {
     /**
+     * @var array
+     */
+    private $formats;
+
+    /**
+     * @param array $formats Output formats
+     */
+    public function setFormats(array $formats): void
+    {
+        $this->formats = array_filter($formats, function (array $format): bool {
+            return $format['enabled'];
+        });
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function remove(array $paths, array $filters): void
@@ -53,7 +68,17 @@ class Resolver extends WebPathResolver
      */
     protected function getFileUrl($path, $filter): string
     {
-        return implode(DIRECTORY_SEPARATOR, [$this->cachePrefix, $this->getFilterCacheDir($filter), preg_replace('/.*\//', '', $path ?: '')]);
+        $path   = (string)$path;
+        $filter = (string)$filter;
+
+        $filename    = preg_replace('/^.*\//', '', $path);
+        $filterParts = explode('__', $filter);
+
+        if (2 === count($filterParts) && isset($this->formats[$filterParts[1]])) {
+            $filename = preg_replace('/(^.+\.).+$/', sprintf('$1%s', $filterParts[1]), $filename);
+        }
+
+        return implode(DIRECTORY_SEPARATOR, [$this->cachePrefix, $this->getFilterCacheDir($filter), $filename]);
     }
 
     /**
@@ -63,6 +88,14 @@ class Resolver extends WebPathResolver
      */
     private function getFilterCacheDir(?string $filter): string
     {
-        return str_replace('_', '/', $filter ?: '');
+        $filter = (string)$filter;
+
+        $parts = explode('__', $filter);
+
+        if (2 === count($parts) && isset($this->formats[$parts[1]])) {
+            $filter = $parts[0];
+        }
+
+        return str_replace('_', '/', $filter);
     }
 }
