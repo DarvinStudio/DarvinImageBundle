@@ -25,11 +25,22 @@ class AddImagineFilterSetsPass implements CompilerPassInterface
     {
         $filterSets = [];
         $config     = $container->getParameter('darvin_image.imagine');
+        $formats    = array_keys(array_filter($container->getParameter('darvin_image.output_formats'), function (array $format): bool {
+            return $format['enabled'];
+        }));
 
         foreach ($config['filter_sets'] as $name => $filterSet) {
-            $filterSets[$name] = array_merge_recursive($config['filter_defaults'], [
+            $filterSet = array_merge_recursive($config['filter_defaults'], [
                 'cache' => 'darvin_image_custom',
             ], $filterSet);
+
+            $filterSets[$name] = $filterSet;
+
+            foreach ($formats as $format) {
+                $filterSets[implode('__', [$name, $format])] = array_merge($filterSet, [
+                    'format' => $format,
+                ]);
+            }
         }
 
         $container->setParameter(
