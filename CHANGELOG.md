@@ -77,3 +77,21 @@ form:
 7.1.3: Support WebP.
 
 7.1.4: Support SVG.
+
+7.2.0: Allow to convert image format:
+
+```yaml
+darvin_image:
+    output_formats:
+        jpg:  ~
+        webp: ~
+```
+
+```twig
+{# Image in original format #}
+<img src="{{ page.image|image_filter('page_main') }}">
+{# Image in JPG #}
+<img src="{{ page.image|image_filter('page_main__jpg') }}">
+{# Image in WebP #}
+<img src="{{ page.image|image_filter('page_main__webp') }}">
+```
