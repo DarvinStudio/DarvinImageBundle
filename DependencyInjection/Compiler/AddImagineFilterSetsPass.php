@@ -18,29 +18,35 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class AddImagineFilterSetsPass implements CompilerPassInterface
 {
+    private const FILTER_SETS_PARAM = 'darvin_image.imagine.filter_sets';
+
     /**
      * {@inheritDoc}
      */
     public function process(ContainerBuilder $container): void
     {
-        $filterSets = [];
-        $config     = $container->getParameter('darvin_image.imagine');
-        $formats    = array_keys(array_filter($container->getParameter('darvin_image.output_formats'), function (array $format): bool {
-            return $format['enabled'];
-        }));
+        $filterSetsConfig = $container->getParameter(self::FILTER_SETS_PARAM);
 
-        foreach ($config['filter_sets'] as $name => $filterSet) {
-            $filterSet = array_merge_recursive($config['filter_defaults'], [
-                'cache' => 'darvin_image_custom',
-            ], $filterSet);
-
-            $filterSets[$name] = $filterSet;
-
-            foreach ($formats as $format) {
-                $filterSets[implode('__', [$name, $format])] = array_merge($filterSet, [
-                    'format' => $format,
+        foreach ($container->getParameter('darvin_image.output_formats') as $formatName => $formatAttr) {
+            if (!$formatAttr['enabled']) {
+                continue;
+            }
+            foreach ($filterSetsConfig as $setName => $setAttr) {
+                $filterSetsConfig[implode('__', [$setName, $formatName])] = array_merge($setAttr, [
+                    'format' => $formatName,
                 ]);
             }
+        }
+
+        $container->setParameter(self::FILTER_SETS_PARAM, $filterSetsConfig);
+
+        $filterSets = [];
+        $defaults   = $container->getParameter('darvin_image.imagine.filter_defaults');
+
+        foreach ($filterSetsConfig as $setName => $setAttr) {
+            $filterSets[$setName] = array_merge_recursive($defaults, [
+                'cache' => 'darvin_image_custom',
+            ], $setAttr);
         }
 
         $container->setParameter(

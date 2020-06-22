@@ -20,14 +20,14 @@ class Resolver extends WebPathResolver
     /**
      * @var array
      */
-    private $formats;
+    private $outputFormats;
 
     /**
-     * @param array $formats Output formats
+     * @param array $outputFormats Output formats
      */
-    public function setFormats(array $formats): void
+    public function setOutputFormats(array $outputFormats): void
     {
-        $this->formats = array_filter($formats, function (array $format): bool {
+        $this->outputFormats = array_filter($outputFormats, function (array $format): bool {
             return $format['enabled'];
         });
     }
@@ -74,7 +74,7 @@ class Resolver extends WebPathResolver
         $filename    = preg_replace('/^.*\//', '', $path);
         $filterParts = explode('__', $filter);
 
-        if (2 === count($filterParts) && isset($this->formats[$filterParts[1]])) {
+        if (2 === count($filterParts) && isset($this->outputFormats[$filterParts[1]])) {
             $filename = preg_replace('/(^.+\.).+$/', sprintf('$1%s', $filterParts[1]), $filename);
         }
 
@@ -92,7 +92,7 @@ class Resolver extends WebPathResolver
 
         $parts = explode('__', $filter);
 
-        if (2 === count($parts) && isset($this->formats[$parts[1]])) {
+        if (2 === count($parts) && isset($this->outputFormats[$parts[1]])) {
             $filter = $parts[0];
         }
 
