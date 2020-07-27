@@ -98,6 +98,7 @@ class ListOrphanImagesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+        $databaseOrphans = $filesystemOrphans = [];
 
         foreach ($this->em->getMetadataFactory()->getAllMetadata() as $metadata) {
             if ($metadata->getReflectionClass()->isAbstract() || !$this->uploaderMetaReader->isUploadable($metadata->getName())) {
@@ -109,7 +110,7 @@ class ListOrphanImagesCommand extends Command
 
             foreach ($inDatabase as $pathname) {
                 if (!isset($inFilesystem[$pathname])) {
-                    $io->writeln(sprintf('Image "%s" exists in database but not in filesystem.', $pathname));
+                    $databaseOrphans[$pathname] = $pathname;
 
                     continue;
                 }
@@ -117,8 +118,14 @@ class ListOrphanImagesCommand extends Command
                 unset($inFilesystem[$pathname]);
             }
             foreach ($inFilesystem as $pathname) {
-                $io->writeln(sprintf('Image "%s" exists in filesystem but not in database.', $pathname));
+                $filesystemOrphans[$pathname] = $pathname;
             }
+        }
+        foreach ($databaseOrphans as $pathname) {
+            $io->writeln(sprintf('Image "%s" exists in database but not in filesystem.', $pathname));
+        }
+        foreach ($filesystemOrphans as $pathname) {
+            $io->writeln(sprintf('Image "%s" exists in filesystem but not in database.', $pathname));
         }
 
         return 0;
