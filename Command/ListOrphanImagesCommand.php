@@ -121,12 +121,16 @@ class ListOrphanImagesCommand extends Command
                 $filesystemOrphans[$pathname] = $pathname;
             }
         }
-        foreach ($databaseOrphans as $pathname) {
-            $io->writeln(sprintf('Image "%s" exists in database but not in filesystem.', $pathname));
-        }
-        foreach ($filesystemOrphans as $pathname) {
-            $io->writeln(sprintf('Image "%s" exists in filesystem but not in database.', $pathname));
-        }
+
+        $io->title('In database but not in filesystem');
+        $io->table(['Pathname'], array_map(function (string $pathname): array {
+            return [$pathname];
+        }, $databaseOrphans));
+
+        $io->title('In filesystem but not in database');
+        $io->table(['Pathname'], array_map(function (string $pathname): array {
+            return [$pathname];
+        }, $filesystemOrphans));
 
         return 0;
     }
