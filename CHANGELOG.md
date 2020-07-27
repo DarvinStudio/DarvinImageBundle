@@ -95,3 +95,5 @@ darvin_image:
 {# Image in WebP #}
 <img src="{{ page.image|image_filter('page_main__webp') }}">
 ```
+
+7.2.1: Show mtime in list orphans command.

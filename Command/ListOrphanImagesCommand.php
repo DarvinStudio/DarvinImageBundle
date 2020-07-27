@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
@@ -122,17 +123,46 @@ class ListOrphanImagesCommand extends Command
             }
         }
 
-        $io->title('In database but not in filesystem');
-        $io->table(['Pathname'], array_map(function (string $pathname): array {
-            return [$pathname];
-        }, $databaseOrphans));
-
-        $io->title('In filesystem but not in database');
-        $io->table(['Pathname'], array_map(function (string $pathname): array {
-            return [$pathname];
-        }, $filesystemOrphans));
+        $this
+            ->print($databaseOrphans, $io, 'In database but not in filesystem')
+            ->print($filesystemOrphans, $io, 'In filesystem but not in database');
 
         return 0;
+    }
+
+    /**
+     * @param string[]                                        $pathnames Orphan image pathnames
+     * @param \Symfony\Component\Console\Style\StyleInterface $io        Input/output
+     * @param string                                          $title     Title
+     *
+     * @return ListOrphanImagesCommand
+     */
+    private function print(array $pathnames, StyleInterface $io, string $title): ListOrphanImagesCommand
+    {
+        $rows = array_map(function (string $pathname): array {
+            $modifiedAt = null;
+
+            $mtime = @filemtime($pathname);
+
+            if (false !== $mtime) {
+                $modifiedAt = \DateTime::createFromFormat('U', (string)$mtime)->format('Y-m-d H:i');
+            }
+
+            return [$modifiedAt, $pathname];
+        }, $pathnames);
+
+        usort($rows, function (array $a, array $b): int {
+            if ($a[0] !== $b[0]) {
+                return $a[0] <=> $b[0];
+            }
+
+            return $a[1] <=> $b[1];
+        });
+
+        $io->title($title);
+        $io->table(['Updated', 'Pathname'], $rows);
+
+        return $this;
     }
 
     /**
