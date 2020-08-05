@@ -55,8 +55,8 @@ class ArchiveFormFactory implements ArchiveFormFactoryInterface
     public function createBuildForm(): FormInterface
     {
         return $this->genericFormFactory->createNamed('darvin_image_archive_build', FormType::class, null, [
-            'action'        => $this->router->generate('darvin_image_archive_build'),
-            'csrf_token_id' => md5(__FILE__.__METHOD__),
+            'action'          => $this->router->generate('darvin_image_archive_build'),
+            'csrf_protection' => false,
         ]);
     }
 }

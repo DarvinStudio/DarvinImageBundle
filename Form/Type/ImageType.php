@@ -95,14 +95,14 @@ class ImageType extends AbstractType
 
         $resolver
             ->setDefaults([
-                'csrf_token_id' => md5(__FILE__.$this->getBlockPrefix()),
-                'required'      => false,
-                'disableable'   => true,
-                'editable'      => true,
-                'filters'       => [],
-                'width'         => 0,
-                'height'        => 0,
-                'help'          => function (Options $options) use ($sizeDescriber) {
+                'csrf_protection' => false,
+                'required'        => false,
+                'disableable'     => true,
+                'editable'        => true,
+                'filters'         => [],
+                'width'           => 0,
+                'height'          => 0,
+                'help'            => function (Options $options) use ($sizeDescriber) {
                     return $sizeDescriber->describeSize($options['filters'], $options['width'], $options['height'], $options['data_class']);
                 },
             ])
