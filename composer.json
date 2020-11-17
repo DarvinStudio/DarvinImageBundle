@@ -12,10 +12,9 @@
         }
     ],
     "require": {
-        "liip/imagine-bundle":               "^2.2",
-        "vich/uploader-bundle":              "^1.12",
-        "darvinstudio/darvin-config-bundle": "*",
-        "darvinstudio/darvin-utils-bundle":  "*"
+        "liip/imagine-bundle":                "^2.2",
+        "darvinstudio/darvin-content-bundle": "*",
+        "darvinstudio/darvin-file-bundle":    "*"
     },
     "suggest": {
         "ext-zip": "Allows to archive images"
