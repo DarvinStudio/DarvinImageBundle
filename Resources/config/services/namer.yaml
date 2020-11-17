@@ -1,15 +1,5 @@
-parameters:
-    darvin_image.namer.directory.class: Darvin\ImageBundle\Namer\DirectoryNamer
-
-    darvin_image.namer.file.class: Darvin\ImageBundle\Namer\FileNamer
-
 services:
-    darvin_image.namer.directory:
-        class:  '%darvin_image.namer.directory.class%'
-        public: true
-
     darvin_image.namer.file:
-        class:  '%darvin_image.namer.file.class%'
-        public: true
-        arguments:
-            - '@darvin_utils.transliteratable.transliterator'
+        alias:      darvin_file.namer.file
+        public:     true
+        deprecated: 'File namer "%alias_id%" is deprecated. Use "darvin_file.namer.file" instead.'

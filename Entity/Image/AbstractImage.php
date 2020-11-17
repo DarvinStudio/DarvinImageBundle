@@ -69,6 +69,14 @@ abstract class AbstractImage extends AbstractFile
     /**
      * {@inheritDoc}
      */
+    public static function getBaseUploadDir(): string
+    {
+        return 'images';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public static function getTranslationEntityClass(): string
     {
         return ImageTranslation::class;

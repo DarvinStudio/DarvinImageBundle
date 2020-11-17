@@ -61,10 +61,7 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
      */
     public function prepend(ContainerBuilder $container): void
     {
-        (new ExtensionConfigurator($container, __DIR__.'/../Resources/config/app'))->configure([
-            'darvin_image',
-            'vich_uploader',
-        ]);
+        (new ExtensionConfigurator($container, __DIR__.'/../Resources/config/app'))->configure('darvin_image');
 
         $config = $this->processConfiguration(
             new Configuration(),
