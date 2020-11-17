@@ -1,6 +1,6 @@
 {
     "name":        "darvinstudio/darvin-image-bundle",
-    "description": "This bundle provides images management functionality for Symfony-based applications.",
+    "description": "This bundle provides image management functionality for Symfony-based applications.",
     "keywords":    ["image"],
     "type":        "symfony-bundle",
     "license":     "MIT",
@@ -12,7 +12,7 @@
         }
     ],
     "require": {
-        "liip/imagine-bundle":                "^2.2",
+        "liip/imagine-bundle":                "^2.3",
         "darvinstudio/darvin-content-bundle": "*",
         "darvinstudio/darvin-file-bundle":    "*"
     },
