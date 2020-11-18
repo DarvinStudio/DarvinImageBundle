@@ -10,12 +10,9 @@
 
 namespace Darvin\ImageBundle\Form\Type;
 
+use Darvin\FileBundle\Form\Type\FileType;
 use Darvin\ImageBundle\Size\ImageSizeDescriberInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -47,72 +44,32 @@ class ImageType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder->add('file', FileType::class, [
-            'label'              => false,
-            'upload_max_size_mb' => $this->uploadMaxSizeMb,
-            'required'           => false,
-            'attr'               => [
-                'accept' => 'image/*',
-            ],
-        ]);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function finishView(FormView $view, FormInterface $form, array $options): void
-    {
-        $view->vars = array_merge($view->vars, [
-            'disableable' => $options['disableable'],
-            'editable'    => $options['editable'],
-        ]);
-
-        $help = (string)$view->children['file']->vars['help'];
-
-        if ('' === $help) {
-            return;
-        }
-
-        $view->children['file']->vars['help'] = null;
-
-        $view->vars['help'] = (string)$view->vars['help'];
-
-        if ('' !== $view->vars['help']) {
-            $view->vars['help'] .= '<br>';
-        }
-
-        $view->vars['help'] .= $help;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $sizeDescriber = $this->sizeDescriber;
 
         $resolver
             ->setDefaults([
-                'csrf_protection' => false,
-                'required'        => false,
-                'disableable'     => true,
-                'editable'        => true,
-                'filters'         => [],
-                'width'           => 0,
-                'height'          => 0,
-                'help'            => function (Options $options) use ($sizeDescriber) {
+                'accept'             => 'image/*',
+                'filters'            => [],
+                'width'              => 0,
+                'height'             => 0,
+                'upload_max_size_mb' => $this->uploadMaxSizeMb,
+                'help'               => function (Options $options) use ($sizeDescriber) {
                     return $sizeDescriber->describeSize($options['filters'], $options['width'], $options['height'], $options['data_class']);
                 },
             ])
-            ->setAllowedTypes('disableable', 'boolean')
-            ->setAllowedTypes('editable', 'boolean')
             ->setAllowedTypes('filters', ['array', 'null', 'string'])
             ->setAllowedTypes('width', 'integer')
-            ->setAllowedTypes('height', 'integer')
-            ->remove('data_class')
-            ->setRequired('data_class');
+            ->setAllowedTypes('height', 'integer');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getParent(): string
+    {
+        return FileType::class;
     }
 
     /**
