@@ -10,6 +10,7 @@
 
 namespace Darvin\ImageBundle\Controller\Image;
 
+use Darvin\FileBundle\Controller\File\AbstractFileController;
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\Form\Type\ImageEditType;
 use Darvin\Utils\Flash\FlashNotifierInterface;
@@ -19,6 +20,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -26,7 +28,7 @@ use Twig\Environment;
 /**
  * Image edit controller
  */
-class EditController extends AbstractImageController
+class EditController extends AbstractFileController
 {
     /**
      * @var \Darvin\Utils\Flash\FlashNotifierInterface
@@ -99,7 +101,12 @@ class EditController extends AbstractImageController
      */
     public function __invoke(Request $request, $id): Response
     {
-        $image    = $this->getImage($id);
+        $image = $this->getFile($id);
+
+        if (!$image instanceof AbstractImage) {
+            throw new NotFoundHttpException(sprintf('File with ID "%s" is not image.', $id));
+        }
+
         $template = $request->isXmlHttpRequest() ? $this->partialTemplate : $this->fullTemplate;
         $twig     = $this->twig;
 

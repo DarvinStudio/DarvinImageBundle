@@ -1,13 +1,13 @@
 darvin_image_image_delete:
     path:         /{id}/delete
-    defaults:     { _controller: darvin_image.image.controller.delete }
+    defaults:     { _controller: darvin_file.controller.delete }
     requirements: { id: \d+ }
     methods:      [ post ]
     condition:    request.isXmlHttpRequest()
 
 darvin_image_image_disable:
     path:         /{id}/disable
-    defaults:     { _controller: darvin_image.image.controller.disable }
+    defaults:     { _controller: darvin_file.controller.disable }
     requirements: { id: \d+ }
     methods:      [ post ]
     condition:    request.isXmlHttpRequest()
@@ -20,19 +20,19 @@ darvin_image_image_edit:
 
 darvin_image_image_enable:
     path:         /{id}/enable
-    defaults:     { _controller: darvin_image.image.controller.enable }
+    defaults:     { _controller: darvin_file.controller.enable }
     requirements: { id: \d+ }
     methods:      [ post ]
     condition:    request.isXmlHttpRequest()
 
 darvin_image_image_exterminate:
     path:      /exterminate
-    defaults:  { _controller: darvin_image.image.controller.exterminate }
+    defaults:  { _controller: darvin_file.controller.exterminate }
     methods:   [ post ]
     condition: request.isXmlHttpRequest()
 
 darvin_image_image_sort:
     path:      /sort
-    defaults:  { _controller: darvin_image.image.controller.sort }
+    defaults:  { _controller: darvin_file.controller.sort }
     methods:   [ post ]
     condition: request.isXmlHttpRequest()

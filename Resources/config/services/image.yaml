@@ -1,11 +1,5 @@
 parameters:
-    darvin_image.image.controller.abstract.class:    Darvin\ImageBundle\Controller\Image\AbstractImageController
-    darvin_image.image.controller.delete.class:      Darvin\ImageBundle\Controller\Image\DeleteController
-    darvin_image.image.controller.disable.class:     Darvin\ImageBundle\Controller\Image\DisableController
-    darvin_image.image.controller.edit.class:        Darvin\ImageBundle\Controller\Image\EditController
-    darvin_image.image.controller.enable.class:      Darvin\ImageBundle\Controller\Image\EnableController
-    darvin_image.image.controller.exterminate.class: Darvin\ImageBundle\Controller\Image\ExterminateController
-    darvin_image.image.controller.sort.class:        Darvin\ImageBundle\Controller\Image\SortController
+    darvin_image.image.controller.edit.class: Darvin\ImageBundle\Controller\Image\EditController
 
     darvin_image.image.copy_cloned_file_event_subscriber.class: Darvin\ImageBundle\EventListener\CopyClonedImageFileSubscriber
 
@@ -21,27 +15,9 @@ parameters:
     darvin_image.image.update_properties_event_subscriber.class: Darvin\ImageBundle\EventListener\UpdateImagePropertiesSubscriber
 
 services:
-    darvin_image.image.controller.abstract:
-        class:    '%darvin_image.image.controller.abstract.class%'
-        abstract: true
-        calls:
-            - [ setEntityManager, [ '@doctrine.orm.entity_manager' ] ]
-
-    darvin_image.image.controller.delete:
-        class:  '%darvin_image.image.controller.delete.class%'
-        parent: darvin_image.image.controller.abstract
-        tags:
-            - { name: controller.service_arguments }
-
-    darvin_image.image.controller.disable:
-        class:  '%darvin_image.image.controller.disable.class%'
-        parent: darvin_image.image.controller.abstract
-        tags:
-            - { name: controller.service_arguments }
-
     darvin_image.image.controller.edit:
         class:  '%darvin_image.image.controller.edit.class%'
-        parent: darvin_image.image.controller.abstract
+        parent: darvin_file.controller.abstract
         arguments:
             - '@darvin_utils.flash.notifier'
             - '@form.factory'
@@ -50,24 +26,6 @@ services:
             - '@twig'
             - '%darvin_image.action.edit.template.full%'
             - '%darvin_image.action.edit.template.partial%'
-        tags:
-            - { name: controller.service_arguments }
-
-    darvin_image.image.controller.enable:
-        class:  '%darvin_image.image.controller.enable.class%'
-        parent: darvin_image.image.controller.abstract
-        tags:
-            - { name: controller.service_arguments }
-
-    darvin_image.image.controller.exterminate:
-        class:  '%darvin_image.image.controller.exterminate.class%'
-        parent: darvin_image.image.controller.abstract
-        tags:
-            - { name: controller.service_arguments }
-
-    darvin_image.image.controller.sort:
-        class:  '%darvin_image.image.controller.sort.class%'
-        parent: darvin_image.image.controller.abstract
         tags:
             - { name: controller.service_arguments }
 
