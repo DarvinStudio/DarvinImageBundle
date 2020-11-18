@@ -1,10 +1,10 @@
 parameters:
-    darvin_image.archive.twig_extension.class: Darvin\ImageBundle\Twig\Extension\ArchiveExtension
+    darvin_image.archive.twig.extension.class: Darvin\ImageBundle\Twig\Extension\ArchiveExtension
 
 services:
-    darvin_image.archive.twig_extension:
-        class: '%darvin_image.archive.twig_extension.class%'
+    darvin_image.archive.twig.extension:
+        class: '%darvin_image.archive.twig.extension.class%'
         arguments:
-            - '@?darvin_file.archive.form_factory'
+            - '@?darvin_file.archive.form.factory'
         tags:
             - { name: twig.extension }
