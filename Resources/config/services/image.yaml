@@ -3,9 +3,6 @@ parameters:
 
     darvin_image.image.form_type.class: Darvin\ImageBundle\Form\Type\ImageType
 
-    darvin_image.image.rename_event_subscriber.class:   Darvin\ImageBundle\EventListener\RenameImageSubscriber
-    darvin_image.image.rename_event_subscriber.tmp_dir: '%darvin_image.tmp_dir%/renamed'
-
     darvin_image.image.twig_extension.class: Darvin\ImageBundle\Twig\Extension\ImageExtension
 
     darvin_image.image.update_properties_event_subscriber.class: Darvin\ImageBundle\EventListener\UpdateImagePropertiesSubscriber
@@ -23,15 +20,6 @@ services:
             - '%darvin_image.upload_max_size_mb%'
         tags:
             - { name: form.type }
-
-    darvin_image.image.rename_event_subscriber:
-        class: '%darvin_image.image.rename_event_subscriber.class%'
-        arguments:
-            - '@filesystem'
-            - '@vich_uploader.storage'
-            - '%darvin_image.image.rename_event_subscriber.tmp_dir%'
-        tags:
-            - { name: doctrine.event_subscriber }
 
     darvin_image.image.twig_extension:
         class: '%darvin_image.image.twig_extension.class%'
