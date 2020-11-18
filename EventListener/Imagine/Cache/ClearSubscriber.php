@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Darvin\ImageBundle\EventListener;
+namespace Darvin\ImageBundle\EventListener\Imagine\Cache;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Doctrine\Common\EventSubscriber;
@@ -19,9 +19,9 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
 use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
- * Cleanup Imagine cache event subscriber
+ * Clear Imagine cache event subscriber
  */
-class CleanupImagineCacheSubscriber implements EventSubscriber
+class ClearSubscriber implements EventSubscriber
 {
     /**
      * @var \Liip\ImagineBundle\Imagine\Cache\CacheManager

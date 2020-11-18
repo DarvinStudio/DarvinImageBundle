@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Darvin\ImageBundle\EventListener;
+namespace Darvin\ImageBundle\EventListener\Imagine\Cache;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface;
@@ -17,9 +17,9 @@ use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 
 /**
- * Warmup Imagine cache event subscriber
+ * Imagine cache warmup event subscriber
  */
-class WarmupImagineCacheSubscriber implements EventSubscriberInterface
+class WarmupSubscriber implements EventSubscriberInterface
 {
     /**
      * @var \Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface

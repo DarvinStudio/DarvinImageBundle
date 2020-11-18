@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Darvin\ImageBundle\Command;
+namespace Darvin\ImageBundle\Command\Imagine\Cache;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface;
@@ -21,7 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Warmup Imagine cache command
  */
-class WarmupImagineCacheCommand extends Command
+class WarmupCommand extends Command
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -39,18 +39,17 @@ class WarmupImagineCacheCommand extends Command
     private $chunkSize;
 
     /**
-     * @param string                                                        $name               Command name
      * @param \Doctrine\ORM\EntityManager                                   $em                 Entity manager
      * @param \Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface $imagineCacheWarmer Imagine cache warmer
-     * @param mixed                                                         $chunkSize          Chunk size
+     * @param int                                                           $chunkSize          Chunk size
      */
-    public function __construct(string $name, EntityManager $em, ImagineCacheWarmerInterface $imagineCacheWarmer, $chunkSize)
+    public function __construct(EntityManager $em, ImagineCacheWarmerInterface $imagineCacheWarmer, int $chunkSize)
     {
-        parent::__construct($name);
+        parent::__construct();
 
         $this->em = $em;
         $this->imagineCacheWarmer = $imagineCacheWarmer;
-        $this->chunkSize = (int)$chunkSize;
+        $this->chunkSize = $chunkSize;
     }
 
     /**
@@ -58,7 +57,9 @@ class WarmupImagineCacheCommand extends Command
      */
     protected function configure(): void
     {
-        $this->setDescription('Generates Imagine cache for all images.');
+        $this
+            ->setName('darvin:image:cache:warmup')
+            ->setDescription('Generates Imagine cache for all images.');
     }
 
     /**

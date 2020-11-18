@@ -1,19 +1,27 @@
 parameters:
-    darvin_image.imagine.cache_resolver.class: Darvin\ImageBundle\Imagine\Cache\Resolver\Resolver
+    darvin_image.imagine.cache.clear.event_subscriber.class: Darvin\ImageBundle\EventListener\Imagine\Cache\ClearSubscriber
 
-    darvin_image.imagine.cache_warmer.class: Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmer
+    darvin_image.imagine.cache.resolver.class: Darvin\ImageBundle\Imagine\Cache\Resolver\Resolver
 
-    darvin_image.imagine.cleanup_cache_event_subscriber.class: Darvin\ImageBundle\EventListener\CleanupImagineCacheSubscriber
+    darvin_image.imagine.cache.warmer.class: Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmer
 
-    darvin_image.imagine.warmup_cache_command.class:      Darvin\ImageBundle\Command\WarmupImagineCacheCommand
-    darvin_image.imagine.warmup_cache_command.name:       darvin:image:cache:warmup
-    darvin_image.imagine.warmup_cache_command.chunk_size: 50
+    darvin_image.imagine.cache.warmup.command.class: Darvin\ImageBundle\Command\Imagine\Cache\WarmupCommand
+    darvin_image.imagine.cache.warmup.command.chunk: 50
 
-    darvin_image.imagine.warmup_cache_event_subscriber.class: Darvin\ImageBundle\EventListener\WarmupImagineCacheSubscriber
+    darvin_image.imagine.cache.warmup.event_subscriber.class: Darvin\ImageBundle\EventListener\Imagine\Cache\WarmupSubscriber
 
 services:
-    darvin_image.imagine.cache_resolver:
-        class: '%darvin_image.imagine.cache_resolver.class%'
+    darvin_image.imagine.cache.clear.event_subscriber:
+        class: '%darvin_image.imagine.cache.clear.event_subscriber.class%'
+        arguments:
+            - '@liip_imagine.cache.manager'
+            - '@liip_imagine.filter.manager'
+            - '@vich_uploader.storage'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    darvin_image.imagine.cache.resolver:
+        class: '%darvin_image.imagine.cache.resolver.class%'
         arguments:
             - '@filesystem'
             - '@router.request_context'
@@ -24,8 +32,8 @@ services:
         tags:
             - { name: liip_imagine.cache.resolver, resolver: darvin_image_custom }
 
-    darvin_image.imagine.cache_warmer:
-        class: '%darvin_image.imagine.cache_warmer.class%'
+    darvin_image.imagine.cache.warmer:
+        class: '%darvin_image.imagine.cache.warmer.class%'
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@liip_imagine.cache.manager'
@@ -35,28 +43,18 @@ services:
             - '@vich_uploader.storage'
             - '%darvin_image.imagine.filter_sets%'
 
-    darvin_image.imagine.cleanup_cache_event_subscriber:
-        class: '%darvin_image.imagine.cleanup_cache_event_subscriber.class%'
+    darvin_image.imagine.cache.warmup.command:
+        class: '%darvin_image.imagine.cache.warmup.command.class%'
         arguments:
-            - '@liip_imagine.cache.manager'
-            - '@liip_imagine.filter.manager'
-            - '@vich_uploader.storage'
-        tags:
-            - { name: doctrine.event_subscriber }
-
-    darvin_image.imagine.warmup_cache_command:
-        class: '%darvin_image.imagine.warmup_cache_command.class%'
-        arguments:
-            - '%darvin_image.imagine.warmup_cache_command.name%'
             - '@doctrine.orm.entity_manager'
-            - '@darvin_image.imagine.cache_warmer'
-            - '%darvin_image.imagine.warmup_cache_command.chunk_size%'
+            - '@darvin_image.imagine.cache.warmer'
+            - '%darvin_image.imagine.cache.warmup.command.chunk%'
         tags:
             - { name: console.command }
 
-    darvin_image.imagine.warmup_cache_event_subscriber:
-        class: '%darvin_image.imagine.warmup_cache_event_subscriber.class%'
+    darvin_image.imagine.cache.warmup.event_subscriber:
+        class: '%darvin_image.imagine.cache.warmup.event_subscriber.class%'
         arguments:
-            - '@darvin_image.imagine.cache_warmer'
+            - '@darvin_image.imagine.cache.warmer'
         tags:
             - { name: kernel.event_subscriber }
