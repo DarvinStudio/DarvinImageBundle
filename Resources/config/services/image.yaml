@@ -13,10 +13,6 @@ parameters:
 
     darvin_image.image.form_type.class: Darvin\ImageBundle\Form\Type\ImageType
 
-    darvin_image.image.list_orphans_command.class:      Darvin\ImageBundle\Command\ListOrphanImagesCommand
-    darvin_image.image.list_orphans_command.name:       darvin:image:orphans
-    darvin_image.image.list_orphans_command.chunk_size: 50
-
     darvin_image.image.rename_event_subscriber.class:   Darvin\ImageBundle\EventListener\RenameImageSubscriber
     darvin_image.image.rename_event_subscriber.tmp_dir: '%darvin_image.tmp_dir%/renamed'
 
@@ -97,19 +93,6 @@ services:
             - '%darvin_image.upload_max_size_mb%'
         tags:
             - { name: form.type }
-
-    darvin_image.image.list_orphans_command:
-        class: '%darvin_image.image.list_orphans_command.class%'
-        arguments:
-            - '%darvin_image.image.list_orphans_command.name%'
-            - '@doctrine.orm.entity_manager'
-            - '@filesystem'
-            - '@vich_uploader.metadata_reader'
-            - '@vich_uploader.storage'
-            - '%darvin_image.image.list_orphans_command.chunk_size%'
-            - '%vich_uploader.mappings%'
-        tags:
-            - { name: console.command }
 
     darvin_image.image.rename_event_subscriber:
         class: '%darvin_image.image.rename_event_subscriber.class%'
