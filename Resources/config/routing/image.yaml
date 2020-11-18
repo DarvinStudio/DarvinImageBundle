@@ -14,7 +14,7 @@ darvin_image_image_disable:
 
 darvin_image_image_edit:
     path:         /{id}/edit
-    defaults:     { _controller: darvin_image.image.controller.edit }
+    defaults:     { _controller: darvin_file.controller.edit }
     requirements: { id: \d+ }
     methods:      [ get, post ]
 

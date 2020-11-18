@@ -1,9 +1,5 @@
 parameters:
-    darvin_image.image.controller.edit.class: Darvin\ImageBundle\Controller\Image\EditController
-
     darvin_image.image.copy_cloned_file_event_subscriber.class: Darvin\ImageBundle\EventListener\CopyClonedImageFileSubscriber
-
-    darvin_image.image.edit_form_type.class: Darvin\ImageBundle\Form\Type\ImageEditType
 
     darvin_image.image.form_type.class: Darvin\ImageBundle\Form\Type\ImageType
 
@@ -15,34 +11,10 @@ parameters:
     darvin_image.image.update_properties_event_subscriber.class: Darvin\ImageBundle\EventListener\UpdateImagePropertiesSubscriber
 
 services:
-    darvin_image.image.controller.edit:
-        class:  '%darvin_image.image.controller.edit.class%'
-        parent: darvin_file.controller.abstract
-        arguments:
-            - '@darvin_utils.flash.notifier'
-            - '@form.factory'
-            - '@router'
-            - '@translator'
-            - '@twig'
-            - '%darvin_image.action.edit.template.full%'
-            - '%darvin_image.action.edit.template.partial%'
-        tags:
-            - { name: controller.service_arguments }
-
     darvin_image.image.copy_cloned_file_event_subscriber:
         class: '%darvin_image.image.copy_cloned_file_event_subscriber.class%'
         tags:
             - { name: kernel.event_subscriber }
-
-    darvin_image.image.edit_form_type:
-        class: '%darvin_image.image.edit_form_type.class%'
-        arguments:
-            - '@darvin_utils.object_namer'
-            - '@translator'
-            - '%darvin_image.action.edit.fields%'
-            - '%darvin_image.action.edit.translation_domain%'
-        tags:
-            - { name: form.type }
 
     darvin_image.image.form_type:
         class: '%darvin_image.image.form_type.class%'
