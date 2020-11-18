@@ -3,8 +3,6 @@ parameters:
 
     darvin_image.image.twig_extension.class: Darvin\ImageBundle\Twig\Extension\ImageExtension
 
-    darvin_image.image.update_properties_event_subscriber.class: Darvin\ImageBundle\EventListener\UpdateImagePropertiesSubscriber
-
 services:
     darvin_image.image.form_type:
         class: '%darvin_image.image.form_type.class%'
@@ -18,8 +16,3 @@ services:
         class: '%darvin_image.image.twig_extension.class%'
         tags:
             - { name: twig.extension }
-
-    darvin_image.image.update_properties_event_subscriber:
-        class: '%darvin_image.image.update_properties_event_subscriber.class%'
-        tags:
-            - { name: kernel.event_subscriber }
