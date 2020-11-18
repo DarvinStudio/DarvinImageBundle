@@ -20,7 +20,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class DarvinImageBundle extends Bundle
 {
-    public const MAJOR_VERSION = 7;
+    public const MAJOR_VERSION = 8;
 
     /**
      * {@inheritDoc}
