@@ -1,8 +1,3 @@
-archive:
-    action:
-        build:
-            submit: 存档的图像
-            success: 图像归档
 image:
     edit:
         success: 图像更新

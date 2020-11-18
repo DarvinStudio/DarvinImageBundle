@@ -1,8 +1,3 @@
-archive:
-    action:
-        build:
-            submit: 'Des Images D''Archives'
-            success: 'Les Images archivées'
 image:
     edit:
         success: 'Image mise à jour'

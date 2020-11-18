@@ -1,9 +1,3 @@
-archive:
-    action:
-        build:
-            submit:  Archive Images
-            success: Images archived
-
 image:
     edit:
         success: Image updated
