@@ -1,6 +1,4 @@
 parameters:
-    darvin_image.image.copy_cloned_file_event_subscriber.class: Darvin\ImageBundle\EventListener\CopyClonedImageFileSubscriber
-
     darvin_image.image.form_type.class: Darvin\ImageBundle\Form\Type\ImageType
 
     darvin_image.image.twig_extension.class: Darvin\ImageBundle\Twig\Extension\ImageExtension
@@ -8,11 +6,6 @@ parameters:
     darvin_image.image.update_properties_event_subscriber.class: Darvin\ImageBundle\EventListener\UpdateImagePropertiesSubscriber
 
 services:
-    darvin_image.image.copy_cloned_file_event_subscriber:
-        class: '%darvin_image.image.copy_cloned_file_event_subscriber.class%'
-        tags:
-            - { name: kernel.event_subscriber }
-
     darvin_image.image.form_type:
         class: '%darvin_image.image.form_type.class%'
         arguments:
