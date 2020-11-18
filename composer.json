@@ -16,9 +16,6 @@
         "darvinstudio/darvin-content-bundle": "*",
         "darvinstudio/darvin-file-bundle":    "*"
     },
-    "suggest": {
-        "ext-zip": "Allows to archive images"
-    },
     "autoload": {
         "psr-4": { "Darvin\\ImageBundle\\": "" }
     }
