@@ -20,5 +20,5 @@ interface ImagineCacheWarmerInterface
     /**
      * @param \Darvin\ImageBundle\Entity\Image\AbstractImage $image Image
      */
-    public function warmupImageCache(AbstractImage $image): void;
+    public function warmImageCache(AbstractImage $image): void;
 }

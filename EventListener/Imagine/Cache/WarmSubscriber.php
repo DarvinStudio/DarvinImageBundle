@@ -17,9 +17,9 @@ use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
 
 /**
- * Imagine cache warmup event subscriber
+ * Warm Imagine cache event subscriber
  */
-class WarmupSubscriber implements EventSubscriberInterface
+class WarmSubscriber implements EventSubscriberInterface
 {
     /**
      * @var \Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface
@@ -40,19 +40,19 @@ class WarmupSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            Events::POST_UPLOAD => 'warmupCache',
+            Events::POST_UPLOAD => 'warmCache',
         ];
     }
 
     /**
      * @param \Vich\UploaderBundle\Event\Event $event Event
      */
-    public function warmupCache(Event $event): void
+    public function warmCache(Event $event): void
     {
         $image = $event->getObject();
 
         if ($image instanceof AbstractImage && null !== $image->getFile()) {
-            $this->imagineCacheWarmer->warmupImageCache($image);
+            $this->imagineCacheWarmer->warmImageCache($image);
         }
     }
 }

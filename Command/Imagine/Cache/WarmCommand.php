@@ -19,9 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Warmup Imagine cache command
+ * Warm Imagine cache command
  */
-class WarmupCommand extends Command
+class WarmCommand extends Command
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -58,7 +58,7 @@ class WarmupCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('darvin:image:cache:warmup')
+            ->setName('darvin:image:cache:warm')
             ->setDescription('Generates Imagine cache for all images.');
     }
 
@@ -90,7 +90,7 @@ class WarmupCommand extends Command
             $image = reset($row);
 
             try {
-                $this->imagineCacheWarmer->warmupImageCache($image);
+                $this->imagineCacheWarmer->warmImageCache($image);
             } catch (\Exception $ex) {
                 $io->warning($ex->getMessage());
             }

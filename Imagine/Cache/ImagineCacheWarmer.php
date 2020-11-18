@@ -88,7 +88,7 @@ class ImagineCacheWarmer implements ImagineCacheWarmerInterface
     /**
      * {@inheritDoc}
      */
-    public function warmupImageCache(AbstractImage $image): void
+    public function warmImageCache(AbstractImage $image): void
     {
         if ($image->isVector()) {
             return;
