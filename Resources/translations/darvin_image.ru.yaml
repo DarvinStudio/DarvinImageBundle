@@ -1,6 +1,4 @@
 image:
-    edit:
-        success: Изображение сохранено
     entity:
         name: Название
     help:

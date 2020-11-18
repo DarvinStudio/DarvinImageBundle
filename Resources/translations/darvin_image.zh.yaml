@@ -1,6 +1,4 @@
 image:
-    edit:
-        success: 图像更新
     entity:
         name: 名称
     help:

@@ -1,6 +1,4 @@
 image:
-    edit:
-        success: Image updated
     entity:
         name: Name
     help:

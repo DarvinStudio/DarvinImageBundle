@@ -1,6 +1,4 @@
 image:
-    edit:
-        success: 'Image mise à jour'
     entity:
         name: Nom
     help:
