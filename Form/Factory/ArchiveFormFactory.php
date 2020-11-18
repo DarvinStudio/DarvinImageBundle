@@ -11,6 +11,7 @@
 namespace Darvin\ImageBundle\Form\Factory;
 
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -57,6 +58,6 @@ class ArchiveFormFactory implements ArchiveFormFactoryInterface
         return $this->genericFormFactory->createNamed('darvin_image_archive_build', FormType::class, null, [
             'action'          => $this->router->generate('darvin_image_archive_build'),
             'csrf_protection' => false,
-        ]);
+        ])->add('_ignore_me', HiddenType::class);
     }
 }
