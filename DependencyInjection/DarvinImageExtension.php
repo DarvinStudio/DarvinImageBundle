@@ -37,7 +37,7 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
         (new ConfigInjector($container))->inject($this->processConfiguration(new Configuration(), $configs), $this->getAlias());
 
         (new ConfigLoader($container, __DIR__.'/../Resources/config/services'))->load([
-            'archive/twig_extension',
+            'archive',
             'image',
             'imageable',
             'imagine',
@@ -46,14 +46,7 @@ class DarvinImageExtension extends Extension implements PrependExtensionInterfac
             'size',
             'url_builder',
             'validation',
-
-            'archive/archiver/zip' => ['extension' => 'zip'],
-            'archive/common'       => ['extension' => 'zip'],
         ]);
-
-        if (extension_loaded('zip')) {
-            $container->setAlias('darvin_image.archiver', 'darvin_image.archiver.zip');
-        }
     }
 
     /**

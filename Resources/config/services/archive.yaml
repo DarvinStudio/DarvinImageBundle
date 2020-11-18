@@ -5,6 +5,6 @@ services:
     darvin_image.archive.twig_extension:
         class: '%darvin_image.archive.twig_extension.class%'
         arguments:
-            - '@?darvin_image.archive.form_factory'
+            - '@?darvin_file.archive.form_factory'
         tags:
             - { name: twig.extension }
