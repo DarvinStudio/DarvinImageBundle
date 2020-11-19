@@ -1,9 +1,9 @@
 parameters:
-    darvin_image.validation.darvin_image_validator.class: Darvin\ImageBundle\Validation\Constraints\DarvinImageValidator
+    darvin_image.validation.validator.darvin_image.class: Darvin\ImageBundle\Validation\Constraints\DarvinImageValidator
 
 services:
-    darvin_image.validation.darvin_image_validator:
-        class: '%darvin_image.validation.darvin_image_validator.class%'
+    darvin_image.validation.validator.darvin_image:
+        class: '%darvin_image.validation.validator.darvin_image.class%'
         arguments:
             - '%darvin_image.constraints%'
             - '%darvin_image.upload_max_size_mb%'

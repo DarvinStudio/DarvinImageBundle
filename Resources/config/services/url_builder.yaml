@@ -3,7 +3,7 @@ parameters:
 
     darvin_image.url_builder.filter.direct_imagine.class: Darvin\ImageBundle\UrlBuilder\Filter\DirectImagineFilter
 
-    darvin_image.url_builder.twig_extension.class: Darvin\ImageBundle\Twig\Extension\UrlBuilderExtension
+    darvin_image.url_builder.twig.extension.class: Darvin\ImageBundle\Twig\Extension\UrlBuilderExtension
 
 services:
     darvin_image.url_builder.builder:
@@ -20,8 +20,8 @@ services:
         tags:
             - { name: darvin_image.url_builder_filter }
 
-    darvin_image.url_builder.twig_extension:
-        class: '%darvin_image.url_builder.twig_extension.class%'
+    darvin_image.url_builder.twig.extension:
+        class: '%darvin_image.url_builder.twig.extension.class%'
         arguments:
             - '@logger'
             - '@darvin_image.url_builder.builder'

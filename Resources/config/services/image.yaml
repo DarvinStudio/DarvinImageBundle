@@ -1,18 +1,18 @@
 parameters:
-    darvin_image.image.form_type.class: Darvin\ImageBundle\Form\Type\ImageType
+    darvin_image.image.form.type.class: Darvin\ImageBundle\Form\Type\ImageType
 
-    darvin_image.image.twig_extension.class: Darvin\ImageBundle\Twig\Extension\ImageExtension
+    darvin_image.image.twig.extension.class: Darvin\ImageBundle\Twig\Extension\ImageExtension
 
 services:
-    darvin_image.image.form_type:
-        class: '%darvin_image.image.form_type.class%'
+    darvin_image.image.form.type:
+        class: '%darvin_image.image.form.type.class%'
         arguments:
             - '@darvin_image.size.describer'
             - '%darvin_image.upload_max_size_mb%'
         tags:
             - { name: form.type }
 
-    darvin_image.image.twig_extension:
-        class: '%darvin_image.image.twig_extension.class%'
+    darvin_image.image.twig.extension:
+        class: '%darvin_image.image.twig.extension.class%'
         tags:
             - { name: twig.extension }

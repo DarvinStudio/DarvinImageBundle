@@ -1,9 +1,9 @@
 parameters:
-    darvin_image.imageable.form_type.entity.class: Darvin\ImageBundle\Form\Type\ImageableEntityType
+    darvin_image.imageable.form.type.entity.class: Darvin\ImageBundle\Form\Type\ImageableEntityType
 
 services:
-    darvin_image.imageable.form_type.entity:
-        class: '%darvin_image.imageable.form_type.entity.class%'
+    darvin_image.imageable.form.type.entity:
+        class: '%darvin_image.imageable.form.type.entity.class%'
         arguments:
             - '@darvin_image.url_builder.builder'
             - '@property_accessor'
