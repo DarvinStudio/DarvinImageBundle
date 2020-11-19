@@ -11,7 +11,7 @@
 namespace Darvin\ImageBundle\Command\Imagine\Cache;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
-use Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface;
+use Darvin\ImageBundle\Imagine\Cache\Warmer\ImagineCacheWarmerInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,7 +29,7 @@ class WarmCommand extends Command
     private $em;
 
     /**
-     * @var \Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface
+     * @var \Darvin\ImageBundle\Imagine\Cache\Warmer\ImagineCacheWarmerInterface
      */
     private $imagineCacheWarmer;
 
@@ -39,9 +39,9 @@ class WarmCommand extends Command
     private $chunkSize;
 
     /**
-     * @param \Doctrine\ORM\EntityManager                                   $em                 Entity manager
-     * @param \Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface $imagineCacheWarmer Imagine cache warmer
-     * @param int                                                           $chunkSize          Chunk size
+     * @param \Doctrine\ORM\EntityManager                                          $em                 Entity manager
+     * @param \Darvin\ImageBundle\Imagine\Cache\Warmer\ImagineCacheWarmerInterface $imagineCacheWarmer Imagine cache warmer
+     * @param int                                                                  $chunkSize          Chunk size
      */
     public function __construct(EntityManager $em, ImagineCacheWarmerInterface $imagineCacheWarmer, int $chunkSize)
     {

@@ -11,7 +11,7 @@
 namespace Darvin\ImageBundle\EventListener\Imagine\Cache;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
-use Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface;
+use Darvin\ImageBundle\Imagine\Cache\Warmer\ImagineCacheWarmerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Vich\UploaderBundle\Event\Event;
 use Vich\UploaderBundle\Event\Events;
@@ -22,12 +22,12 @@ use Vich\UploaderBundle\Event\Events;
 class WarmSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var \Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface
+     * @var \Darvin\ImageBundle\Imagine\Cache\Warmer\ImagineCacheWarmerInterface
      */
     private $imagineCacheWarmer;
 
     /**
-     * @param \Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmerInterface $imagineCacheWarmer Imagine cache warmer
+     * @param \Darvin\ImageBundle\Imagine\Cache\Warmer\ImagineCacheWarmerInterface $imagineCacheWarmer Imagine cache warmer
      */
     public function __construct(ImagineCacheWarmerInterface $imagineCacheWarmer)
     {

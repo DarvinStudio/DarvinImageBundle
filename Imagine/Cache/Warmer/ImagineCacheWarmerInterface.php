@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Darvin\ImageBundle\Imagine\Cache;
+namespace Darvin\ImageBundle\Imagine\Cache\Warmer;
 
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 

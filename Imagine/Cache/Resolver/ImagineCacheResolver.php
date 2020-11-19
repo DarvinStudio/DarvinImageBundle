@@ -15,7 +15,7 @@ use Liip\ImagineBundle\Imagine\Cache\Resolver\WebPathResolver;
 /**
  * Imagine cache resolver
  */
-class Resolver extends WebPathResolver
+class ImagineCacheResolver extends WebPathResolver
 {
     /**
      * @var array

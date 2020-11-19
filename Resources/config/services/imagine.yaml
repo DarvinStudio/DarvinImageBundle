@@ -1,9 +1,9 @@
 parameters:
     darvin_image.imagine.cache.clear.event_subscriber.class: Darvin\ImageBundle\EventListener\Imagine\Cache\ClearSubscriber
 
-    darvin_image.imagine.cache.resolver.class: Darvin\ImageBundle\Imagine\Cache\Resolver\Resolver
+    darvin_image.imagine.cache.resolver.class: Darvin\ImageBundle\Imagine\Cache\Resolver\ImagineCacheResolver
 
-    darvin_image.imagine.cache.warmer.class: Darvin\ImageBundle\Imagine\Cache\ImagineCacheWarmer
+    darvin_image.imagine.cache.warmer.class: Darvin\ImageBundle\Imagine\Cache\Warmer\ImagineCacheWarmer
 
     darvin_image.imagine.cache.warm.command.class: Darvin\ImageBundle\Command\Imagine\Cache\WarmCommand
     darvin_image.imagine.cache.warm.command.chunk: 50
