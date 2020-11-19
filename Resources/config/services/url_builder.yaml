@@ -9,8 +9,8 @@ services:
     darvin_image.url_builder.builder:
         class: '%darvin_image.url_builder.builder.class%'
         arguments:
-            - '@request_stack'
-            - '@vich_uploader.storage'
+            - '@darvin_file.url_builder.builder'
+            - '@darvin_file.url_builder.url_absolutizer'
             - '%darvin_image.placeholder%'
 
     darvin_image.url_builder.filter.direct_imagine:

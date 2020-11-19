@@ -11,13 +11,11 @@
 
 namespace Darvin\ImageBundle\UrlBuilder;
 
+use Darvin\FileBundle\UrlBuilder\UrlAbsolutizerInterface;
 use Darvin\ImageBundle\Entity\Image\AbstractImage;
 use Darvin\ImageBundle\UrlBuilder\Exception\FilterAlreadyExistsException;
 use Darvin\ImageBundle\UrlBuilder\Exception\FilterNotFoundException;
 use Darvin\ImageBundle\UrlBuilder\Filter\FilterInterface;
-use Doctrine\Common\Util\ClassUtils;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
  * URL builder
@@ -25,14 +23,14 @@ use Vich\UploaderBundle\Storage\StorageInterface;
 class UrlBuilder implements UrlBuilderInterface
 {
     /**
-     * @var \Symfony\Component\HttpFoundation\RequestStack
+     * @var \Darvin\FileBundle\UrlBuilder\UrlBuilderInterface
      */
-    private $requestStack;
+    private $genericUrlBuilder;
 
     /**
-     * @var \Vich\UploaderBundle\Storage\StorageInterface
+     * @var \Darvin\FileBundle\UrlBuilder\UrlAbsolutizerInterface
      */
-    private $storage;
+    private $urlAbsolutizer;
 
     /**
      * @var string|null
@@ -45,14 +43,17 @@ class UrlBuilder implements UrlBuilderInterface
     private $filters;
 
     /**
-     * @param \Symfony\Component\HttpFoundation\RequestStack $requestStack Request stack
-     * @param \Vich\UploaderBundle\Storage\StorageInterface  $storage      Storage
-     * @param string|null                                    $placeholder  Placeholder image pathname relative to the web directory
+     * @param \Darvin\FileBundle\UrlBuilder\UrlBuilderInterface     $genericUrlBuilder Generic URL builder
+     * @param \Darvin\FileBundle\UrlBuilder\UrlAbsolutizerInterface $urlAbsolutizer    URL absolutizer
+     * @param string|null                                           $placeholder       Placeholder image pathname relative to the web directory
      */
-    public function __construct(RequestStack $requestStack, StorageInterface $storage, ?string $placeholder = null)
-    {
-        $this->requestStack = $requestStack;
-        $this->storage = $storage;
+    public function __construct(
+        \Darvin\FileBundle\UrlBuilder\UrlBuilderInterface $genericUrlBuilder,
+        UrlAbsolutizerInterface $urlAbsolutizer,
+        ?string $placeholder = null
+    ) {
+        $this->genericUrlBuilder = $genericUrlBuilder;
+        $this->urlAbsolutizer = $urlAbsolutizer;
         $this->placeholder = $placeholder;
 
         $this->filters = [];
@@ -70,7 +71,7 @@ class UrlBuilder implements UrlBuilderInterface
             return $this->getFilter($filterName)->buildUrl($this->buildOriginalUrl($image, false), $parameters);
         }
 
-        return $this->makeUrlAbsolute(null !== $fallback ? $fallback : $this->placeholder);
+        return $this->urlAbsolutizer->absolutizeUrl(null !== $fallback ? $fallback : $this->placeholder);
     }
 
     /**
@@ -78,11 +79,7 @@ class UrlBuilder implements UrlBuilderInterface
      */
     public function buildOriginalUrl(?AbstractImage $image, bool $prependHost = true, ?string $fallback = null): ?string
     {
-        if ($this->isActive($image)) {
-            return $this->makeUrlAbsolute($this->storage->resolveUri($image, AbstractImage::PROPERTY_FILE, ClassUtils::getClass($image)), $prependHost);
-        }
-
-        return $this->makeUrlAbsolute(null !== $fallback ? $fallback : $this->placeholder, $prependHost);
+        return $this->genericUrlBuilder->buildOriginalUrl($image, $prependHost, null !== $fallback ? $fallback : $this->placeholder);
     }
 
     /**
@@ -90,7 +87,7 @@ class UrlBuilder implements UrlBuilderInterface
      */
     public function isActive(?AbstractImage $image): bool
     {
-        return null !== $image && $image->isEnabled();
+        return $this->genericUrlBuilder->isActive($image);
     }
 
     /**
@@ -130,30 +127,5 @@ class UrlBuilder implements UrlBuilderInterface
     private function hasFilter(string $name): bool
     {
         return isset($this->filters[$name]);
-    }
-
-    /**
-     * @param string|null $url         URL
-     * @param bool        $prependHost Whether to prepend host
-     *
-     * @return string|null
-     */
-    private function makeUrlAbsolute(?string $url, bool $prependHost = true): ?string
-    {
-        if (null === $url) {
-            return null;
-        }
-
-        $parts = ['/', ltrim($url, '/')];
-
-        if ($prependHost) {
-            $request = $this->requestStack->getCurrentRequest();
-
-            if (null !== $request) {
-                array_unshift($parts, $request->getSchemeAndHttpHost());
-            }
-        }
-
-        return implode('', $parts);
     }
 }
