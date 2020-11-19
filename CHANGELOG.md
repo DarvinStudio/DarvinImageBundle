@@ -101,3 +101,5 @@ darvin_image:
 7.2.2: Allow list orphans command to work in production environment.
 
 7.2.3: Disable CSRF protection.
+
+8.0.0: Extract File bundle.
