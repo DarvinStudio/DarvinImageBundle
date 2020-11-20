@@ -9,6 +9,6 @@ services:
         tags:
             - { name: twig.extension }
         deprecated:
-            message: 'Archive Twig extension "%alias_id%" is deprecated. Use "darvin_file.archive.twig.extension" instead.'
+            message: 'Archive Twig extension "%service_id%" is deprecated. Use "darvin_file.archive.twig.extension" instead.'
             package: 'darvinstudio/darvin-image-bundle'
             version: '8.0.0'
