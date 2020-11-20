@@ -42,6 +42,8 @@ class ArchiveExtension extends AbstractExtension
             new TwigFunction('image_archive_build_form', [$this, 'renderBuildForm'], [
                 'needs_environment' => true,
                 'is_safe'           => ['html'],
+                'deprecated'        => true,
+                'alternative'       => 'file_archive_build_form',
             ]),
         ];
     }
