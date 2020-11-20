@@ -16,7 +16,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 /**
  * Image size describer
  */
-class SizeDescriber implements ImageSizeDescriberInterface
+class ImageSizeDescriber implements ImageSizeDescriberInterface
 {
     /**
      * @var \Liip\ImagineBundle\Imagine\Filter\FilterConfiguration

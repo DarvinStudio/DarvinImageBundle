@@ -1,5 +1,5 @@
 parameters:
-    darvin_image.size.describer.class: Darvin\ImageBundle\Size\SizeDescriber
+    darvin_image.size.describer.class: Darvin\ImageBundle\Size\ImageSizeDescriber
 
 services:
     darvin_image.size.describer:
