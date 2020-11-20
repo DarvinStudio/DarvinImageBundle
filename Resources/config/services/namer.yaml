@@ -1,5 +1,8 @@
 services:
     darvin_image.namer.file:
-        alias:      darvin_file.namer.file
-        public:     true
-        deprecated: 'File namer "%alias_id%" is deprecated. Use "darvin_file.namer.file" instead.'
+        alias:  darvin_file.namer.file
+        public: true
+        deprecated:
+            message: 'File namer "%alias_id%" is deprecated. Use "darvin_file.namer.file" instead.'
+            package: 'darvinstudio/darvin-image-bundle'
+            version: '8.0.0'
