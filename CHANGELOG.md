@@ -1,10 +1,10 @@
 6.1.0: Make "ext-zip" (allows to archive images) optional.
 
 6.1.1: "Darvin\ImageBundle\Form\Type\ImageType" form type: added options "filters", "width" and "height", which help
- to generate recommended image size description. "filters" can be string or array containing Imagine filter set name(s).
- If multiple Imagine filters are provided, filter with biggest thumbnail size will be used. "width" and "height" have
- higher priority than "filters".
- 
+to generate recommended image size description. "filters" can be string or array containing Imagine filter set name(s).
+If multiple Imagine filters are provided, filter with biggest thumbnail size will be used. "width" and "height" have
+higher priority than "filters".
+
 Admin section configuration examples:
 
 ```yaml
@@ -59,7 +59,7 @@ form:
 7.0.5: Rename cache resolvers to escape collisions.
 
 7.0.8:
- 
+
 - Move service configs to "services" dir.
 
 - Replace "empty()" calls with null comparisons.
@@ -104,4 +104,19 @@ darvin_image:
 
 8.0.0: Extract File bundle.
 
-8.0.1: Alias public services.
+8.0.1:
+
+- Alias public services.
+
+- Allow to specify placeholder for Imagine filter:
+
+```yaml
+darvin_image:
+    imagine:
+        filter_sets:
+            homepage_gallery:
+                entities:    Darvin\PageBundle\Entity\HomepageImage
+                placeholder: test.png
+                filters:
+                    thumbnail: { size: [ 50, 50 ], mode: outbound }
+```

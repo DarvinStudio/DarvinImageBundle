@@ -27,5 +27,6 @@ services:
         arguments:
             - '@logger'
             - '@darvin_image.url_builder.builder'
+            - '%darvin_image.imagine.filter_sets%'
         tags:
             - { name: twig.extension }

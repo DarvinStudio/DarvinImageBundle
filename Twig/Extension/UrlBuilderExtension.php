@@ -35,13 +35,20 @@ class UrlBuilderExtension extends AbstractExtension
     private $urlBuilder;
 
     /**
-     * @param \Psr\Log\LoggerInterface                           $logger     Logger
-     * @param \Darvin\ImageBundle\UrlBuilder\UrlBuilderInterface $urlBuilder URL builder
+     * @var array
      */
-    public function __construct(LoggerInterface $logger, UrlBuilderInterface $urlBuilder)
+    private $imagineFilterSets;
+
+    /**
+     * @param \Psr\Log\LoggerInterface                           $logger            Logger
+     * @param \Darvin\ImageBundle\UrlBuilder\UrlBuilderInterface $urlBuilder        URL builder
+     * @param array                                              $imagineFilterSets Imagine filter sets
+     */
+    public function __construct(LoggerInterface $logger, UrlBuilderInterface $urlBuilder, array $imagineFilterSets)
     {
         $this->logger = $logger;
         $this->urlBuilder = $urlBuilder;
+        $this->imagineFilterSets = $imagineFilterSets;
     }
 
     /**
@@ -74,6 +81,9 @@ class UrlBuilderExtension extends AbstractExtension
      */
     public function buildImagineUrl(?AbstractImage $image, string $filterName, ?string $fallback = null): ?string
     {
+        if (null === $fallback) {
+            $fallback = $this->imagineFilterSets[$filterName]['placeholder'] ?? null;
+        }
         try {
             return $this->urlBuilder->buildFilteredUrl($image, DirectImagineFilter::NAME, [
                 DirectImagineFilter::FILTER_NAME_PARAM => $filterName,
