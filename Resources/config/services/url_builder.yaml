@@ -6,6 +6,8 @@ parameters:
     darvin_image.url_builder.twig.extension.class: Darvin\ImageBundle\Twig\Extension\UrlBuilderExtension
 
 services:
+    Darvin\ImageBundle\UrlBuilder\UrlBuilderInterface: '@darvin_image.url_builder.builder'
+
     darvin_image.url_builder.builder:
         class: '%darvin_image.url_builder.builder.class%'
         arguments:

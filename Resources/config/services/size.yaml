@@ -2,6 +2,8 @@ parameters:
     darvin_image.size.describer.class: Darvin\ImageBundle\Size\ImageSizeDescriber
 
 services:
+    Darvin\ImageBundle\Size\ImageSizeDescriberInterface: '@darvin_image.size.describer'
+
     darvin_image.size.describer:
         class: '%darvin_image.size.describer.class%'
         arguments:

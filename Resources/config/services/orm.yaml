@@ -2,5 +2,7 @@ parameters:
     darvin_image.orm.image_joiner.class: Darvin\ImageBundle\ORM\ImageJoiner
 
 services:
+    Darvin\ImageBundle\ORM\ImageJoinerInterface: '@darvin_image.orm.image_joiner'
+
     darvin_image.orm.image_joiner:
         class: '%darvin_image.orm.image_joiner.class%'

@@ -103,3 +103,5 @@ darvin_image:
 7.2.3: Disable CSRF protection.
 
 8.0.0: Extract File bundle.
+
+8.0.1: Alias public services.
