@@ -12,6 +12,7 @@ namespace Darvin\ImageBundle\Entity\Image;
 
 use Darvin\ContentBundle\Traits\TranslationTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslationInterface;
 
 /**
  * Image translation
@@ -19,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\InheritanceType("SINGLE_TABLE")
  */
-class ImageTranslation
+class ImageTranslation implements TranslationInterface
 {
     use TranslationTrait;
 

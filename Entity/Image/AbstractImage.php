@@ -15,6 +15,7 @@ use Darvin\ImageBundle\Validation\Constraints as DarvinImageAssert;
 use Darvin\Utils\Mapping\Annotation\Clonable;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -33,7 +34,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @method string|null getAlt()
  * @method string|null getTitle()
  */
-abstract class AbstractImage
+abstract class AbstractImage implements TranslatableInterface
 {
     use TranslatableTrait;
 
