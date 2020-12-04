@@ -14,6 +14,7 @@ use Darvin\ContentBundle\Traits\TranslatableTrait;
 use Darvin\FileBundle\Entity\AbstractFile;
 use Darvin\ImageBundle\Validation\Constraints as DarvinImageAssert;
 use Doctrine\ORM\Mapping as ORM;
+use Knp\DoctrineBehaviors\Contract\Entity\TranslatableInterface;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -24,7 +25,7 @@ use Symfony\Component\HttpFoundation\File\File;
  * @method string|null getAlt()
  * @method string|null getTitle()
  */
-abstract class AbstractImage extends AbstractFile
+abstract class AbstractImage extends AbstractFile implements TranslatableInterface
 {
     use TranslatableTrait;
 
