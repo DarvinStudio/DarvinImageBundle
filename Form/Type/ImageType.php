@@ -18,6 +18,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Image form type
@@ -30,17 +31,24 @@ class ImageType extends AbstractType
     private $sizeDescriber;
 
     /**
+     * @var \Symfony\Contracts\Translation\TranslatorInterface
+     */
+    private $translator;
+
+    /**
      * @var int
      */
     private $uploadMaxSizeMb;
 
     /**
      * @param \Darvin\ImageBundle\Size\ImageSizeDescriberInterface $sizeDescriber   Image size describer
+     * @param \Symfony\Contracts\Translation\TranslatorInterface   $translator      Translator
      * @param int                                                  $uploadMaxSizeMb Max upload size in MB
      */
-    public function __construct(ImageSizeDescriberInterface $sizeDescriber, int $uploadMaxSizeMb)
+    public function __construct(ImageSizeDescriberInterface $sizeDescriber, TranslatorInterface $translator, int $uploadMaxSizeMb)
     {
         $this->sizeDescriber = $sizeDescriber;
+        $this->translator = $translator;
         $this->uploadMaxSizeMb = $uploadMaxSizeMb;
     }
 
@@ -67,23 +75,8 @@ class ImageType extends AbstractType
         $view->vars = array_merge($view->vars, [
             'disableable' => $options['disableable'],
             'editable'    => $options['editable'],
+            'help'        => $this->buildHelp($view, $options['help_translation_domain']),
         ]);
-
-        $help = (string)$view->children['file']->vars['help'];
-
-        if ('' === $help) {
-            return;
-        }
-
-        $view->children['file']->vars['help'] = null;
-
-        $view->vars['help'] = (string)$view->vars['help'];
-
-        if ('' !== $view->vars['help']) {
-            $view->vars['help'] .= '<br>';
-        }
-
-        $view->vars['help'] .= $help;
     }
 
     /**
@@ -95,14 +88,15 @@ class ImageType extends AbstractType
 
         $resolver
             ->setDefaults([
-                'csrf_protection' => false,
-                'required'        => false,
-                'disableable'     => true,
-                'editable'        => true,
-                'filters'         => [],
-                'width'           => 0,
-                'height'          => 0,
-                'help'            => function (Options $options) use ($sizeDescriber) {
+                'csrf_protection'         => false,
+                'required'                => false,
+                'disableable'             => true,
+                'editable'                => true,
+                'filters'                 => [],
+                'width'                   => 0,
+                'height'                  => 0,
+                'help_translation_domain' => 'admin',
+                'help'                    => function (Options $options) use ($sizeDescriber): ?string {
                     return $sizeDescriber->describeSize($options['filters'], $options['width'], $options['height'], $options['data_class']);
                 },
             ])
@@ -111,6 +105,7 @@ class ImageType extends AbstractType
             ->setAllowedTypes('filters', ['array', 'null', 'string'])
             ->setAllowedTypes('width', 'integer')
             ->setAllowedTypes('height', 'integer')
+            ->setAllowedTypes('help_translation_domain', 'string')
             ->remove('data_class')
             ->setRequired('data_class');
     }
@@ -121,5 +116,35 @@ class ImageType extends AbstractType
     public function getBlockPrefix(): string
     {
         return 'darvin_image_image';
+    }
+
+    /**
+     * @param \Symfony\Component\Form\FormView $view        Form view
+     * @param string                           $transDomain Help translation domain
+     *
+     * @return string|null
+     */
+    private function buildHelp(FormView $view, string $transDomain): ?string
+    {
+        $parts = [
+            $view->vars['help'],
+            $view->children['file']->vars['help'],
+        ];
+
+        $view->children['file']->vars['help'] = null;
+
+        $parts = array_filter(array_map('strval', $parts), function (string $help): bool {
+            return '' !== $help;
+        });
+
+        if (empty($parts)) {
+            return null;
+        }
+
+        $translator = $this->translator;
+
+        return implode('<br>', array_map(function (string $help) use ($translator, $transDomain): string {
+            return $translator->trans($help, [], $transDomain);
+        }, $parts));
     }
 }
