@@ -13,7 +13,8 @@ namespace Darvin\ImageBundle\Form\Type;
 use Darvin\FileBundle\Form\Type\FileType;
 use Darvin\ImageBundle\Size\ImageSizeDescriberInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -44,20 +45,31 @@ class ImageType extends AbstractType
     /**
      * {@inheritDoc}
      */
+    public function finishView(FormView $view, FormInterface $form, array $options): void
+    {
+        if (!isset($view->vars['help_translation_parameters']['%size_help%'])) {
+            $view->vars['help_translation_parameters']['%size_help%'] = $this->sizeDescriber->describeSize(
+                $options['filters'],
+                $options['width'],
+                $options['height'],
+                $options['data_class']
+            );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $sizeDescriber = $this->sizeDescriber;
-
         $resolver
             ->setDefaults([
                 'accept'             => 'image/*',
                 'filters'            => [],
+                'help'               => 'form.image.help',
+                'upload_max_size_mb' => $this->uploadMaxSizeMb,
                 'width'              => 0,
                 'height'             => 0,
-                'upload_max_size_mb' => $this->uploadMaxSizeMb,
-                'help'               => function (Options $options) use ($sizeDescriber) {
-                    return $sizeDescriber->describeSize($options['filters'], $options['width'], $options['height'], $options['data_class']);
-                },
             ])
             ->setAllowedTypes('filters', ['array', 'null', 'string'])
             ->setAllowedTypes('width', 'integer')

@@ -120,3 +120,5 @@ darvin_image:
                 filters:
                     thumbnail: { size: [ 50, 50 ], mode: outbound }
 ```
+
+8.0.3: Make image form help customizable.
