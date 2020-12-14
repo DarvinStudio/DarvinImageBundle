@@ -69,18 +69,15 @@ class ImageType extends AbstractType
         ]);
 
         if (!isset($view->vars['help_translation_parameters']['%file_help%'])) {
-            $fileHelp = (string)$view->children['file']->vars['help'];
-
-            if ('' !== $fileHelp) {
-                $view->vars['help_translation_parameters']['%file_help%'] = $fileHelp;
-            }
+            $view->vars['help_translation_parameters']['%file_help%'] = $view->children['file']->vars['help'];
         }
         if (!isset($view->vars['help_translation_parameters']['%size_help%'])) {
-            $sizeHelp = (string)$this->sizeDescriber->describeSize($options['filters'], $options['width'], $options['height'], $options['data_class']);
-
-            if ('' !== $sizeHelp) {
-                $view->vars['help_translation_parameters']['%size_help%'] = $sizeHelp;
-            }
+            $view->vars['help_translation_parameters']['%size_help%'] = $this->sizeDescriber->describeSize(
+                $options['filters'],
+                $options['width'],
+                $options['height'],
+                $options['data_class']
+            );
         }
 
         $view->children['file']->vars['help'] = null;
