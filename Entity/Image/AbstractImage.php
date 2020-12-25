@@ -128,4 +128,20 @@ abstract class AbstractImage extends AbstractFile implements TranslatableInterfa
     {
         return in_array($this->extension, self::VECTOR_EXTENSIONS);
     }
+
+    /**
+     * @return int|null
+     */
+    public function getWidth(): ?int
+    {
+        return $this->width;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getHeight(): ?int
+    {
+        return $this->height;
+    }
 }
