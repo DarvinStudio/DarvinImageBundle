@@ -124,3 +124,5 @@ darvin_image:
 8.0.3: Make image form help customizable.
 
 8.0.4: Restore missing AbstractImage::getWidth() and getHeight().
+
+8.0.5: Remove unsupported translations.

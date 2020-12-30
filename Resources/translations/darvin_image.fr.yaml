@@ -1,7 +1,0 @@
-image:
-    entity:
-        name: Nom
-    help:
-        name: 'Image nom du fichier (sans extension)'
-size:
-    description: 'Recommandé taille minimale: %width%x%height%.'
