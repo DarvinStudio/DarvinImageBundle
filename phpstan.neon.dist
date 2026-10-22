@@ -1,0 +1,19 @@
+includes:
+    - phpstan-baseline.neon
+parameters:
+    level: 5
+    phpVersion:
+        min: 70200
+        max: 80400
+    excludePaths:
+        - */Tests/*
+        - */vendor/*
+    treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        # False positive caused by a docblock bug in symfony/http-foundation 5.x: JsonResponse::__construct() documents
+        # "@param mixed $data", which PHPStan resolves as the (non-existent) class Symfony\Component\HttpFoundation\mixed.
+        -
+            message: '#^Parameter \#1 \$data of class Symfony\\Component\\HttpFoundation\\JsonResponse constructor expects Symfony\\Component\\HttpFoundation\\mixed\|null, array.*given\.$#'
+            identifier: argument.type
+            count: 1
+            path: Controller/Image/ExterminateController.php
