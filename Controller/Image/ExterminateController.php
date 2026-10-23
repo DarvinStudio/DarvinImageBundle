@@ -27,7 +27,8 @@ class ExterminateController extends AbstractImageController
     public function __invoke(Request $request): Response
     {
         $exterminated = [];
-        $ids          = $request->request->get('ids', []);
+        $data         = $request->request->all();
+        $ids          = array_key_exists('ids', $data) ? $data['ids'] : [];
 
         if (!is_array($ids)) {
             $ids = [$ids];

@@ -27,7 +27,8 @@ class SortController extends AbstractImageController
      */
     public function __invoke(Request $request): Response
     {
-        $ids = $request->request->get('ids');
+        $data = $request->request->all();
+        $ids  = array_key_exists('ids', $data) ? $data['ids'] : null;
 
         if (!is_array($ids)) {
             throw new NotFoundHttpException(sprintf('Query parameter "ids" must be an array, got "%s".', gettype($ids)));
