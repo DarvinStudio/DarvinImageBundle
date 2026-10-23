@@ -1,0 +1,12 @@
+parameters:
+    ignoreErrors:
+        -
+            message: '#^Call to function array_key_exists\(\) with ''locale'' and array\{alias\: string\|null\} will always evaluate to false\.$#'
+            identifier: function.impossibleType
+            count: 1
+            path: ORM/ImageJoiner.php
+        -
+            message: '#^Trait Darvin\\ImageBundle\\Traits\\ImageableRepositoryTrait is used zero times and is not analysed\.$#'
+            identifier: trait.unused
+            count: 1
+            path: Traits/ImageableRepositoryTrait.php
